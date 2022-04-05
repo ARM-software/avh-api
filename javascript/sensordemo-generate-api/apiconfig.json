@@ -1,0 +1,9 @@
+{
+  "npmName": "avh-api",
+  "projectDescription": "Arm Virtual Hosting API",
+  "packageName": "AvhClient",
+  "disallowAdditionalPropertiesIfNotPresent": false,
+  "apiPackage": "Arm",
+  "projectVersion": "1.0.0",
+  "usePromises": true
+}

@@ -1,0 +1,19 @@
+{
+  "name": "sensordemo-test-runner",
+  "version": "0.0.1",
+  "description": "Reference Project Build and Test running on Arm Virtual Hardware",
+  "main": "index.js",
+  "keywords": [],
+  "author": "",
+  "license": "SEE LICENSE IN license.txt",
+  "scripts": {
+    "test": "mocha --reporter json --reporter-option output=$REPORT_PATH"
+  },
+  "dependencies": {
+    "arm_api": "file:../api",
+    "mocha": "^9.2.2",
+    "promise-socket": "^7.0.0",
+    "split2": "^4.1.0",
+    "websocket-stream": "^5.5.2"
+  }
+}
