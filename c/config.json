@@ -1,0 +1,6 @@
+{
+  "packageName": "ApiClient",
+  "disallowAdditionalPropertiesIfNotPresent": false,
+  "pythonAttrNoneIfUnset": true,
+  "usePromises": true
+}
