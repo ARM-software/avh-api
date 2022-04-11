@@ -11,10 +11,10 @@
 import sys
 import unittest
 
-import ApiClient
-from ApiClient.model.vpn_definition import VpnDefinition
+import AvhClient
+from AvhClient.model.vpn_definition import VpnDefinition
 globals()['VpnDefinition'] = VpnDefinition
-from ApiClient.model.instance_services import InstanceServices
+from AvhClient.model.instance_services import InstanceServices
 
 
 class TestInstanceServices(unittest.TestCase):

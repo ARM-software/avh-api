@@ -11,10 +11,10 @@
 import sys
 import unittest
 
-import ApiClient
-from ApiClient.model.instance_state import InstanceState
+import AvhClient
+from AvhClient.model.instance_state import InstanceState
 globals()['InstanceState'] = InstanceState
-from ApiClient.model.instance_return import InstanceReturn
+from AvhClient.model.instance_return import InstanceReturn
 
 
 class TestInstanceReturn(unittest.TestCase):

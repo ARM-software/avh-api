@@ -11,8 +11,8 @@
 import sys
 import unittest
 
-import ApiClient
-from ApiClient.model.vpn_definition import VpnDefinition
+import AvhClient
+from AvhClient.model.vpn_definition import VpnDefinition
 
 
 class TestVpnDefinition(unittest.TestCase):

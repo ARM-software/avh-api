@@ -11,10 +11,10 @@
 import sys
 import unittest
 
-import ApiClient
-from ApiClient.model.firmware import Firmware
+import AvhClient
+from AvhClient.model.firmware import Firmware
 globals()['Firmware'] = Firmware
-from ApiClient.model.model_software import ModelSoftware
+from AvhClient.model.model_software import ModelSoftware
 
 
 class TestModelSoftware(unittest.TestCase):

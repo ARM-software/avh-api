@@ -11,8 +11,8 @@
 import sys
 import unittest
 
-import ApiClient
-from ApiClient.model.instance_state import InstanceState
+import AvhClient
+from AvhClient.model.instance_state import InstanceState
 
 
 class TestInstanceState(unittest.TestCase):

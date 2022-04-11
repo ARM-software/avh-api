@@ -11,8 +11,8 @@
 import sys
 import unittest
 
-import ApiClient
-from ApiClient.model.credentials import Credentials
+import AvhClient
+from AvhClient.model.credentials import Credentials
 
 
 class TestCredentials(unittest.TestCase):

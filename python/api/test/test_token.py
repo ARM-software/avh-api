@@ -11,8 +11,8 @@
 import sys
 import unittest
 
-import ApiClient
-from ApiClient.model.token import Token
+import AvhClient
+from AvhClient.model.token import Token
 
 
 class TestToken(unittest.TestCase):

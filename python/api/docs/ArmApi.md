@@ -1,4 +1,4 @@
-# ApiClient.ArmApi
+# AvhClient.ArmApi
 
 All URIs are relative to *https://app.avh.arm.com/api*
 
@@ -14,6 +14,7 @@ Method | HTTP request | Description
 [**v1_get_images**](ArmApi.md#v1_get_images) | **GET** /v1/images | Get all Images Metadata
 [**v1_get_instance**](ArmApi.md#v1_get_instance) | **GET** /v1/instances/{instanceId} | Get Instance
 [**v1_get_instance_console**](ArmApi.md#v1_get_instance_console) | **GET** /v1/instances/{instanceId}/console | Get console websocket URL
+[**v1_get_instance_gpios**](ArmApi.md#v1_get_instance_gpios) | **GET** /v1/instances/{instanceId}/gpios | Get Instance GPIOs
 [**v1_get_instance_peripherals**](ArmApi.md#v1_get_instance_peripherals) | **GET** /v1/instances/{instanceId}/peripherals | Get Instance Peripherals
 [**v1_get_instance_state**](ArmApi.md#v1_get_instance_state) | **GET** /v1/instances/{instanceId}/state | Get state of Instance
 [**v1_get_instances**](ArmApi.md#v1_get_instances) | **GET** /v1/instances | Get Instances
@@ -29,6 +30,7 @@ Method | HTTP request | Description
 [**v1_ready**](ArmApi.md#v1_ready) | **GET** /v1/ready | API Status
 [**v1_reboot_instance**](ArmApi.md#v1_reboot_instance) | **POST** /v1/instances/{instanceId}/reboot | Reboot an Instance
 [**v1_restore_snapshot**](ArmApi.md#v1_restore_snapshot) | **POST** /v1/instances/{instanceId}/snapshots/{snapshotId}/restore | Restore a Snapshot
+[**v1_set_instance_gpios**](ArmApi.md#v1_set_instance_gpios) | **PUT** /v1/instances/{instanceId}/gpios | Set Instance GPIOs
 [**v1_set_instance_peripherals**](ArmApi.md#v1_set_instance_peripherals) | **PUT** /v1/instances/{instanceId}/peripherals | Set Instance Peripherals
 [**v1_set_instance_state**](ArmApi.md#v1_set_instance_state) | **PUT** /v1/instances/{instanceId}/state | Set state of Instance
 [**v1_snapshot_delete**](ArmApi.md#v1_snapshot_delete) | **DELETE** /v1/instances/{instanceId}/snapshots/{snapshotId} | Delete a Snapshot
@@ -37,11 +39,10 @@ Method | HTTP request | Description
 [**v1_stop_instance**](ArmApi.md#v1_stop_instance) | **POST** /v1/instances/{instanceId}/stop | Stop an Instance
 [**v1_unpause_instance**](ArmApi.md#v1_unpause_instance) | **POST** /v1/instances/{instanceId}/unpause | Unpause an Instance
 [**v1_upload_image_data**](ArmApi.md#v1_upload_image_data) | **POST** /v1/images/{imageId} | Upload Image Data
-[**v1_users_login**](ArmApi.md#v1_users_login) | **POST** /v1/users/login | Log In
 
 
 # **v1_auth_login**
-> Token v1_auth_login(body)
+> Token v1_auth_login(api_token)
 
 Log In
 
@@ -50,30 +51,33 @@ Log In
 
 ```python
 import time
-import ApiClient
-from ApiClient.api import arm_api
-from ApiClient.model.api_error import ApiError
-from ApiClient.model.token import Token
+import AvhClient
+from AvhClient.api import arm_api
+from AvhClient.model.api_token import ApiToken
+from AvhClient.model.api_error import ApiError
+from AvhClient.model.token import Token
 from pprint import pprint
 # Defining the host is optional and defaults to https://app.avh.arm.com/api
 # See configuration.py for a list of all supported configuration parameters.
-configuration = ApiClient.Configuration(
+configuration = AvhClient.Configuration(
     host = "https://app.avh.arm.com/api"
 )
 
 
 # Enter a context with an instance of the API client
-with ApiClient.ApiClient() as api_client:
+with AvhClient.ApiClient() as api_client:
     # Create an instance of the API class
     api_instance = arm_api.ArmApi(api_client)
-    body = {} # {str: (bool, date, datetime, dict, float, int, list, str, none_type)} | Authorization data ( Credentials|ApiToken|Token )
+    api_token = ApiToken(
+        api_token="api_token_example",
+    ) # ApiToken | Authorization Data
 
     # example passing only required values which don't have defaults set
     try:
         # Log In
-        api_response = api_instance.v1_auth_login(body)
+        api_response = api_instance.v1_auth_login(api_token)
         pprint(api_response)
-    except ApiClient.ApiException as e:
+    except AvhClient.ApiException as e:
         print("Exception when calling ArmApi->v1_auth_login: %s\n" % e)
 ```
 
@@ -82,7 +86,7 @@ with ApiClient.ApiClient() as api_client:
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **body** | **{str: (bool, date, datetime, dict, float, int, list, str, none_type)}**| Authorization data ( Credentials|ApiToken|Token ) |
+ **api_token** | [**ApiToken**](ApiToken.md)| Authorization Data |
 
 ### Return type
 
@@ -118,14 +122,14 @@ Create a new Image
 
 ```python
 import time
-import ApiClient
-from ApiClient.api import arm_api
-from ApiClient.model.api_not_found_error import ApiNotFoundError
-from ApiClient.model.image import Image
+import AvhClient
+from AvhClient.api import arm_api
+from AvhClient.model.image import Image
+from AvhClient.model.api_not_found_error import ApiNotFoundError
 from pprint import pprint
 # Defining the host is optional and defaults to https://app.avh.arm.com/api
 # See configuration.py for a list of all supported configuration parameters.
-configuration = ApiClient.Configuration(
+configuration = AvhClient.Configuration(
     host = "https://app.avh.arm.com/api"
 )
 
@@ -135,12 +139,12 @@ configuration = ApiClient.Configuration(
 # satisfies your auth use case.
 
 # Configure Bearer authorization (JWT): BearerAuth
-configuration = ApiClient.Configuration(
+configuration = AvhClient.Configuration(
     access_token = 'YOUR_BEARER_TOKEN'
 )
 
 # Enter a context with an instance of the API client
-with ApiClient.ApiClient(configuration) as api_client:
+with AvhClient.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = arm_api.ArmApi(api_client)
     type = "type_example" # str | Image type
@@ -154,7 +158,7 @@ with ApiClient.ApiClient(configuration) as api_client:
         # Create a new Image
         api_response = api_instance.v1_create_image(type, )
         pprint(api_response)
-    except ApiClient.ApiException as e:
+    except AvhClient.ApiException as e:
         print("Exception when calling ArmApi->v1_create_image: %s\n" % e)
 
     # example passing only required values which don't have defaults set
@@ -163,7 +167,7 @@ with ApiClient.ApiClient(configuration) as api_client:
         # Create a new Image
         api_response = api_instance.v1_create_image(type, name=name, project=project, instance=instance, file=file)
         pprint(api_response)
-    except ApiClient.ApiException as e:
+    except AvhClient.ApiException as e:
         print("Exception when calling ArmApi->v1_create_image: %s\n" % e)
 ```
 
@@ -213,16 +217,16 @@ Create Instance
 
 ```python
 import time
-import ApiClient
-from ApiClient.api import arm_api
-from ApiClient.model.instance_create_options import InstanceCreateOptions
-from ApiClient.model.api_error import ApiError
-from ApiClient.model.user_error import UserError
-from ApiClient.model.instance_return import InstanceReturn
+import AvhClient
+from AvhClient.api import arm_api
+from AvhClient.model.instance_create_options import InstanceCreateOptions
+from AvhClient.model.instance_return import InstanceReturn
+from AvhClient.model.api_error import ApiError
+from AvhClient.model.user_error import UserError
 from pprint import pprint
 # Defining the host is optional and defaults to https://app.avh.arm.com/api
 # See configuration.py for a list of all supported configuration parameters.
-configuration = ApiClient.Configuration(
+configuration = AvhClient.Configuration(
     host = "https://app.avh.arm.com/api"
 )
 
@@ -232,12 +236,12 @@ configuration = ApiClient.Configuration(
 # satisfies your auth use case.
 
 # Configure Bearer authorization (JWT): BearerAuth
-configuration = ApiClient.Configuration(
+configuration = AvhClient.Configuration(
     access_token = 'YOUR_BEARER_TOKEN'
 )
 
 # Enter a context with an instance of the API client
-with ApiClient.ApiClient(configuration) as api_client:
+with AvhClient.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = arm_api.ArmApi(api_client)
     instance_create_options = InstanceCreateOptions(
@@ -296,7 +300,7 @@ with ApiClient.ApiClient(configuration) as api_client:
         # Create Instance
         api_response = api_instance.v1_create_instance(instance_create_options)
         pprint(api_response)
-    except ApiClient.ApiException as e:
+    except AvhClient.ApiException as e:
         print("Exception when calling ArmApi->v1_create_instance: %s\n" % e)
 ```
 
@@ -342,16 +346,16 @@ Create Instance Snapshot
 
 ```python
 import time
-import ApiClient
-from ApiClient.api import arm_api
-from ApiClient.model.api_error import ApiError
-from ApiClient.model.user_error import UserError
-from ApiClient.model.snapshot import Snapshot
-from ApiClient.model.snapshot_creation_options import SnapshotCreationOptions
+import AvhClient
+from AvhClient.api import arm_api
+from AvhClient.model.snapshot_creation_options import SnapshotCreationOptions
+from AvhClient.model.api_error import ApiError
+from AvhClient.model.snapshot import Snapshot
+from AvhClient.model.user_error import UserError
 from pprint import pprint
 # Defining the host is optional and defaults to https://app.avh.arm.com/api
 # See configuration.py for a list of all supported configuration parameters.
-configuration = ApiClient.Configuration(
+configuration = AvhClient.Configuration(
     host = "https://app.avh.arm.com/api"
 )
 
@@ -361,12 +365,12 @@ configuration = ApiClient.Configuration(
 # satisfies your auth use case.
 
 # Configure Bearer authorization (JWT): BearerAuth
-configuration = ApiClient.Configuration(
+configuration = AvhClient.Configuration(
     access_token = 'YOUR_BEARER_TOKEN'
 )
 
 # Enter a context with an instance of the API client
-with ApiClient.ApiClient(configuration) as api_client:
+with AvhClient.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = arm_api.ArmApi(api_client)
     instance_id = "instanceId_example" # str | Instance ID - uuid
@@ -379,7 +383,7 @@ with ApiClient.ApiClient(configuration) as api_client:
         # Create Instance Snapshot
         api_response = api_instance.v1_create_snapshot(instance_id, snapshot_creation_options)
         pprint(api_response)
-    except ApiClient.ApiException as e:
+    except AvhClient.ApiException as e:
         print("Exception when calling ArmApi->v1_create_snapshot: %s\n" % e)
 ```
 
@@ -426,13 +430,13 @@ Delete Image
 
 ```python
 import time
-import ApiClient
-from ApiClient.api import arm_api
-from ApiClient.model.api_not_found_error import ApiNotFoundError
+import AvhClient
+from AvhClient.api import arm_api
+from AvhClient.model.api_not_found_error import ApiNotFoundError
 from pprint import pprint
 # Defining the host is optional and defaults to https://app.avh.arm.com/api
 # See configuration.py for a list of all supported configuration parameters.
-configuration = ApiClient.Configuration(
+configuration = AvhClient.Configuration(
     host = "https://app.avh.arm.com/api"
 )
 
@@ -442,12 +446,12 @@ configuration = ApiClient.Configuration(
 # satisfies your auth use case.
 
 # Configure Bearer authorization (JWT): BearerAuth
-configuration = ApiClient.Configuration(
+configuration = AvhClient.Configuration(
     access_token = 'YOUR_BEARER_TOKEN'
 )
 
 # Enter a context with an instance of the API client
-with ApiClient.ApiClient(configuration) as api_client:
+with AvhClient.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = arm_api.ArmApi(api_client)
     image_id = "imageId_example" # str | Image ID - uuid
@@ -456,7 +460,7 @@ with ApiClient.ApiClient(configuration) as api_client:
     try:
         # Delete Image
         api_instance.v1_delete_image(image_id)
-    except ApiClient.ApiException as e:
+    except AvhClient.ApiException as e:
         print("Exception when calling ArmApi->v1_delete_image: %s\n" % e)
 ```
 
@@ -501,14 +505,14 @@ Remove Instance
 
 ```python
 import time
-import ApiClient
-from ApiClient.api import arm_api
-from ApiClient.model.api_error import ApiError
-from ApiClient.model.api_not_found_error import ApiNotFoundError
+import AvhClient
+from AvhClient.api import arm_api
+from AvhClient.model.api_not_found_error import ApiNotFoundError
+from AvhClient.model.api_error import ApiError
 from pprint import pprint
 # Defining the host is optional and defaults to https://app.avh.arm.com/api
 # See configuration.py for a list of all supported configuration parameters.
-configuration = ApiClient.Configuration(
+configuration = AvhClient.Configuration(
     host = "https://app.avh.arm.com/api"
 )
 
@@ -518,12 +522,12 @@ configuration = ApiClient.Configuration(
 # satisfies your auth use case.
 
 # Configure Bearer authorization (JWT): BearerAuth
-configuration = ApiClient.Configuration(
+configuration = AvhClient.Configuration(
     access_token = 'YOUR_BEARER_TOKEN'
 )
 
 # Enter a context with an instance of the API client
-with ApiClient.ApiClient(configuration) as api_client:
+with AvhClient.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = arm_api.ArmApi(api_client)
     instance_id = "instanceId_example" # str | Instance ID
@@ -532,7 +536,7 @@ with ApiClient.ApiClient(configuration) as api_client:
     try:
         # Remove Instance
         api_instance.v1_delete_instance(instance_id)
-    except ApiClient.ApiException as e:
+    except AvhClient.ApiException as e:
         print("Exception when calling ArmApi->v1_delete_instance: %s\n" % e)
 ```
 
@@ -578,14 +582,14 @@ Get Image Metadata
 
 ```python
 import time
-import ApiClient
-from ApiClient.api import arm_api
-from ApiClient.model.api_not_found_error import ApiNotFoundError
-from ApiClient.model.image import Image
+import AvhClient
+from AvhClient.api import arm_api
+from AvhClient.model.image import Image
+from AvhClient.model.api_not_found_error import ApiNotFoundError
 from pprint import pprint
 # Defining the host is optional and defaults to https://app.avh.arm.com/api
 # See configuration.py for a list of all supported configuration parameters.
-configuration = ApiClient.Configuration(
+configuration = AvhClient.Configuration(
     host = "https://app.avh.arm.com/api"
 )
 
@@ -595,12 +599,12 @@ configuration = ApiClient.Configuration(
 # satisfies your auth use case.
 
 # Configure Bearer authorization (JWT): BearerAuth
-configuration = ApiClient.Configuration(
+configuration = AvhClient.Configuration(
     access_token = 'YOUR_BEARER_TOKEN'
 )
 
 # Enter a context with an instance of the API client
-with ApiClient.ApiClient(configuration) as api_client:
+with AvhClient.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = arm_api.ArmApi(api_client)
     image_id = "imageId_example" # str | Image ID - uuid
@@ -610,7 +614,7 @@ with ApiClient.ApiClient(configuration) as api_client:
         # Get Image Metadata
         api_response = api_instance.v1_get_image(image_id)
         pprint(api_response)
-    except ApiClient.ApiException as e:
+    except AvhClient.ApiException as e:
         print("Exception when calling ArmApi->v1_get_image: %s\n" % e)
 ```
 
@@ -655,13 +659,13 @@ Get all Images Metadata
 
 ```python
 import time
-import ApiClient
-from ApiClient.api import arm_api
-from ApiClient.model.image import Image
+import AvhClient
+from AvhClient.api import arm_api
+from AvhClient.model.image import Image
 from pprint import pprint
 # Defining the host is optional and defaults to https://app.avh.arm.com/api
 # See configuration.py for a list of all supported configuration parameters.
-configuration = ApiClient.Configuration(
+configuration = AvhClient.Configuration(
     host = "https://app.avh.arm.com/api"
 )
 
@@ -671,12 +675,12 @@ configuration = ApiClient.Configuration(
 # satisfies your auth use case.
 
 # Configure Bearer authorization (JWT): BearerAuth
-configuration = ApiClient.Configuration(
+configuration = AvhClient.Configuration(
     access_token = 'YOUR_BEARER_TOKEN'
 )
 
 # Enter a context with an instance of the API client
-with ApiClient.ApiClient(configuration) as api_client:
+with AvhClient.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = arm_api.ArmApi(api_client)
     project = "project_example" # str | Optionally filter by project - uuid (optional)
@@ -687,7 +691,7 @@ with ApiClient.ApiClient(configuration) as api_client:
         # Get all Images Metadata
         api_response = api_instance.v1_get_images(project=project)
         pprint(api_response)
-    except ApiClient.ApiException as e:
+    except AvhClient.ApiException as e:
         print("Exception when calling ArmApi->v1_get_images: %s\n" % e)
 ```
 
@@ -731,15 +735,15 @@ Get Instance
 
 ```python
 import time
-import ApiClient
-from ApiClient.api import arm_api
-from ApiClient.model.instance import Instance
-from ApiClient.model.api_error import ApiError
-from ApiClient.model.api_not_found_error import ApiNotFoundError
+import AvhClient
+from AvhClient.api import arm_api
+from AvhClient.model.api_not_found_error import ApiNotFoundError
+from AvhClient.model.api_error import ApiError
+from AvhClient.model.instance import Instance
 from pprint import pprint
 # Defining the host is optional and defaults to https://app.avh.arm.com/api
 # See configuration.py for a list of all supported configuration parameters.
-configuration = ApiClient.Configuration(
+configuration = AvhClient.Configuration(
     host = "https://app.avh.arm.com/api"
 )
 
@@ -749,12 +753,12 @@ configuration = ApiClient.Configuration(
 # satisfies your auth use case.
 
 # Configure Bearer authorization (JWT): BearerAuth
-configuration = ApiClient.Configuration(
+configuration = AvhClient.Configuration(
     access_token = 'YOUR_BEARER_TOKEN'
 )
 
 # Enter a context with an instance of the API client
-with ApiClient.ApiClient(configuration) as api_client:
+with AvhClient.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = arm_api.ArmApi(api_client)
     instance_id = "instanceId_example" # str | Instance ID
@@ -767,7 +771,7 @@ with ApiClient.ApiClient(configuration) as api_client:
         # Get Instance
         api_response = api_instance.v1_get_instance(instance_id)
         pprint(api_response)
-    except ApiClient.ApiException as e:
+    except AvhClient.ApiException as e:
         print("Exception when calling ArmApi->v1_get_instance: %s\n" % e)
 
     # example passing only required values which don't have defaults set
@@ -776,7 +780,7 @@ with ApiClient.ApiClient(configuration) as api_client:
         # Get Instance
         api_response = api_instance.v1_get_instance(instance_id, return_attr=return_attr)
         pprint(api_response)
-    except ApiClient.ApiException as e:
+    except AvhClient.ApiException as e:
         print("Exception when calling ArmApi->v1_get_instance: %s\n" % e)
 ```
 
@@ -823,15 +827,15 @@ Get console websocket URL
 
 ```python
 import time
-import ApiClient
-from ApiClient.api import arm_api
-from ApiClient.model.api_error import ApiError
-from ApiClient.model.api_not_found_error import ApiNotFoundError
-from ApiClient.model.instance_console_endpoint import InstanceConsoleEndpoint
+import AvhClient
+from AvhClient.api import arm_api
+from AvhClient.model.api_not_found_error import ApiNotFoundError
+from AvhClient.model.api_error import ApiError
+from AvhClient.model.instance_console_endpoint import InstanceConsoleEndpoint
 from pprint import pprint
 # Defining the host is optional and defaults to https://app.avh.arm.com/api
 # See configuration.py for a list of all supported configuration parameters.
-configuration = ApiClient.Configuration(
+configuration = AvhClient.Configuration(
     host = "https://app.avh.arm.com/api"
 )
 
@@ -841,12 +845,12 @@ configuration = ApiClient.Configuration(
 # satisfies your auth use case.
 
 # Configure Bearer authorization (JWT): BearerAuth
-configuration = ApiClient.Configuration(
+configuration = AvhClient.Configuration(
     access_token = 'YOUR_BEARER_TOKEN'
 )
 
 # Enter a context with an instance of the API client
-with ApiClient.ApiClient(configuration) as api_client:
+with AvhClient.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = arm_api.ArmApi(api_client)
     instance_id = "instanceId_example" # str | Instance ID - uuid
@@ -856,7 +860,7 @@ with ApiClient.ApiClient(configuration) as api_client:
         # Get console websocket URL
         api_response = api_instance.v1_get_instance_console(instance_id)
         pprint(api_response)
-    except ApiClient.ApiException as e:
+    except AvhClient.ApiException as e:
         print("Exception when calling ArmApi->v1_get_instance_console: %s\n" % e)
 ```
 
@@ -891,6 +895,85 @@ Name | Type | Description  | Notes
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
+# **v1_get_instance_gpios**
+> GpiosState v1_get_instance_gpios(instance_id)
+
+Get Instance GPIOs
+
+### Example
+
+* Bearer (JWT) Authentication (BearerAuth):
+
+```python
+import time
+import AvhClient
+from AvhClient.api import arm_api
+from AvhClient.model.gpios_state import GpiosState
+from AvhClient.model.api_error import ApiError
+from AvhClient.model.user_error import UserError
+from pprint import pprint
+# Defining the host is optional and defaults to https://app.avh.arm.com/api
+# See configuration.py for a list of all supported configuration parameters.
+configuration = AvhClient.Configuration(
+    host = "https://app.avh.arm.com/api"
+)
+
+# The client must configure the authentication and authorization parameters
+# in accordance with the API server security policy.
+# Examples for each auth method are provided below, use the example that
+# satisfies your auth use case.
+
+# Configure Bearer authorization (JWT): BearerAuth
+configuration = AvhClient.Configuration(
+    access_token = 'YOUR_BEARER_TOKEN'
+)
+
+# Enter a context with an instance of the API client
+with AvhClient.ApiClient(configuration) as api_client:
+    # Create an instance of the API class
+    api_instance = arm_api.ArmApi(api_client)
+    instance_id = "instanceId_example" # str | Instance ID - uuid
+
+    # example passing only required values which don't have defaults set
+    try:
+        # Get Instance GPIOs
+        api_response = api_instance.v1_get_instance_gpios(instance_id)
+        pprint(api_response)
+    except AvhClient.ApiException as e:
+        print("Exception when calling ArmApi->v1_get_instance_gpios: %s\n" % e)
+```
+
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **instance_id** | **str**| Instance ID - uuid |
+
+### Return type
+
+[**GpiosState**](GpiosState.md)
+
+### Authorization
+
+[BearerAuth](../README.md#BearerAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+
+### HTTP response details
+
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+**200** | Current GPIO State |  -  |
+**403** | Forbidden |  -  |
+**404** | Not Found |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
 # **v1_get_instance_peripherals**
 > {str: (bool, date, datetime, dict, float, int, list, str, none_type)} v1_get_instance_peripherals(instance_id)
 
@@ -902,14 +985,14 @@ Get Instance Peripherals
 
 ```python
 import time
-import ApiClient
-from ApiClient.api import arm_api
-from ApiClient.model.api_error import ApiError
-from ApiClient.model.user_error import UserError
+import AvhClient
+from AvhClient.api import arm_api
+from AvhClient.model.api_error import ApiError
+from AvhClient.model.user_error import UserError
 from pprint import pprint
 # Defining the host is optional and defaults to https://app.avh.arm.com/api
 # See configuration.py for a list of all supported configuration parameters.
-configuration = ApiClient.Configuration(
+configuration = AvhClient.Configuration(
     host = "https://app.avh.arm.com/api"
 )
 
@@ -919,12 +1002,12 @@ configuration = ApiClient.Configuration(
 # satisfies your auth use case.
 
 # Configure Bearer authorization (JWT): BearerAuth
-configuration = ApiClient.Configuration(
+configuration = AvhClient.Configuration(
     access_token = 'YOUR_BEARER_TOKEN'
 )
 
 # Enter a context with an instance of the API client
-with ApiClient.ApiClient(configuration) as api_client:
+with AvhClient.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = arm_api.ArmApi(api_client)
     instance_id = "instanceId_example" # str | Instance ID - uuid
@@ -934,7 +1017,7 @@ with ApiClient.ApiClient(configuration) as api_client:
         # Get Instance Peripherals
         api_response = api_instance.v1_get_instance_peripherals(instance_id)
         pprint(api_response)
-    except ApiClient.ApiException as e:
+    except AvhClient.ApiException as e:
         print("Exception when calling ArmApi->v1_get_instance_peripherals: %s\n" % e)
 ```
 
@@ -980,15 +1063,15 @@ Get state of Instance
 
 ```python
 import time
-import ApiClient
-from ApiClient.api import arm_api
-from ApiClient.model.api_error import ApiError
-from ApiClient.model.user_error import UserError
-from ApiClient.model.instance_state import InstanceState
+import AvhClient
+from AvhClient.api import arm_api
+from AvhClient.model.instance_state import InstanceState
+from AvhClient.model.api_error import ApiError
+from AvhClient.model.user_error import UserError
 from pprint import pprint
 # Defining the host is optional and defaults to https://app.avh.arm.com/api
 # See configuration.py for a list of all supported configuration parameters.
-configuration = ApiClient.Configuration(
+configuration = AvhClient.Configuration(
     host = "https://app.avh.arm.com/api"
 )
 
@@ -998,12 +1081,12 @@ configuration = ApiClient.Configuration(
 # satisfies your auth use case.
 
 # Configure Bearer authorization (JWT): BearerAuth
-configuration = ApiClient.Configuration(
+configuration = AvhClient.Configuration(
     access_token = 'YOUR_BEARER_TOKEN'
 )
 
 # Enter a context with an instance of the API client
-with ApiClient.ApiClient(configuration) as api_client:
+with AvhClient.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = arm_api.ArmApi(api_client)
     instance_id = "instanceId_example" # str | Instance ID - uuid
@@ -1013,7 +1096,7 @@ with ApiClient.ApiClient(configuration) as api_client:
         # Get state of Instance
         api_response = api_instance.v1_get_instance_state(instance_id)
         pprint(api_response)
-    except ApiClient.ApiException as e:
+    except AvhClient.ApiException as e:
         print("Exception when calling ArmApi->v1_get_instance_state: %s\n" % e)
 ```
 
@@ -1059,14 +1142,14 @@ Get Instances
 
 ```python
 import time
-import ApiClient
-from ApiClient.api import arm_api
-from ApiClient.model.instance import Instance
-from ApiClient.model.api_error import ApiError
+import AvhClient
+from AvhClient.api import arm_api
+from AvhClient.model.api_error import ApiError
+from AvhClient.model.instance import Instance
 from pprint import pprint
 # Defining the host is optional and defaults to https://app.avh.arm.com/api
 # See configuration.py for a list of all supported configuration parameters.
-configuration = ApiClient.Configuration(
+configuration = AvhClient.Configuration(
     host = "https://app.avh.arm.com/api"
 )
 
@@ -1076,12 +1159,12 @@ configuration = ApiClient.Configuration(
 # satisfies your auth use case.
 
 # Configure Bearer authorization (JWT): BearerAuth
-configuration = ApiClient.Configuration(
+configuration = AvhClient.Configuration(
     access_token = 'YOUR_BEARER_TOKEN'
 )
 
 # Enter a context with an instance of the API client
-with ApiClient.ApiClient(configuration) as api_client:
+with AvhClient.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = arm_api.ArmApi(api_client)
     name = "name_example" # str | Optionally filter by project name (optional)
@@ -1095,7 +1178,7 @@ with ApiClient.ApiClient(configuration) as api_client:
         # Get Instances
         api_response = api_instance.v1_get_instances(name=name, return_attr=return_attr)
         pprint(api_response)
-    except ApiClient.ApiException as e:
+    except AvhClient.ApiException as e:
         print("Exception when calling ArmApi->v1_get_instances: %s\n" % e)
 ```
 
@@ -1141,13 +1224,13 @@ Get Software for Model
 
 ```python
 import time
-import ApiClient
-from ApiClient.api import arm_api
-from ApiClient.model.firmware import Firmware
+import AvhClient
+from AvhClient.api import arm_api
+from AvhClient.model.firmware import Firmware
 from pprint import pprint
 # Defining the host is optional and defaults to https://app.avh.arm.com/api
 # See configuration.py for a list of all supported configuration parameters.
-configuration = ApiClient.Configuration(
+configuration = AvhClient.Configuration(
     host = "https://app.avh.arm.com/api"
 )
 
@@ -1157,12 +1240,12 @@ configuration = ApiClient.Configuration(
 # satisfies your auth use case.
 
 # Configure Bearer authorization (JWT): BearerAuth
-configuration = ApiClient.Configuration(
+configuration = AvhClient.Configuration(
     access_token = 'YOUR_BEARER_TOKEN'
 )
 
 # Enter a context with an instance of the API client
-with ApiClient.ApiClient(configuration) as api_client:
+with AvhClient.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = arm_api.ArmApi(api_client)
     model = "model_example" # str | Model to list available software for
@@ -1172,7 +1255,7 @@ with ApiClient.ApiClient(configuration) as api_client:
         # Get Software for Model
         api_response = api_instance.v1_get_model_software(model)
         pprint(api_response)
-    except ApiClient.ApiException as e:
+    except AvhClient.ApiException as e:
         print("Exception when calling ArmApi->v1_get_model_software: %s\n" % e)
 ```
 
@@ -1216,13 +1299,13 @@ Get Supported Models
 
 ```python
 import time
-import ApiClient
-from ApiClient.api import arm_api
-from ApiClient.model.model import Model
+import AvhClient
+from AvhClient.api import arm_api
+from AvhClient.model.model import Model
 from pprint import pprint
 # Defining the host is optional and defaults to https://app.avh.arm.com/api
 # See configuration.py for a list of all supported configuration parameters.
-configuration = ApiClient.Configuration(
+configuration = AvhClient.Configuration(
     host = "https://app.avh.arm.com/api"
 )
 
@@ -1232,12 +1315,12 @@ configuration = ApiClient.Configuration(
 # satisfies your auth use case.
 
 # Configure Bearer authorization (JWT): BearerAuth
-configuration = ApiClient.Configuration(
+configuration = AvhClient.Configuration(
     access_token = 'YOUR_BEARER_TOKEN'
 )
 
 # Enter a context with an instance of the API client
-with ApiClient.ApiClient(configuration) as api_client:
+with AvhClient.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = arm_api.ArmApi(api_client)
 
@@ -1246,7 +1329,7 @@ with ApiClient.ApiClient(configuration) as api_client:
         # Get Supported Models
         api_response = api_instance.v1_get_models()
         pprint(api_response)
-    except ApiClient.ApiException as e:
+    except AvhClient.ApiException as e:
         print("Exception when calling ArmApi->v1_get_models: %s\n" % e)
 ```
 
@@ -1287,13 +1370,13 @@ Get Project
 
 ```python
 import time
-import ApiClient
-from ApiClient.api import arm_api
-from ApiClient.model.project import Project
+import AvhClient
+from AvhClient.api import arm_api
+from AvhClient.model.project import Project
 from pprint import pprint
 # Defining the host is optional and defaults to https://app.avh.arm.com/api
 # See configuration.py for a list of all supported configuration parameters.
-configuration = ApiClient.Configuration(
+configuration = AvhClient.Configuration(
     host = "https://app.avh.arm.com/api"
 )
 
@@ -1303,12 +1386,12 @@ configuration = ApiClient.Configuration(
 # satisfies your auth use case.
 
 # Configure Bearer authorization (JWT): BearerAuth
-configuration = ApiClient.Configuration(
+configuration = AvhClient.Configuration(
     access_token = 'YOUR_BEARER_TOKEN'
 )
 
 # Enter a context with an instance of the API client
-with ApiClient.ApiClient(configuration) as api_client:
+with AvhClient.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = arm_api.ArmApi(api_client)
     project_id = "projectId_example" # str | Project ID - uuid
@@ -1318,7 +1401,7 @@ with ApiClient.ApiClient(configuration) as api_client:
         # Get Project
         api_response = api_instance.v1_get_project(project_id)
         pprint(api_response)
-    except ApiClient.ApiException as e:
+    except AvhClient.ApiException as e:
         print("Exception when calling ArmApi->v1_get_project: %s\n" % e)
 ```
 
@@ -1362,14 +1445,14 @@ Get Instances in Project
 
 ```python
 import time
-import ApiClient
-from ApiClient.api import arm_api
-from ApiClient.model.instance import Instance
-from ApiClient.model.api_error import ApiError
+import AvhClient
+from AvhClient.api import arm_api
+from AvhClient.model.api_error import ApiError
+from AvhClient.model.instance import Instance
 from pprint import pprint
 # Defining the host is optional and defaults to https://app.avh.arm.com/api
 # See configuration.py for a list of all supported configuration parameters.
-configuration = ApiClient.Configuration(
+configuration = AvhClient.Configuration(
     host = "https://app.avh.arm.com/api"
 )
 
@@ -1379,12 +1462,12 @@ configuration = ApiClient.Configuration(
 # satisfies your auth use case.
 
 # Configure Bearer authorization (JWT): BearerAuth
-configuration = ApiClient.Configuration(
+configuration = AvhClient.Configuration(
     access_token = 'YOUR_BEARER_TOKEN'
 )
 
 # Enter a context with an instance of the API client
-with ApiClient.ApiClient(configuration) as api_client:
+with AvhClient.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = arm_api.ArmApi(api_client)
     project_id = "projectId_example" # str | Project ID - uuid
@@ -1398,7 +1481,7 @@ with ApiClient.ApiClient(configuration) as api_client:
         # Get Instances in Project
         api_response = api_instance.v1_get_project_instances(project_id)
         pprint(api_response)
-    except ApiClient.ApiException as e:
+    except AvhClient.ApiException as e:
         print("Exception when calling ArmApi->v1_get_project_instances: %s\n" % e)
 
     # example passing only required values which don't have defaults set
@@ -1407,7 +1490,7 @@ with ApiClient.ApiClient(configuration) as api_client:
         # Get Instances in Project
         api_response = api_instance.v1_get_project_instances(project_id, name=name, return_attr=return_attr)
         pprint(api_response)
-    except ApiClient.ApiException as e:
+    except AvhClient.ApiException as e:
         print("Exception when calling ArmApi->v1_get_project_instances: %s\n" % e)
 ```
 
@@ -1454,15 +1537,15 @@ Get Projects
 
 ```python
 import time
-import ApiClient
-from ApiClient.api import arm_api
-from ApiClient.model.api_error import ApiError
-from ApiClient.model.user_error import UserError
-from ApiClient.model.project import Project
+import AvhClient
+from AvhClient.api import arm_api
+from AvhClient.model.api_error import ApiError
+from AvhClient.model.project import Project
+from AvhClient.model.user_error import UserError
 from pprint import pprint
 # Defining the host is optional and defaults to https://app.avh.arm.com/api
 # See configuration.py for a list of all supported configuration parameters.
-configuration = ApiClient.Configuration(
+configuration = AvhClient.Configuration(
     host = "https://app.avh.arm.com/api"
 )
 
@@ -1472,12 +1555,12 @@ configuration = ApiClient.Configuration(
 # satisfies your auth use case.
 
 # Configure Bearer authorization (JWT): BearerAuth
-configuration = ApiClient.Configuration(
+configuration = AvhClient.Configuration(
     access_token = 'YOUR_BEARER_TOKEN'
 )
 
 # Enter a context with an instance of the API client
-with ApiClient.ApiClient(configuration) as api_client:
+with AvhClient.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = arm_api.ArmApi(api_client)
     name = "name_example" # str | Filter by project name (optional)
@@ -1489,7 +1572,7 @@ with ApiClient.ApiClient(configuration) as api_client:
         # Get Projects
         api_response = api_instance.v1_get_projects(name=name, ids_only=ids_only)
         pprint(api_response)
-    except ApiClient.ApiException as e:
+    except AvhClient.ApiException as e:
         print("Exception when calling ArmApi->v1_get_projects: %s\n" % e)
 ```
 
@@ -1536,15 +1619,15 @@ Get Instance Snapshots
 
 ```python
 import time
-import ApiClient
-from ApiClient.api import arm_api
-from ApiClient.model.api_error import ApiError
-from ApiClient.model.user_error import UserError
-from ApiClient.model.snapshot import Snapshot
+import AvhClient
+from AvhClient.api import arm_api
+from AvhClient.model.api_error import ApiError
+from AvhClient.model.snapshot import Snapshot
+from AvhClient.model.user_error import UserError
 from pprint import pprint
 # Defining the host is optional and defaults to https://app.avh.arm.com/api
 # See configuration.py for a list of all supported configuration parameters.
-configuration = ApiClient.Configuration(
+configuration = AvhClient.Configuration(
     host = "https://app.avh.arm.com/api"
 )
 
@@ -1554,12 +1637,12 @@ configuration = ApiClient.Configuration(
 # satisfies your auth use case.
 
 # Configure Bearer authorization (JWT): BearerAuth
-configuration = ApiClient.Configuration(
+configuration = AvhClient.Configuration(
     access_token = 'YOUR_BEARER_TOKEN'
 )
 
 # Enter a context with an instance of the API client
-with ApiClient.ApiClient(configuration) as api_client:
+with AvhClient.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = arm_api.ArmApi(api_client)
     instance_id = "instanceId_example" # str | Instance ID - uuid
@@ -1570,7 +1653,7 @@ with ApiClient.ApiClient(configuration) as api_client:
         # Get Instance Snapshots
         api_response = api_instance.v1_get_snapshot(instance_id, snapshot_id)
         pprint(api_response)
-    except ApiClient.ApiException as e:
+    except AvhClient.ApiException as e:
         print("Exception when calling ArmApi->v1_get_snapshot: %s\n" % e)
 ```
 
@@ -1617,15 +1700,15 @@ Get Instance Snapshots
 
 ```python
 import time
-import ApiClient
-from ApiClient.api import arm_api
-from ApiClient.model.api_error import ApiError
-from ApiClient.model.user_error import UserError
-from ApiClient.model.snapshot import Snapshot
+import AvhClient
+from AvhClient.api import arm_api
+from AvhClient.model.api_error import ApiError
+from AvhClient.model.snapshot import Snapshot
+from AvhClient.model.user_error import UserError
 from pprint import pprint
 # Defining the host is optional and defaults to https://app.avh.arm.com/api
 # See configuration.py for a list of all supported configuration parameters.
-configuration = ApiClient.Configuration(
+configuration = AvhClient.Configuration(
     host = "https://app.avh.arm.com/api"
 )
 
@@ -1635,12 +1718,12 @@ configuration = ApiClient.Configuration(
 # satisfies your auth use case.
 
 # Configure Bearer authorization (JWT): BearerAuth
-configuration = ApiClient.Configuration(
+configuration = AvhClient.Configuration(
     access_token = 'YOUR_BEARER_TOKEN'
 )
 
 # Enter a context with an instance of the API client
-with ApiClient.ApiClient(configuration) as api_client:
+with AvhClient.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = arm_api.ArmApi(api_client)
     instance_id = "instanceId_example" # str | Instance ID - uuid
@@ -1650,7 +1733,7 @@ with ApiClient.ApiClient(configuration) as api_client:
         # Get Instance Snapshots
         api_response = api_instance.v1_get_snapshots(instance_id)
         pprint(api_response)
-    except ApiClient.ApiException as e:
+    except AvhClient.ApiException as e:
         print("Exception when calling ArmApi->v1_get_snapshots: %s\n" % e)
 ```
 
@@ -1696,14 +1779,14 @@ Update Instance
 
 ```python
 import time
-import ApiClient
-from ApiClient.api import arm_api
-from ApiClient.model.api_error import ApiError
-from ApiClient.model.api_not_found_error import ApiNotFoundError
+import AvhClient
+from AvhClient.api import arm_api
+from AvhClient.model.api_not_found_error import ApiNotFoundError
+from AvhClient.model.api_error import ApiError
 from pprint import pprint
 # Defining the host is optional and defaults to https://app.avh.arm.com/api
 # See configuration.py for a list of all supported configuration parameters.
-configuration = ApiClient.Configuration(
+configuration = AvhClient.Configuration(
     host = "https://app.avh.arm.com/api"
 )
 
@@ -1713,12 +1796,12 @@ configuration = ApiClient.Configuration(
 # satisfies your auth use case.
 
 # Configure Bearer authorization (JWT): BearerAuth
-configuration = ApiClient.Configuration(
+configuration = AvhClient.Configuration(
     access_token = 'YOUR_BEARER_TOKEN'
 )
 
 # Enter a context with an instance of the API client
-with ApiClient.ApiClient(configuration) as api_client:
+with AvhClient.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = arm_api.ArmApi(api_client)
     instance_id = "instanceId_example" # str | Instance ID
@@ -1729,7 +1812,7 @@ with ApiClient.ApiClient(configuration) as api_client:
         # Update Instance
         api_response = api_instance.v1_patch_instance(instance_id, body)
         pprint(api_response)
-    except ApiClient.ApiException as e:
+    except AvhClient.ApiException as e:
         print("Exception when calling ArmApi->v1_patch_instance: %s\n" % e)
 ```
 
@@ -1776,13 +1859,13 @@ Pause an Instance
 
 ```python
 import time
-import ApiClient
-from ApiClient.api import arm_api
-from ApiClient.model.api_error import ApiError
+import AvhClient
+from AvhClient.api import arm_api
+from AvhClient.model.api_error import ApiError
 from pprint import pprint
 # Defining the host is optional and defaults to https://app.avh.arm.com/api
 # See configuration.py for a list of all supported configuration parameters.
-configuration = ApiClient.Configuration(
+configuration = AvhClient.Configuration(
     host = "https://app.avh.arm.com/api"
 )
 
@@ -1792,12 +1875,12 @@ configuration = ApiClient.Configuration(
 # satisfies your auth use case.
 
 # Configure Bearer authorization (JWT): BearerAuth
-configuration = ApiClient.Configuration(
+configuration = AvhClient.Configuration(
     access_token = 'YOUR_BEARER_TOKEN'
 )
 
 # Enter a context with an instance of the API client
-with ApiClient.ApiClient(configuration) as api_client:
+with AvhClient.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = arm_api.ArmApi(api_client)
     instance_id = "instanceId_example" # str | Instance ID - uuid
@@ -1806,7 +1889,7 @@ with ApiClient.ApiClient(configuration) as api_client:
     try:
         # Pause an Instance
         api_instance.v1_pause_instance(instance_id)
-    except ApiClient.ApiException as e:
+    except AvhClient.ApiException as e:
         print("Exception when calling ArmApi->v1_pause_instance: %s\n" % e)
 ```
 
@@ -1853,19 +1936,19 @@ Check if  API is ready for queries
 
 ```python
 import time
-import ApiClient
-from ApiClient.api import arm_api
-from ApiClient.model.api_error import ApiError
+import AvhClient
+from AvhClient.api import arm_api
+from AvhClient.model.api_error import ApiError
 from pprint import pprint
 # Defining the host is optional and defaults to https://app.avh.arm.com/api
 # See configuration.py for a list of all supported configuration parameters.
-configuration = ApiClient.Configuration(
+configuration = AvhClient.Configuration(
     host = "https://app.avh.arm.com/api"
 )
 
 
 # Enter a context with an instance of the API client
-with ApiClient.ApiClient() as api_client:
+with AvhClient.ApiClient() as api_client:
     # Create an instance of the API class
     api_instance = arm_api.ArmApi(api_client)
 
@@ -1873,7 +1956,7 @@ with ApiClient.ApiClient() as api_client:
     try:
         # API Status
         api_instance.v1_ready()
-    except ApiClient.ApiException as e:
+    except AvhClient.ApiException as e:
         print("Exception when calling ArmApi->v1_ready: %s\n" % e)
 ```
 
@@ -1915,13 +1998,13 @@ Reboot an Instance
 
 ```python
 import time
-import ApiClient
-from ApiClient.api import arm_api
-from ApiClient.model.api_error import ApiError
+import AvhClient
+from AvhClient.api import arm_api
+from AvhClient.model.api_error import ApiError
 from pprint import pprint
 # Defining the host is optional and defaults to https://app.avh.arm.com/api
 # See configuration.py for a list of all supported configuration parameters.
-configuration = ApiClient.Configuration(
+configuration = AvhClient.Configuration(
     host = "https://app.avh.arm.com/api"
 )
 
@@ -1931,12 +2014,12 @@ configuration = ApiClient.Configuration(
 # satisfies your auth use case.
 
 # Configure Bearer authorization (JWT): BearerAuth
-configuration = ApiClient.Configuration(
+configuration = AvhClient.Configuration(
     access_token = 'YOUR_BEARER_TOKEN'
 )
 
 # Enter a context with an instance of the API client
-with ApiClient.ApiClient(configuration) as api_client:
+with AvhClient.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = arm_api.ArmApi(api_client)
     instance_id = "instanceId_example" # str | Instance ID - uuid
@@ -1945,7 +2028,7 @@ with ApiClient.ApiClient(configuration) as api_client:
     try:
         # Reboot an Instance
         api_instance.v1_reboot_instance(instance_id)
-    except ApiClient.ApiException as e:
+    except AvhClient.ApiException as e:
         print("Exception when calling ArmApi->v1_reboot_instance: %s\n" % e)
 ```
 
@@ -1991,14 +2074,14 @@ Restore a Snapshot
 
 ```python
 import time
-import ApiClient
-from ApiClient.api import arm_api
-from ApiClient.model.api_error import ApiError
-from ApiClient.model.user_error import UserError
+import AvhClient
+from AvhClient.api import arm_api
+from AvhClient.model.api_error import ApiError
+from AvhClient.model.user_error import UserError
 from pprint import pprint
 # Defining the host is optional and defaults to https://app.avh.arm.com/api
 # See configuration.py for a list of all supported configuration parameters.
-configuration = ApiClient.Configuration(
+configuration = AvhClient.Configuration(
     host = "https://app.avh.arm.com/api"
 )
 
@@ -2008,12 +2091,12 @@ configuration = ApiClient.Configuration(
 # satisfies your auth use case.
 
 # Configure Bearer authorization (JWT): BearerAuth
-configuration = ApiClient.Configuration(
+configuration = AvhClient.Configuration(
     access_token = 'YOUR_BEARER_TOKEN'
 )
 
 # Enter a context with an instance of the API client
-with ApiClient.ApiClient(configuration) as api_client:
+with AvhClient.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = arm_api.ArmApi(api_client)
     instance_id = "instanceId_example" # str | Instance ID - uuid
@@ -2023,7 +2106,7 @@ with ApiClient.ApiClient(configuration) as api_client:
     try:
         # Restore a Snapshot
         api_instance.v1_restore_snapshot(instance_id, snapshot_id)
-    except ApiClient.ApiException as e:
+    except AvhClient.ApiException as e:
         print("Exception when calling ArmApi->v1_restore_snapshot: %s\n" % e)
 ```
 
@@ -2059,6 +2142,96 @@ void (empty response body)
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
+# **v1_set_instance_gpios**
+> GpiosState v1_set_instance_gpios(instance_id, gpios_state)
+
+Set Instance GPIOs
+
+### Example
+
+* Bearer (JWT) Authentication (BearerAuth):
+
+```python
+import time
+import AvhClient
+from AvhClient.api import arm_api
+from AvhClient.model.gpios_state import GpiosState
+from AvhClient.model.api_error import ApiError
+from AvhClient.model.user_error import UserError
+from pprint import pprint
+# Defining the host is optional and defaults to https://app.avh.arm.com/api
+# See configuration.py for a list of all supported configuration parameters.
+configuration = AvhClient.Configuration(
+    host = "https://app.avh.arm.com/api"
+)
+
+# The client must configure the authentication and authorization parameters
+# in accordance with the API server security policy.
+# Examples for each auth method are provided below, use the example that
+# satisfies your auth use case.
+
+# Configure Bearer authorization (JWT): BearerAuth
+configuration = AvhClient.Configuration(
+    access_token = 'YOUR_BEARER_TOKEN'
+)
+
+# Enter a context with an instance of the API client
+with AvhClient.ApiClient(configuration) as api_client:
+    # Create an instance of the API class
+    api_instance = arm_api.ArmApi(api_client)
+    instance_id = "instanceId_example" # str | Instance ID - uuid
+    gpios_state = GpiosState(
+        key=GpioStateDefinition(
+            bit_count=3.14,
+            banks=[
+                [
+                    Bit(3.14),
+                ],
+            ],
+        ),
+    ) # GpiosState | New GPIO state
+
+    # example passing only required values which don't have defaults set
+    try:
+        # Set Instance GPIOs
+        api_response = api_instance.v1_set_instance_gpios(instance_id, gpios_state)
+        pprint(api_response)
+    except AvhClient.ApiException as e:
+        print("Exception when calling ArmApi->v1_set_instance_gpios: %s\n" % e)
+```
+
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **instance_id** | **str**| Instance ID - uuid |
+ **gpios_state** | [**GpiosState**](GpiosState.md)| New GPIO state |
+
+### Return type
+
+[**GpiosState**](GpiosState.md)
+
+### Authorization
+
+[BearerAuth](../README.md#BearerAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: application/json
+ - **Accept**: application/json
+
+
+### HTTP response details
+
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+**200** | Current GPIOs State |  -  |
+**403** | Forbidden |  -  |
+**404** | Not Found |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
 # **v1_set_instance_peripherals**
 > {str: (bool, date, datetime, dict, float, int, list, str, none_type)} v1_set_instance_peripherals(instance_id, body)
 
@@ -2070,14 +2243,14 @@ Set Instance Peripherals
 
 ```python
 import time
-import ApiClient
-from ApiClient.api import arm_api
-from ApiClient.model.api_error import ApiError
-from ApiClient.model.user_error import UserError
+import AvhClient
+from AvhClient.api import arm_api
+from AvhClient.model.api_error import ApiError
+from AvhClient.model.user_error import UserError
 from pprint import pprint
 # Defining the host is optional and defaults to https://app.avh.arm.com/api
 # See configuration.py for a list of all supported configuration parameters.
-configuration = ApiClient.Configuration(
+configuration = AvhClient.Configuration(
     host = "https://app.avh.arm.com/api"
 )
 
@@ -2087,12 +2260,12 @@ configuration = ApiClient.Configuration(
 # satisfies your auth use case.
 
 # Configure Bearer authorization (JWT): BearerAuth
-configuration = ApiClient.Configuration(
+configuration = AvhClient.Configuration(
     access_token = 'YOUR_BEARER_TOKEN'
 )
 
 # Enter a context with an instance of the API client
-with ApiClient.ApiClient(configuration) as api_client:
+with AvhClient.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = arm_api.ArmApi(api_client)
     instance_id = "instanceId_example" # str | Instance ID - uuid
@@ -2113,7 +2286,7 @@ with ApiClient.ApiClient(configuration) as api_client:
         # Set Instance Peripherals
         api_response = api_instance.v1_set_instance_peripherals(instance_id, body)
         pprint(api_response)
-    except ApiClient.ApiException as e:
+    except AvhClient.ApiException as e:
         print("Exception when calling ArmApi->v1_set_instance_peripherals: %s\n" % e)
 ```
 
@@ -2160,15 +2333,15 @@ Set state of Instance
 
 ```python
 import time
-import ApiClient
-from ApiClient.api import arm_api
-from ApiClient.model.api_error import ApiError
-from ApiClient.model.user_error import UserError
-from ApiClient.model.v1_set_state_body import V1SetStateBody
+import AvhClient
+from AvhClient.api import arm_api
+from AvhClient.model.api_error import ApiError
+from AvhClient.model.v1_set_state_body import V1SetStateBody
+from AvhClient.model.user_error import UserError
 from pprint import pprint
 # Defining the host is optional and defaults to https://app.avh.arm.com/api
 # See configuration.py for a list of all supported configuration parameters.
-configuration = ApiClient.Configuration(
+configuration = AvhClient.Configuration(
     host = "https://app.avh.arm.com/api"
 )
 
@@ -2178,12 +2351,12 @@ configuration = ApiClient.Configuration(
 # satisfies your auth use case.
 
 # Configure Bearer authorization (JWT): BearerAuth
-configuration = ApiClient.Configuration(
+configuration = AvhClient.Configuration(
     access_token = 'YOUR_BEARER_TOKEN'
 )
 
 # Enter a context with an instance of the API client
-with ApiClient.ApiClient(configuration) as api_client:
+with AvhClient.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = arm_api.ArmApi(api_client)
     instance_id = "instanceId_example" # str | Instance ID - uuid
@@ -2195,7 +2368,7 @@ with ApiClient.ApiClient(configuration) as api_client:
     try:
         # Set state of Instance
         api_instance.v1_set_instance_state(instance_id, v1_set_state_body)
-    except ApiClient.ApiException as e:
+    except AvhClient.ApiException as e:
         print("Exception when calling ArmApi->v1_set_instance_state: %s\n" % e)
 ```
 
@@ -2244,14 +2417,14 @@ Delete a Snapshot
 
 ```python
 import time
-import ApiClient
-from ApiClient.api import arm_api
-from ApiClient.model.api_error import ApiError
-from ApiClient.model.user_error import UserError
+import AvhClient
+from AvhClient.api import arm_api
+from AvhClient.model.api_error import ApiError
+from AvhClient.model.user_error import UserError
 from pprint import pprint
 # Defining the host is optional and defaults to https://app.avh.arm.com/api
 # See configuration.py for a list of all supported configuration parameters.
-configuration = ApiClient.Configuration(
+configuration = AvhClient.Configuration(
     host = "https://app.avh.arm.com/api"
 )
 
@@ -2261,12 +2434,12 @@ configuration = ApiClient.Configuration(
 # satisfies your auth use case.
 
 # Configure Bearer authorization (JWT): BearerAuth
-configuration = ApiClient.Configuration(
+configuration = AvhClient.Configuration(
     access_token = 'YOUR_BEARER_TOKEN'
 )
 
 # Enter a context with an instance of the API client
-with ApiClient.ApiClient(configuration) as api_client:
+with AvhClient.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = arm_api.ArmApi(api_client)
     instance_id = "instanceId_example" # str | Instance ID - uuid
@@ -2276,7 +2449,7 @@ with ApiClient.ApiClient(configuration) as api_client:
     try:
         # Delete a Snapshot
         api_instance.v1_snapshot_delete(instance_id, snapshot_id)
-    except ApiClient.ApiException as e:
+    except AvhClient.ApiException as e:
         print("Exception when calling ArmApi->v1_snapshot_delete: %s\n" % e)
 ```
 
@@ -2323,16 +2496,16 @@ Rename a Snapshot
 
 ```python
 import time
-import ApiClient
-from ApiClient.api import arm_api
-from ApiClient.model.api_error import ApiError
-from ApiClient.model.user_error import UserError
-from ApiClient.model.snapshot import Snapshot
-from ApiClient.model.snapshot_creation_options import SnapshotCreationOptions
+import AvhClient
+from AvhClient.api import arm_api
+from AvhClient.model.snapshot_creation_options import SnapshotCreationOptions
+from AvhClient.model.api_error import ApiError
+from AvhClient.model.snapshot import Snapshot
+from AvhClient.model.user_error import UserError
 from pprint import pprint
 # Defining the host is optional and defaults to https://app.avh.arm.com/api
 # See configuration.py for a list of all supported configuration parameters.
-configuration = ApiClient.Configuration(
+configuration = AvhClient.Configuration(
     host = "https://app.avh.arm.com/api"
 )
 
@@ -2342,12 +2515,12 @@ configuration = ApiClient.Configuration(
 # satisfies your auth use case.
 
 # Configure Bearer authorization (JWT): BearerAuth
-configuration = ApiClient.Configuration(
+configuration = AvhClient.Configuration(
     access_token = 'YOUR_BEARER_TOKEN'
 )
 
 # Enter a context with an instance of the API client
-with ApiClient.ApiClient(configuration) as api_client:
+with AvhClient.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = arm_api.ArmApi(api_client)
     instance_id = "instanceId_example" # str | Instance ID - uuid
@@ -2361,7 +2534,7 @@ with ApiClient.ApiClient(configuration) as api_client:
         # Rename a Snapshot
         api_response = api_instance.v1_snapshot_rename(instance_id, snapshot_id, snapshot_creation_options)
         pprint(api_response)
-    except ApiClient.ApiException as e:
+    except AvhClient.ApiException as e:
         print("Exception when calling ArmApi->v1_snapshot_rename: %s\n" % e)
 ```
 
@@ -2409,14 +2582,14 @@ Start an Instance
 
 ```python
 import time
-import ApiClient
-from ApiClient.api import arm_api
-from ApiClient.model.api_error import ApiError
-from ApiClient.model.instance_start_options import InstanceStartOptions
+import AvhClient
+from AvhClient.api import arm_api
+from AvhClient.model.instance_start_options import InstanceStartOptions
+from AvhClient.model.api_error import ApiError
 from pprint import pprint
 # Defining the host is optional and defaults to https://app.avh.arm.com/api
 # See configuration.py for a list of all supported configuration parameters.
-configuration = ApiClient.Configuration(
+configuration = AvhClient.Configuration(
     host = "https://app.avh.arm.com/api"
 )
 
@@ -2426,12 +2599,12 @@ configuration = ApiClient.Configuration(
 # satisfies your auth use case.
 
 # Configure Bearer authorization (JWT): BearerAuth
-configuration = ApiClient.Configuration(
+configuration = AvhClient.Configuration(
     access_token = 'YOUR_BEARER_TOKEN'
 )
 
 # Enter a context with an instance of the API client
-with ApiClient.ApiClient(configuration) as api_client:
+with AvhClient.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = arm_api.ArmApi(api_client)
     instance_id = "instanceId_example" # str | Instance ID - uuid
@@ -2443,7 +2616,7 @@ with ApiClient.ApiClient(configuration) as api_client:
     try:
         # Start an Instance
         api_instance.v1_start_instance(instance_id)
-    except ApiClient.ApiException as e:
+    except AvhClient.ApiException as e:
         print("Exception when calling ArmApi->v1_start_instance: %s\n" % e)
 
     # example passing only required values which don't have defaults set
@@ -2451,7 +2624,7 @@ with ApiClient.ApiClient(configuration) as api_client:
     try:
         # Start an Instance
         api_instance.v1_start_instance(instance_id, instance_start_options=instance_start_options)
-    except ApiClient.ApiException as e:
+    except AvhClient.ApiException as e:
         print("Exception when calling ArmApi->v1_start_instance: %s\n" % e)
 ```
 
@@ -2499,15 +2672,15 @@ Stop an Instance
 
 ```python
 import time
-import ApiClient
-from ApiClient.api import arm_api
-from ApiClient.model.instance_stop_options import InstanceStopOptions
-from ApiClient.model.api_error import ApiError
-from ApiClient.model.user_error import UserError
+import AvhClient
+from AvhClient.api import arm_api
+from AvhClient.model.api_error import ApiError
+from AvhClient.model.user_error import UserError
+from AvhClient.model.instance_stop_options import InstanceStopOptions
 from pprint import pprint
 # Defining the host is optional and defaults to https://app.avh.arm.com/api
 # See configuration.py for a list of all supported configuration parameters.
-configuration = ApiClient.Configuration(
+configuration = AvhClient.Configuration(
     host = "https://app.avh.arm.com/api"
 )
 
@@ -2517,12 +2690,12 @@ configuration = ApiClient.Configuration(
 # satisfies your auth use case.
 
 # Configure Bearer authorization (JWT): BearerAuth
-configuration = ApiClient.Configuration(
+configuration = AvhClient.Configuration(
     access_token = 'YOUR_BEARER_TOKEN'
 )
 
 # Enter a context with an instance of the API client
-with ApiClient.ApiClient(configuration) as api_client:
+with AvhClient.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = arm_api.ArmApi(api_client)
     instance_id = "instanceId_example" # str | Instance ID - uuid
@@ -2534,7 +2707,7 @@ with ApiClient.ApiClient(configuration) as api_client:
     try:
         # Stop an Instance
         api_instance.v1_stop_instance(instance_id)
-    except ApiClient.ApiException as e:
+    except AvhClient.ApiException as e:
         print("Exception when calling ArmApi->v1_stop_instance: %s\n" % e)
 
     # example passing only required values which don't have defaults set
@@ -2542,7 +2715,7 @@ with ApiClient.ApiClient(configuration) as api_client:
     try:
         # Stop an Instance
         api_instance.v1_stop_instance(instance_id, instance_stop_options=instance_stop_options)
-    except ApiClient.ApiException as e:
+    except AvhClient.ApiException as e:
         print("Exception when calling ArmApi->v1_stop_instance: %s\n" % e)
 ```
 
@@ -2590,14 +2763,14 @@ Unpause an Instance
 
 ```python
 import time
-import ApiClient
-from ApiClient.api import arm_api
-from ApiClient.model.api_error import ApiError
-from ApiClient.model.user_error import UserError
+import AvhClient
+from AvhClient.api import arm_api
+from AvhClient.model.api_error import ApiError
+from AvhClient.model.user_error import UserError
 from pprint import pprint
 # Defining the host is optional and defaults to https://app.avh.arm.com/api
 # See configuration.py for a list of all supported configuration parameters.
-configuration = ApiClient.Configuration(
+configuration = AvhClient.Configuration(
     host = "https://app.avh.arm.com/api"
 )
 
@@ -2607,12 +2780,12 @@ configuration = ApiClient.Configuration(
 # satisfies your auth use case.
 
 # Configure Bearer authorization (JWT): BearerAuth
-configuration = ApiClient.Configuration(
+configuration = AvhClient.Configuration(
     access_token = 'YOUR_BEARER_TOKEN'
 )
 
 # Enter a context with an instance of the API client
-with ApiClient.ApiClient(configuration) as api_client:
+with AvhClient.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = arm_api.ArmApi(api_client)
     instance_id = "instanceId_example" # str | Instance ID - uuid
@@ -2621,7 +2794,7 @@ with ApiClient.ApiClient(configuration) as api_client:
     try:
         # Unpause an Instance
         api_instance.v1_unpause_instance(instance_id)
-    except ApiClient.ApiException as e:
+    except AvhClient.ApiException as e:
         print("Exception when calling ArmApi->v1_unpause_instance: %s\n" % e)
 ```
 
@@ -2669,15 +2842,15 @@ If the active project has enough remaining quota, updates an Image with the cont
 
 ```python
 import time
-import ApiClient
-from ApiClient.api import arm_api
-from ApiClient.model.api_not_found_error import ApiNotFoundError
-from ApiClient.model.api_conflict_error import ApiConflictError
-from ApiClient.model.image import Image
+import AvhClient
+from AvhClient.api import arm_api
+from AvhClient.model.image import Image
+from AvhClient.model.api_conflict_error import ApiConflictError
+from AvhClient.model.api_not_found_error import ApiNotFoundError
 from pprint import pprint
 # Defining the host is optional and defaults to https://app.avh.arm.com/api
 # See configuration.py for a list of all supported configuration parameters.
-configuration = ApiClient.Configuration(
+configuration = AvhClient.Configuration(
     host = "https://app.avh.arm.com/api"
 )
 
@@ -2687,12 +2860,12 @@ configuration = ApiClient.Configuration(
 # satisfies your auth use case.
 
 # Configure Bearer authorization (JWT): BearerAuth
-configuration = ApiClient.Configuration(
+configuration = AvhClient.Configuration(
     access_token = 'YOUR_BEARER_TOKEN'
 )
 
 # Enter a context with an instance of the API client
-with ApiClient.ApiClient(configuration) as api_client:
+with AvhClient.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = arm_api.ArmApi(api_client)
     image_id = "imageId_example" # str | Image ID - uuid
@@ -2703,7 +2876,7 @@ with ApiClient.ApiClient(configuration) as api_client:
         # Upload Image Data
         api_response = api_instance.v1_upload_image_data(image_id, body)
         pprint(api_response)
-    except ApiClient.ApiException as e:
+    except AvhClient.ApiException as e:
         print("Exception when calling ArmApi->v1_upload_image_data: %s\n" % e)
 ```
 
@@ -2736,77 +2909,6 @@ Name | Type | Description  | Notes
 **200** | application/json |  -  |
 **404** | application/json |  -  |
 **409** | Conflict |  -  |
-
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
-
-# **v1_users_login**
-> Token v1_users_login(credentials)
-
-Log In
-
-### Example
-
-
-```python
-import time
-import ApiClient
-from ApiClient.api import arm_api
-from ApiClient.model.credentials import Credentials
-from ApiClient.model.api_error import ApiError
-from ApiClient.model.token import Token
-from pprint import pprint
-# Defining the host is optional and defaults to https://app.avh.arm.com/api
-# See configuration.py for a list of all supported configuration parameters.
-configuration = ApiClient.Configuration(
-    host = "https://app.avh.arm.com/api"
-)
-
-
-# Enter a context with an instance of the API client
-with ApiClient.ApiClient() as api_client:
-    # Create an instance of the API class
-    api_instance = arm_api.ArmApi(api_client)
-    credentials = Credentials(
-        username="username_example",
-        password="password_example",
-    ) # Credentials | Authorization data
-
-    # example passing only required values which don't have defaults set
-    try:
-        # Log In
-        api_response = api_instance.v1_users_login(credentials)
-        pprint(api_response)
-    except ApiClient.ApiException as e:
-        print("Exception when calling ArmApi->v1_users_login: %s\n" % e)
-```
-
-
-### Parameters
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **credentials** | [**Credentials**](Credentials.md)| Authorization data |
-
-### Return type
-
-[**Token**](Token.md)
-
-### Authorization
-
-No authorization required
-
-### HTTP request headers
-
- - **Content-Type**: application/json
- - **Accept**: application/json
-
-
-### HTTP response details
-
-| Status code | Description | Response headers |
-|-------------|-------------|------------------|
-**200** | User Authorization |  -  |
-**403** | Forbidden |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 

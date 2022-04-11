@@ -11,8 +11,8 @@
 import sys
 import unittest
 
-import ApiClient
-from ApiClient.model.firmware import Firmware
+import AvhClient
+from AvhClient.model.firmware import Firmware
 
 
 class TestFirmware(unittest.TestCase):

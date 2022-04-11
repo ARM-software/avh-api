@@ -11,10 +11,10 @@
 import sys
 import unittest
 
-import ApiClient
-from ApiClient.model.snapshot_status import SnapshotStatus
+import AvhClient
+from AvhClient.model.snapshot_status import SnapshotStatus
 globals()['SnapshotStatus'] = SnapshotStatus
-from ApiClient.model.snapshot import Snapshot
+from AvhClient.model.snapshot import Snapshot
 
 
 class TestSnapshot(unittest.TestCase):

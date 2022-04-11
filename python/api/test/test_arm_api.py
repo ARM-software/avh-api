@@ -10,8 +10,8 @@
 
 import unittest
 
-import ApiClient
-from ApiClient.api.arm_api import ArmApi  # noqa: E501
+import AvhClient
+from AvhClient.api.arm_api import ArmApi  # noqa: E501
 
 
 class TestArmApi(unittest.TestCase):
@@ -90,6 +90,13 @@ class TestArmApi(unittest.TestCase):
         """Test case for v1_get_instance_console
 
         Get console websocket URL  # noqa: E501
+        """
+        pass
+
+    def test_v1_get_instance_gpios(self):
+        """Test case for v1_get_instance_gpios
+
+        Get Instance GPIOs  # noqa: E501
         """
         pass
 
@@ -198,6 +205,13 @@ class TestArmApi(unittest.TestCase):
         """
         pass
 
+    def test_v1_set_instance_gpios(self):
+        """Test case for v1_set_instance_gpios
+
+        Set Instance GPIOs  # noqa: E501
+        """
+        pass
+
     def test_v1_set_instance_peripherals(self):
         """Test case for v1_set_instance_peripherals
 
@@ -251,13 +265,6 @@ class TestArmApi(unittest.TestCase):
         """Test case for v1_upload_image_data
 
         Upload Image Data  # noqa: E501
-        """
-        pass
-
-    def test_v1_users_login(self):
-        """Test case for v1_users_login
-
-        Log In  # noqa: E501
         """
         pass
 

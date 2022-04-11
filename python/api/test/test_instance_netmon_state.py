@@ -11,8 +11,8 @@
 import sys
 import unittest
 
-import ApiClient
-from ApiClient.model.instance_netmon_state import InstanceNetmonState
+import AvhClient
+from AvhClient.model.instance_netmon_state import InstanceNetmonState
 
 
 class TestInstanceNetmonState(unittest.TestCase):

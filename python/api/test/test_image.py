@@ -11,8 +11,8 @@
 import sys
 import unittest
 
-import ApiClient
-from ApiClient.model.image import Image
+import AvhClient
+from AvhClient.model.image import Image
 
 
 class TestImage(unittest.TestCase):

@@ -11,8 +11,8 @@
 import sys
 import unittest
 
-import ApiClient
-from ApiClient.model.model import Model
+import AvhClient
+from AvhClient.model.model import Model
 
 
 class TestModel(unittest.TestCase):

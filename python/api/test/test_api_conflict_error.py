@@ -11,8 +11,8 @@
 import sys
 import unittest
 
-import ApiClient
-from ApiClient.model.api_conflict_error import ApiConflictError
+import AvhClient
+from AvhClient.model.api_conflict_error import ApiConflictError
 
 
 class TestApiConflictError(unittest.TestCase):

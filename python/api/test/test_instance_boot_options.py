@@ -11,8 +11,8 @@
 import sys
 import unittest
 
-import ApiClient
-from ApiClient.model.instance_boot_options import InstanceBootOptions
+import AvhClient
+from AvhClient.model.instance_boot_options import InstanceBootOptions
 
 
 class TestInstanceBootOptions(unittest.TestCase):

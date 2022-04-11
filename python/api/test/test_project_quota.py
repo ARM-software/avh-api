@@ -11,8 +11,8 @@
 import sys
 import unittest
 
-import ApiClient
-from ApiClient.model.project_quota import ProjectQuota
+import AvhClient
+from AvhClient.model.project_quota import ProjectQuota
 
 
 class TestProjectQuota(unittest.TestCase):

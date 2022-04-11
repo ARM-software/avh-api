@@ -1,0 +1,6 @@
+{
+  "packageName": "AvhClientAsync",
+  "disallowAdditionalPropertiesIfNotPresent": false,
+  "pythonAttrNoneIfUnset": true,
+  "library": "asyncio"
+}

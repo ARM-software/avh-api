@@ -11,8 +11,8 @@
 import sys
 import unittest
 
-import ApiClient
-from ApiClient.model.snapshot_status import SnapshotStatus
+import AvhClient
+from AvhClient.model.snapshot_status import SnapshotStatus
 
 
 class TestSnapshotStatus(unittest.TestCase):

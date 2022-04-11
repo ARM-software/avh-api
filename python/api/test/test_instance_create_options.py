@@ -11,14 +11,14 @@
 import sys
 import unittest
 
-import ApiClient
-from ApiClient.model.instance_boot_options import InstanceBootOptions
-from ApiClient.model.model import Model
-from ApiClient.model.volume_options import VolumeOptions
+import AvhClient
+from AvhClient.model.instance_boot_options import InstanceBootOptions
+from AvhClient.model.model import Model
+from AvhClient.model.volume_options import VolumeOptions
 globals()['InstanceBootOptions'] = InstanceBootOptions
 globals()['Model'] = Model
 globals()['VolumeOptions'] = VolumeOptions
-from ApiClient.model.instance_create_options import InstanceCreateOptions
+from AvhClient.model.instance_create_options import InstanceCreateOptions
 
 
 class TestInstanceCreateOptions(unittest.TestCase):

@@ -11,8 +11,8 @@
 import sys
 import unittest
 
-import ApiClient
-from ApiClient.model.volume_options import VolumeOptions
+import AvhClient
+from AvhClient.model.volume_options import VolumeOptions
 
 
 class TestVolumeOptions(unittest.TestCase):

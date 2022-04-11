@@ -11,16 +11,16 @@
 import sys
 import unittest
 
-import ApiClient
-from ApiClient.model.instance_boot_options import InstanceBootOptions
-from ApiClient.model.instance_netmon_state import InstanceNetmonState
-from ApiClient.model.instance_services import InstanceServices
-from ApiClient.model.instance_state import InstanceState
+import AvhClient
+from AvhClient.model.instance_boot_options import InstanceBootOptions
+from AvhClient.model.instance_netmon_state import InstanceNetmonState
+from AvhClient.model.instance_services import InstanceServices
+from AvhClient.model.instance_state import InstanceState
 globals()['InstanceBootOptions'] = InstanceBootOptions
 globals()['InstanceNetmonState'] = InstanceNetmonState
 globals()['InstanceServices'] = InstanceServices
 globals()['InstanceState'] = InstanceState
-from ApiClient.model.instance import Instance
+from AvhClient.model.instance import Instance
 
 
 class TestInstance(unittest.TestCase):
