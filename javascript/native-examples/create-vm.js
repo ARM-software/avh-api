@@ -60,7 +60,11 @@ async function main() {
   console.log('VM Created successfully')
 }
 
-main().catch((error) => {
-  console.error('Error: ', error)
-  process.exit(1)
-})
+if (require.main === module) {
+  main().catch((error) => {
+    console.error('Error: ', error)
+    process.exit(1)
+  })
+}
+
+module.exports = main
