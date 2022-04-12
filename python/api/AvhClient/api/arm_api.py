@@ -36,6 +36,7 @@ from AvhClient.model.instance_start_options import InstanceStartOptions
 from AvhClient.model.instance_state import InstanceState
 from AvhClient.model.instance_stop_options import InstanceStopOptions
 from AvhClient.model.model import Model
+from AvhClient.model.peripherals_data import PeripheralsData
 from AvhClient.model.project import Project
 from AvhClient.model.snapshot import Snapshot
 from AvhClient.model.snapshot_creation_options import SnapshotCreationOptions
@@ -666,7 +667,7 @@ class ArmApi(object):
         )
         self.v1_get_instance_peripherals_endpoint = _Endpoint(
             settings={
-                'response_type': ({str: (bool, date, datetime, dict, float, int, list, str, none_type)},),
+                'response_type': (PeripheralsData,),
                 'auth': [
                     'BearerAuth'
                 ],
@@ -1193,7 +1194,7 @@ class ArmApi(object):
         )
         self.v1_patch_instance_endpoint = _Endpoint(
             settings={
-                'response_type': ({str: (bool, date, datetime, dict, float, int, list, str, none_type)},),
+                'response_type': (Instance,),
                 'auth': [
                     'BearerAuth'
                 ],
@@ -1510,7 +1511,7 @@ class ArmApi(object):
         )
         self.v1_set_instance_peripherals_endpoint = _Endpoint(
             settings={
-                'response_type': ({str: (bool, date, datetime, dict, float, int, list, str, none_type)},),
+                'response_type': (PeripheralsData,),
                 'auth': [
                     'BearerAuth'
                 ],
@@ -1522,11 +1523,11 @@ class ArmApi(object):
             params_map={
                 'all': [
                     'instance_id',
-                    'body',
+                    'peripherals_data',
                 ],
                 'required': [
                     'instance_id',
-                    'body',
+                    'peripherals_data',
                 ],
                 'nullable': [
                 ],
@@ -1543,15 +1544,15 @@ class ArmApi(object):
                 'openapi_types': {
                     'instance_id':
                         (str,),
-                    'body':
-                        (str,),
+                    'peripherals_data':
+                        (PeripheralsData,),
                 },
                 'attribute_map': {
                     'instance_id': 'instanceId',
                 },
                 'location_map': {
                     'instance_id': 'path',
-                    'body': 'body',
+                    'peripherals_data': 'body',
                 },
                 'collection_format_map': {
                 }
@@ -2870,7 +2871,7 @@ class ArmApi(object):
             async_req (bool): execute request asynchronously
 
         Returns:
-            {str: (bool, date, datetime, dict, float, int, list, str, none_type)}
+            PeripheralsData
                 If the method is called asynchronously, returns the request
                 thread.
         """
@@ -3637,7 +3638,7 @@ class ArmApi(object):
             async_req (bool): execute request asynchronously
 
         Returns:
-            {str: (bool, date, datetime, dict, float, int, list, str, none_type)}
+            Instance
                 If the method is called asynchronously, returns the request
                 thread.
         """
@@ -4063,7 +4064,7 @@ class ArmApi(object):
     def v1_set_instance_peripherals(
         self,
         instance_id,
-        body,
+        peripherals_data,
         **kwargs
     ):
         """Set Instance Peripherals  # noqa: E501
@@ -4071,12 +4072,12 @@ class ArmApi(object):
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
 
-        >>> thread = api.v1_set_instance_peripherals(instance_id, body, async_req=True)
+        >>> thread = api.v1_set_instance_peripherals(instance_id, peripherals_data, async_req=True)
         >>> result = thread.get()
 
         Args:
             instance_id (str): Instance ID - uuid
-            body (str): New peripherals state
+            peripherals_data (PeripheralsData): New peripherals state
 
         Keyword Args:
             _return_http_data_only (bool): response data without head status
@@ -4107,7 +4108,7 @@ class ArmApi(object):
             async_req (bool): execute request asynchronously
 
         Returns:
-            {str: (bool, date, datetime, dict, float, int, list, str, none_type)}
+            PeripheralsData
                 If the method is called asynchronously, returns the request
                 thread.
         """
@@ -4137,8 +4138,8 @@ class ArmApi(object):
         kwargs['_host_index'] = kwargs.get('_host_index')
         kwargs['instance_id'] = \
             instance_id
-        kwargs['body'] = \
-            body
+        kwargs['peripherals_data'] = \
+            peripherals_data
         return self.v1_set_instance_peripherals_endpoint.call_with_http_info(**kwargs)
 
     def v1_set_instance_state(

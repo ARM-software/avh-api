@@ -30,6 +30,7 @@ AvhClientAsync/models/instance_state.py
 AvhClientAsync/models/instance_stop_options.py
 AvhClientAsync/models/model.py
 AvhClientAsync/models/model_software.py
+AvhClientAsync/models/peripherals_data.py
 AvhClientAsync/models/project.py
 AvhClientAsync/models/project_quota.py
 AvhClientAsync/models/project_settings.py
@@ -66,6 +67,7 @@ docs/InstanceState.md
 docs/InstanceStopOptions.md
 docs/Model.md
 docs/ModelSoftware.md
+docs/PeripheralsData.md
 docs/Project.md
 docs/ProjectQuota.md
 docs/ProjectSettings.md
@@ -106,6 +108,7 @@ test/test_instance_state.py
 test/test_instance_stop_options.py
 test/test_model.py
 test/test_model_software.py
+test/test_peripherals_data.py
 test/test_project.py
 test/test_project_quota.py
 test/test_project_settings.py

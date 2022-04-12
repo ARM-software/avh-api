@@ -34,6 +34,7 @@ import InstanceState from './model/InstanceState';
 import InstanceStopOptions from './model/InstanceStopOptions';
 import Model from './model/Model';
 import ModelSoftware from './model/ModelSoftware';
+import PeripheralsData from './model/PeripheralsData';
 import Project from './model/Project';
 import ProjectQuota from './model/ProjectQuota';
 import ProjectSettings from './model/ProjectSettings';
@@ -212,6 +213,12 @@ export {
      * @property {module:model/ModelSoftware}
      */
     ModelSoftware,
+
+    /**
+     * The PeripheralsData model constructor.
+     * @property {module:model/PeripheralsData}
+     */
+    PeripheralsData,
 
     /**
      * The Project model constructor.

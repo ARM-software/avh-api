@@ -84,12 +84,6 @@
       //expect(instance).to.be();
     });
 
-    it('should have the property noSnapshotMount (base name: "noSnapshotMount")', function() {
-      // uncomment below and update the code to test the property noSnapshotMount
-      //var instance = new ArmApi.InstanceBootOptions();
-      //expect(instance).to.be();
-    });
-
     it('should have the property pac (base name: "pac")', function() {
       // uncomment below and update the code to test the property pac
       //var instance = new ArmApi.InstanceBootOptions();
@@ -98,12 +92,6 @@
 
     it('should have the property aprr (base name: "aprr")', function() {
       // uncomment below and update the code to test the property aprr
-      //var instance = new ArmApi.InstanceBootOptions();
-      //expect(instance).to.be();
-    });
-
-    it('should have the property cdhashes (base name: "cdhashes")', function() {
-      // uncomment below and update the code to test the property cdhashes
       //var instance = new ArmApi.InstanceBootOptions();
       //expect(instance).to.be();
     });

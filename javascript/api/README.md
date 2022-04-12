@@ -180,6 +180,7 @@ Class | Method | HTTP request | Description
  - [ArmApi.InstanceStopOptions](docs/InstanceStopOptions.md)
  - [ArmApi.Model](docs/Model.md)
  - [ArmApi.ModelSoftware](docs/ModelSoftware.md)
+ - [ArmApi.PeripheralsData](docs/PeripheralsData.md)
  - [ArmApi.Project](docs/Project.md)
  - [ArmApi.ProjectQuota](docs/ProjectQuota.md)
  - [ArmApi.ProjectSettings](docs/ProjectSettings.md)

@@ -65,6 +65,7 @@ from AvhClient.model.instance_start_options import InstanceStartOptions
 from AvhClient.model.instance_state import InstanceState
 from AvhClient.model.instance_stop_options import InstanceStopOptions
 from AvhClient.model.model import Model
+from AvhClient.model.peripherals_data import PeripheralsData
 from AvhClient.model.project import Project
 from AvhClient.model.snapshot import Snapshot
 from AvhClient.model.snapshot_creation_options import SnapshotCreationOptions
@@ -162,6 +163,7 @@ Class | Method | HTTP request | Description
  - [InstanceStopOptions](docs/InstanceStopOptions.md)
  - [Model](docs/Model.md)
  - [ModelSoftware](docs/ModelSoftware.md)
+ - [PeripheralsData](docs/PeripheralsData.md)
  - [Project](docs/Project.md)
  - [ProjectQuota](docs/ProjectQuota.md)
  - [ProjectSettings](docs/ProjectSettings.md)

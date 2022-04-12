@@ -836,7 +836,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **v1_get_instance_peripherals**
-> object v1_get_instance_peripherals(instance_id)
+> PeripheralsData v1_get_instance_peripherals(instance_id)
 
 Get Instance Peripherals
 
@@ -887,7 +887,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-**object**
+[**PeripheralsData**](PeripheralsData.md)
 
 ### Authorization
 
@@ -1554,7 +1554,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **v1_patch_instance**
-> object v1_patch_instance(instance_id, body)
+> Instance v1_patch_instance(instance_id, body)
 
 Update Instance
 
@@ -1588,7 +1588,9 @@ with AvhClientAsync.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = AvhClientAsync.ArmApi(api_client)
     instance_id = 'instance_id_example' # str | Instance ID
-body = None # object | 
+body = {
+ "name": "New Name"
+} # object | 
 
     try:
         # Update Instance
@@ -1607,7 +1609,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-**object**
+[**Instance**](Instance.md)
 
 ### Authorization
 
@@ -1989,7 +1991,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **v1_set_instance_peripherals**
-> object v1_set_instance_peripherals(instance_id, body)
+> PeripheralsData v1_set_instance_peripherals(instance_id, peripherals_data)
 
 Set Instance Peripherals
 
@@ -2023,21 +2025,21 @@ with AvhClientAsync.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = AvhClientAsync.ArmApi(api_client)
     instance_id = 'instance_id_example' # str | Instance ID - uuid
-body = {
-  "acceleration": "0.000000,9.810000,0.000000",
-  "gyroscope": "0.000000,0.000000,0.000000",
-  "magnetic": "0.000000,45.000000,0.000000",
-  "orientation": "0.000000,0.000000,0.000000",
-  "temperature": "25.000000",
-  "proximity": "50.000000",
-  "light": "20.000000",
-  "pressure": "1013.250000",
-  "humidity": "55.000000"
-} # str | New peripherals state
+peripherals_data = {
+  "acceleration": [0, 9.81, 0],
+  "gyroscope": [0, 0, 0],
+  "magnetic": [0, 45, 0 ],
+  "orientation": [0, 0, 0 ],
+  "temperature": 25,
+  "proximity": 50,
+  "light": 20,
+  "pressure": 1013.25,
+  "humidity": 55
+} # PeripheralsData | New peripherals state
 
     try:
         # Set Instance Peripherals
-        api_response = api_instance.v1_set_instance_peripherals(instance_id, body)
+        api_response = api_instance.v1_set_instance_peripherals(instance_id, peripherals_data)
         pprint(api_response)
     except ApiException as e:
         print("Exception when calling ArmApi->v1_set_instance_peripherals: %s\n" % e)
@@ -2048,11 +2050,11 @@ body = {
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **instance_id** | **str**| Instance ID - uuid | 
- **body** | **str**| New peripherals state | 
+ **peripherals_data** | [**PeripheralsData**](PeripheralsData.md)| New peripherals state | 
 
 ### Return type
 
-**object**
+[**PeripheralsData**](PeripheralsData.md)
 
 ### Authorization
 

@@ -62,17 +62,11 @@ class InstanceBootOptions {
             if (data.hasOwnProperty('randomSeed')) {
                 obj['randomSeed'] = ApiClient.convertToType(data['randomSeed'], 'String');
             }
-            if (data.hasOwnProperty('noSnapshotMount')) {
-                obj['noSnapshotMount'] = ApiClient.convertToType(data['noSnapshotMount'], 'Boolean');
-            }
             if (data.hasOwnProperty('pac')) {
                 obj['pac'] = ApiClient.convertToType(data['pac'], 'Boolean');
             }
             if (data.hasOwnProperty('aprr')) {
                 obj['aprr'] = ApiClient.convertToType(data['aprr'], 'Boolean');
-            }
-            if (data.hasOwnProperty('cdhashes')) {
-                obj['cdhashes'] = ApiClient.convertToType(data['cdhashes'], ['String']);
             }
         }
         return obj;
@@ -110,12 +104,6 @@ InstanceBootOptions.prototype['ecid'] = undefined;
 InstanceBootOptions.prototype['randomSeed'] = undefined;
 
 /**
- * Do not mount IOS snapshot (iOS only)
- * @member {Boolean} noSnapshotMount
- */
-InstanceBootOptions.prototype['noSnapshotMount'] = undefined;
-
-/**
  * Enable PAC
  * @member {Boolean} pac
  */
@@ -126,12 +114,6 @@ InstanceBootOptions.prototype['pac'] = undefined;
  * @member {Boolean} aprr
  */
 InstanceBootOptions.prototype['aprr'] = undefined;
-
-/**
- * cdhashes to inject to kernel (iOS only)
- * @member {Array.<String>} cdhashes
- */
-InstanceBootOptions.prototype['cdhashes'] = undefined;
 
 
 

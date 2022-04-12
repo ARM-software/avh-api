@@ -143,6 +143,7 @@ Class | Method | HTTP request | Description
  - [InstanceStopOptions](docs/InstanceStopOptions.md)
  - [Model](docs/Model.md)
  - [ModelSoftware](docs/ModelSoftware.md)
+ - [PeripheralsData](docs/PeripheralsData.md)
  - [Project](docs/Project.md)
  - [ProjectQuota](docs/ProjectQuota.md)
  - [ProjectSettings](docs/ProjectSettings.md)

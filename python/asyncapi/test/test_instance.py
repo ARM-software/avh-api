@@ -53,12 +53,8 @@ class TestInstance(unittest.TestCase):
                     udid = '', 
                     ecid = '', 
                     random_seed = '', 
-                    no_snapshot_mount = True, 
                     pac = True, 
-                    aprr = True, 
-                    cdhashes = [
-                        ''
-                        ], ), 
+                    aprr = True, ), 
                 service_ip = '', 
                 wifi_ip = '', 
                 services = AvhClientAsync.models.instance_services.InstanceServices(

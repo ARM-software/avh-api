@@ -272,12 +272,8 @@ with AvhClient.ApiClient(configuration) as api_client:
             udid="udid_example",
             ecid="ecid_example",
             random_seed="random_seed_example",
-            no_snapshot_mount=True,
             pac=True,
             aprr=True,
-            cdhashes=[
-                "cdhashes_example",
-            ],
         ),
         device=Model(
             type="type_example",
@@ -973,7 +969,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **v1_get_instance_peripherals**
-> {str: (bool, date, datetime, dict, float, int, list, str, none_type)} v1_get_instance_peripherals(instance_id)
+> PeripheralsData v1_get_instance_peripherals(instance_id)
 
 Get Instance Peripherals
 
@@ -987,6 +983,7 @@ import AvhClient
 from AvhClient.api import arm_api
 from AvhClient.model.api_error import ApiError
 from AvhClient.model.user_error import UserError
+from AvhClient.model.peripherals_data import PeripheralsData
 from pprint import pprint
 # Defining the host is optional and defaults to https://app.avh.arm.com/api
 # See configuration.py for a list of all supported configuration parameters.
@@ -1028,7 +1025,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-**{str: (bool, date, datetime, dict, float, int, list, str, none_type)}**
+[**PeripheralsData**](PeripheralsData.md)
 
 ### Authorization
 
@@ -1767,7 +1764,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **v1_patch_instance**
-> {str: (bool, date, datetime, dict, float, int, list, str, none_type)} v1_patch_instance(instance_id, body)
+> Instance v1_patch_instance(instance_id, body)
 
 Update Instance
 
@@ -1781,6 +1778,7 @@ import AvhClient
 from AvhClient.api import arm_api
 from AvhClient.model.api_not_found_error import ApiNotFoundError
 from AvhClient.model.api_error import ApiError
+from AvhClient.model.instance import Instance
 from pprint import pprint
 # Defining the host is optional and defaults to https://app.avh.arm.com/api
 # See configuration.py for a list of all supported configuration parameters.
@@ -1824,7 +1822,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-**{str: (bool, date, datetime, dict, float, int, list, str, none_type)}**
+[**Instance**](Instance.md)
 
 ### Authorization
 
@@ -2231,7 +2229,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **v1_set_instance_peripherals**
-> {str: (bool, date, datetime, dict, float, int, list, str, none_type)} v1_set_instance_peripherals(instance_id, body)
+> PeripheralsData v1_set_instance_peripherals(instance_id, peripherals_data)
 
 Set Instance Peripherals
 
@@ -2245,6 +2243,7 @@ import AvhClient
 from AvhClient.api import arm_api
 from AvhClient.model.api_error import ApiError
 from AvhClient.model.user_error import UserError
+from AvhClient.model.peripherals_data import PeripheralsData
 from pprint import pprint
 # Defining the host is optional and defaults to https://app.avh.arm.com/api
 # See configuration.py for a list of all supported configuration parameters.
@@ -2267,22 +2266,30 @@ with AvhClient.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = arm_api.ArmApi(api_client)
     instance_id = "instanceId_example" # str | Instance ID - uuid
-    body = '''{
-  "acceleration": "0.000000,9.810000,0.000000",
-  "gyroscope": "0.000000,0.000000,0.000000",
-  "magnetic": "0.000000,45.000000,0.000000",
-  "orientation": "0.000000,0.000000,0.000000",
-  "temperature": "25.000000",
-  "proximity": "50.000000",
-  "light": "20.000000",
-  "pressure": "1013.250000",
-  "humidity": "55.000000"
-}''' # str | New peripherals state
+    peripherals_data = PeripheralsData(
+        acceleration=[
+            3.14,
+        ],
+        gyroscope=[
+            3.14,
+        ],
+        magnetic=[
+            3.14,
+        ],
+        orientation=[
+            3.14,
+        ],
+        temperature=3.14,
+        proximity=3.14,
+        light=3.14,
+        pressure=3.14,
+        humidity=3.14,
+    ) # PeripheralsData | New peripherals state
 
     # example passing only required values which don't have defaults set
     try:
         # Set Instance Peripherals
-        api_response = api_instance.v1_set_instance_peripherals(instance_id, body)
+        api_response = api_instance.v1_set_instance_peripherals(instance_id, peripherals_data)
         pprint(api_response)
     except AvhClient.ApiException as e:
         print("Exception when calling ArmApi->v1_set_instance_peripherals: %s\n" % e)
@@ -2294,11 +2301,11 @@ with AvhClient.ApiClient(configuration) as api_client:
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **instance_id** | **str**| Instance ID - uuid |
- **body** | **str**| New peripherals state |
+ **peripherals_data** | [**PeripheralsData**](PeripheralsData.md)| New peripherals state |
 
 ### Return type
 
-**{str: (bool, date, datetime, dict, float, int, list, str, none_type)}**
+[**PeripheralsData**](PeripheralsData.md)
 
 ### Authorization
 

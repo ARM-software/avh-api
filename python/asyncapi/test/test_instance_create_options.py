@@ -62,12 +62,8 @@ class TestInstanceCreateOptions(unittest.TestCase):
                     udid = '', 
                     ecid = '', 
                     random_seed = '', 
-                    no_snapshot_mount = True, 
                     pac = True, 
-                    aprr = True, 
-                    cdhashes = [
-                        ''
-                        ], ), 
+                    aprr = True, ), 
                 device = AvhClientAsync.models.model.Model(
                     type = '', 
                     name = '', 

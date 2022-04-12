@@ -41,10 +41,8 @@ class InstanceBootOptions(object):
         'udid': 'str',
         'ecid': 'str',
         'random_seed': 'str',
-        'no_snapshot_mount': 'bool',
         'pac': 'bool',
-        'aprr': 'bool',
-        'cdhashes': 'list[str]'
+        'aprr': 'bool'
     }
 
     attribute_map = {
@@ -53,13 +51,11 @@ class InstanceBootOptions(object):
         'udid': 'udid',
         'ecid': 'ecid',
         'random_seed': 'randomSeed',
-        'no_snapshot_mount': 'noSnapshotMount',
         'pac': 'pac',
-        'aprr': 'aprr',
-        'cdhashes': 'cdhashes'
+        'aprr': 'aprr'
     }
 
-    def __init__(self, boot_args=None, restore_boot_args=None, udid=None, ecid=None, random_seed=None, no_snapshot_mount=None, pac=None, aprr=None, cdhashes=None, local_vars_configuration=None):  # noqa: E501
+    def __init__(self, boot_args=None, restore_boot_args=None, udid=None, ecid=None, random_seed=None, pac=None, aprr=None, local_vars_configuration=None):  # noqa: E501
         """InstanceBootOptions - a model defined in OpenAPI"""  # noqa: E501
         if local_vars_configuration is None:
             local_vars_configuration = Configuration.get_default_copy()
@@ -70,10 +66,8 @@ class InstanceBootOptions(object):
         self._udid = None
         self._ecid = None
         self._random_seed = None
-        self._no_snapshot_mount = None
         self._pac = None
         self._aprr = None
-        self._cdhashes = None
         self.discriminator = None
 
         self.boot_args = boot_args
@@ -81,10 +75,8 @@ class InstanceBootOptions(object):
         self.udid = udid
         self.ecid = ecid
         self.random_seed = random_seed
-        self.no_snapshot_mount = no_snapshot_mount
         self.pac = pac
         self.aprr = aprr
-        self.cdhashes = cdhashes
 
     @property
     def boot_args(self):
@@ -198,29 +190,6 @@ class InstanceBootOptions(object):
         self._random_seed = random_seed
 
     @property
-    def no_snapshot_mount(self):
-        """Gets the no_snapshot_mount of this InstanceBootOptions.  # noqa: E501
-
-        Do not mount IOS snapshot (iOS only)  # noqa: E501
-
-        :return: The no_snapshot_mount of this InstanceBootOptions.  # noqa: E501
-        :rtype: bool
-        """
-        return self._no_snapshot_mount
-
-    @no_snapshot_mount.setter
-    def no_snapshot_mount(self, no_snapshot_mount):
-        """Sets the no_snapshot_mount of this InstanceBootOptions.
-
-        Do not mount IOS snapshot (iOS only)  # noqa: E501
-
-        :param no_snapshot_mount: The no_snapshot_mount of this InstanceBootOptions.  # noqa: E501
-        :type no_snapshot_mount: bool
-        """
-
-        self._no_snapshot_mount = no_snapshot_mount
-
-    @property
     def pac(self):
         """Gets the pac of this InstanceBootOptions.  # noqa: E501
 
@@ -265,29 +234,6 @@ class InstanceBootOptions(object):
         """
 
         self._aprr = aprr
-
-    @property
-    def cdhashes(self):
-        """Gets the cdhashes of this InstanceBootOptions.  # noqa: E501
-
-        cdhashes to inject to kernel (iOS only)  # noqa: E501
-
-        :return: The cdhashes of this InstanceBootOptions.  # noqa: E501
-        :rtype: list[str]
-        """
-        return self._cdhashes
-
-    @cdhashes.setter
-    def cdhashes(self, cdhashes):
-        """Sets the cdhashes of this InstanceBootOptions.
-
-        cdhashes to inject to kernel (iOS only)  # noqa: E501
-
-        :param cdhashes: The cdhashes of this InstanceBootOptions.  # noqa: E501
-        :type cdhashes: list[str]
-        """
-
-        self._cdhashes = cdhashes
 
     def to_dict(self, serialize=False):
         """Returns the model properties as a dict"""

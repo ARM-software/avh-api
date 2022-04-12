@@ -25,6 +25,7 @@ docs/InstanceState.md
 docs/InstanceStopOptions.md
 docs/Model.md
 docs/ModelSoftware.md
+docs/PeripheralsData.md
 docs/Project.md
 docs/ProjectQuota.md
 docs/ProjectSettings.md
@@ -64,6 +65,7 @@ src/model/InstanceState.js
 src/model/InstanceStopOptions.js
 src/model/Model.js
 src/model/ModelSoftware.js
+src/model/PeripheralsData.js
 src/model/Project.js
 src/model/ProjectQuota.js
 src/model/ProjectSettings.js
@@ -98,6 +100,7 @@ test/model/InstanceState.spec.js
 test/model/InstanceStopOptions.spec.js
 test/model/Model.spec.js
 test/model/ModelSoftware.spec.js
+test/model/PeripheralsData.spec.js
 test/model/Project.spec.js
 test/model/ProjectQuota.spec.js
 test/model/ProjectSettings.spec.js

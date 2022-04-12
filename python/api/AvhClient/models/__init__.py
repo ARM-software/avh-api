@@ -31,6 +31,7 @@ from AvhClient.model.instance_state import InstanceState
 from AvhClient.model.instance_stop_options import InstanceStopOptions
 from AvhClient.model.model import Model
 from AvhClient.model.model_software import ModelSoftware
+from AvhClient.model.peripherals_data import PeripheralsData
 from AvhClient.model.project import Project
 from AvhClient.model.project_quota import ProjectQuota
 from AvhClient.model.project_settings import ProjectSettings

@@ -572,7 +572,7 @@ Name | Type | Description  | Notes
 
 ## v1GetInstancePeripherals
 
-> Object v1GetInstancePeripherals(instanceId)
+> PeripheralsData v1GetInstancePeripherals(instanceId)
 
 Get Instance Peripherals
 
@@ -604,7 +604,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-**Object**
+[**PeripheralsData**](PeripheralsData.md)
 
 ### Authorization
 
@@ -1044,7 +1044,7 @@ Name | Type | Description  | Notes
 
 ## v1PatchInstance
 
-> Object v1PatchInstance(instanceId, body)
+> Instance v1PatchInstance(instanceId, body)
 
 Update Instance
 
@@ -1059,7 +1059,9 @@ BearerAuth.accessToken = "YOUR ACCESS TOKEN"
 
 let apiInstance = new ArmApi.ArmApi();
 let instanceId = "instanceId_example"; // String | Instance ID
-let body = {key: null}; // Object | 
+let body = {
+ "name": "New Name"
+}; // Object | 
 apiInstance.v1PatchInstance(instanceId, body).then((data) => {
   console.log('API called successfully. Returned data: ' + data);
 }, (error) => {
@@ -1078,7 +1080,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-**Object**
+[**Instance**](Instance.md)
 
 ### Authorization
 
@@ -1334,7 +1336,7 @@ Name | Type | Description  | Notes
 
 ## v1SetInstancePeripherals
 
-> Object v1SetInstancePeripherals(instanceId, body)
+> PeripheralsData v1SetInstancePeripherals(instanceId, peripheralsData)
 
 Set Instance Peripherals
 
@@ -1349,18 +1351,18 @@ BearerAuth.accessToken = "YOUR ACCESS TOKEN"
 
 let apiInstance = new ArmApi.ArmApi();
 let instanceId = "instanceId_example"; // String | Instance ID - uuid
-let body = {
-  "acceleration": "0.000000,9.810000,0.000000",
-  "gyroscope": "0.000000,0.000000,0.000000",
-  "magnetic": "0.000000,45.000000,0.000000",
-  "orientation": "0.000000,0.000000,0.000000",
-  "temperature": "25.000000",
-  "proximity": "50.000000",
-  "light": "20.000000",
-  "pressure": "1013.250000",
-  "humidity": "55.000000"
-}; // String | New peripherals state
-apiInstance.v1SetInstancePeripherals(instanceId, body).then((data) => {
+let peripheralsData = {
+  "acceleration": [0, 9.81, 0],
+  "gyroscope": [0, 0, 0],
+  "magnetic": [0, 45, 0 ],
+  "orientation": [0, 0, 0 ],
+  "temperature": 25,
+  "proximity": 50,
+  "light": 20,
+  "pressure": 1013.25,
+  "humidity": 55
+}; // PeripheralsData | New peripherals state
+apiInstance.v1SetInstancePeripherals(instanceId, peripheralsData).then((data) => {
   console.log('API called successfully. Returned data: ' + data);
 }, (error) => {
   console.error(error);
@@ -1374,11 +1376,11 @@ apiInstance.v1SetInstancePeripherals(instanceId, body).then((data) => {
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **instanceId** | **String**| Instance ID - uuid | 
- **body** | **String**| New peripherals state | 
+ **peripheralsData** | [**PeripheralsData**](PeripheralsData.md)| New peripherals state | 
 
 ### Return type
 
-**Object**
+[**PeripheralsData**](PeripheralsData.md)
 
 ### Authorization
 

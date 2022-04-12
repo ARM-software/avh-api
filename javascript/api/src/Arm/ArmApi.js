@@ -28,6 +28,7 @@ import InstanceStartOptions from '../model/InstanceStartOptions';
 import InstanceState from '../model/InstanceState';
 import InstanceStopOptions from '../model/InstanceStopOptions';
 import Model from '../model/Model';
+import PeripheralsData from '../model/PeripheralsData';
 import Project from '../model/Project';
 import Snapshot from '../model/Snapshot';
 import SnapshotCreationOptions from '../model/SnapshotCreationOptions';
@@ -595,7 +596,7 @@ export default class ArmApi {
     /**
      * Get Instance Peripherals
      * @param {String} instanceId Instance ID - uuid
-     * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with an object containing data of type {@link Object} and HTTP response
+     * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with an object containing data of type {@link module:model/PeripheralsData} and HTTP response
      */
     v1GetInstancePeripheralsWithHttpInfo(instanceId) {
       let postBody = null;
@@ -617,7 +618,7 @@ export default class ArmApi {
       let authNames = ['BearerAuth'];
       let contentTypes = [];
       let accepts = ['application/json'];
-      let returnType = Object;
+      let returnType = PeripheralsData;
       return this.apiClient.callApi(
         '/v1/instances/{instanceId}/peripherals', 'GET',
         pathParams, queryParams, headerParams, formParams, postBody,
@@ -628,7 +629,7 @@ export default class ArmApi {
     /**
      * Get Instance Peripherals
      * @param {String} instanceId Instance ID - uuid
-     * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with data of type {@link Object}
+     * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with data of type {@link module:model/PeripheralsData}
      */
     v1GetInstancePeripherals(instanceId) {
       return this.v1GetInstancePeripheralsWithHttpInfo(instanceId)
@@ -1069,7 +1070,7 @@ export default class ArmApi {
      * Update Instance
      * @param {String} instanceId Instance ID
      * @param {Object.<String, Object>} body 
-     * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with an object containing data of type {@link Object} and HTTP response
+     * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with an object containing data of type {@link module:model/Instance} and HTTP response
      */
     v1PatchInstanceWithHttpInfo(instanceId, body) {
       let postBody = body;
@@ -1095,7 +1096,7 @@ export default class ArmApi {
       let authNames = ['BearerAuth'];
       let contentTypes = ['application/json'];
       let accepts = ['application/json'];
-      let returnType = Object;
+      let returnType = Instance;
       return this.apiClient.callApi(
         '/v1/instances/{instanceId}', 'PATCH',
         pathParams, queryParams, headerParams, formParams, postBody,
@@ -1107,7 +1108,7 @@ export default class ArmApi {
      * Update Instance
      * @param {String} instanceId Instance ID
      * @param {Object.<String, Object>} body 
-     * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with data of type {@link Object}
+     * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with data of type {@link module:model/Instance}
      */
     v1PatchInstance(instanceId, body) {
       return this.v1PatchInstanceWithHttpInfo(instanceId, body)
@@ -1358,18 +1359,18 @@ export default class ArmApi {
     /**
      * Set Instance Peripherals
      * @param {String} instanceId Instance ID - uuid
-     * @param {String} body New peripherals state
-     * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with an object containing data of type {@link Object} and HTTP response
+     * @param {module:model/PeripheralsData} peripheralsData New peripherals state
+     * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with an object containing data of type {@link module:model/PeripheralsData} and HTTP response
      */
-    v1SetInstancePeripheralsWithHttpInfo(instanceId, body) {
-      let postBody = body;
+    v1SetInstancePeripheralsWithHttpInfo(instanceId, peripheralsData) {
+      let postBody = peripheralsData;
       // verify the required parameter 'instanceId' is set
       if (instanceId === undefined || instanceId === null) {
         throw new Error("Missing the required parameter 'instanceId' when calling v1SetInstancePeripherals");
       }
-      // verify the required parameter 'body' is set
-      if (body === undefined || body === null) {
-        throw new Error("Missing the required parameter 'body' when calling v1SetInstancePeripherals");
+      // verify the required parameter 'peripheralsData' is set
+      if (peripheralsData === undefined || peripheralsData === null) {
+        throw new Error("Missing the required parameter 'peripheralsData' when calling v1SetInstancePeripherals");
       }
 
       let pathParams = {
@@ -1385,7 +1386,7 @@ export default class ArmApi {
       let authNames = ['BearerAuth'];
       let contentTypes = ['application/json'];
       let accepts = ['application/json'];
-      let returnType = Object;
+      let returnType = PeripheralsData;
       return this.apiClient.callApi(
         '/v1/instances/{instanceId}/peripherals', 'PUT',
         pathParams, queryParams, headerParams, formParams, postBody,
@@ -1396,11 +1397,11 @@ export default class ArmApi {
     /**
      * Set Instance Peripherals
      * @param {String} instanceId Instance ID - uuid
-     * @param {String} body New peripherals state
-     * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with data of type {@link Object}
+     * @param {module:model/PeripheralsData} peripheralsData New peripherals state
+     * @return {Promise} a {@link https://www.promisejs.org/|Promise}, with data of type {@link module:model/PeripheralsData}
      */
-    v1SetInstancePeripherals(instanceId, body) {
-      return this.v1SetInstancePeripheralsWithHttpInfo(instanceId, body)
+    v1SetInstancePeripherals(instanceId, peripheralsData) {
+      return this.v1SetInstancePeripheralsWithHttpInfo(instanceId, peripheralsData)
         .then(function(response_and_data) {
           return response_and_data.data;
         });

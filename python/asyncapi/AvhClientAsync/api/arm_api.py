@@ -1643,7 +1643,7 @@ class ArmApi(object):
         :return: Returns the result object.
                  If the method is called asynchronously,
                  returns the request thread.
-        :rtype: object
+        :rtype: PeripheralsData
         """
         kwargs['_return_http_data_only'] = True
         return self.v1_get_instance_peripherals_with_http_info(instance_id, **kwargs)  # noqa: E501
@@ -1680,7 +1680,7 @@ class ArmApi(object):
         :return: Returns the result object.
                  If the method is called asynchronously,
                  returns the request thread.
-        :rtype: tuple(object, status_code(int), headers(HTTPHeaderDict))
+        :rtype: tuple(PeripheralsData, status_code(int), headers(HTTPHeaderDict))
         """
 
         local_var_params = locals()
@@ -1735,7 +1735,7 @@ class ArmApi(object):
         auth_settings = ['BearerAuth']  # noqa: E501
 
         response_types_map = {
-            200: "object",
+            200: "PeripheralsData",
             403: "ApiError",
             404: "UserError",
         }
@@ -3039,7 +3039,7 @@ class ArmApi(object):
         :return: Returns the result object.
                  If the method is called asynchronously,
                  returns the request thread.
-        :rtype: object
+        :rtype: Instance
         """
         kwargs['_return_http_data_only'] = True
         return self.v1_patch_instance_with_http_info(instance_id, body, **kwargs)  # noqa: E501
@@ -3078,7 +3078,7 @@ class ArmApi(object):
         :return: Returns the result object.
                  If the method is called asynchronously,
                  returns the request thread.
-        :rtype: tuple(object, status_code(int), headers(HTTPHeaderDict))
+        :rtype: tuple(Instance, status_code(int), headers(HTTPHeaderDict))
         """
 
         local_var_params = locals()
@@ -3146,7 +3146,7 @@ class ArmApi(object):
         auth_settings = ['BearerAuth']  # noqa: E501
 
         response_types_map = {
-            200: "object",
+            200: "Instance",
             403: "ApiError",
             404: "ApiNotFoundError",
         }
@@ -3861,19 +3861,19 @@ class ArmApi(object):
             collection_formats=collection_formats,
             _request_auth=local_var_params.get('_request_auth'))
 
-    def v1_set_instance_peripherals(self, instance_id, body, **kwargs):  # noqa: E501
+    def v1_set_instance_peripherals(self, instance_id, peripherals_data, **kwargs):  # noqa: E501
         """Set Instance Peripherals  # noqa: E501
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
 
-        >>> thread = api.v1_set_instance_peripherals(instance_id, body, async_req=True)
+        >>> thread = api.v1_set_instance_peripherals(instance_id, peripherals_data, async_req=True)
         >>> result = thread.get()
 
         :param instance_id: Instance ID - uuid (required)
         :type instance_id: str
-        :param body: New peripherals state (required)
-        :type body: str
+        :param peripherals_data: New peripherals state (required)
+        :type peripherals_data: PeripheralsData
         :param async_req: Whether to execute the request asynchronously.
         :type async_req: bool, optional
         :param _preload_content: if False, the urllib3.HTTPResponse object will
@@ -3887,24 +3887,24 @@ class ArmApi(object):
         :return: Returns the result object.
                  If the method is called asynchronously,
                  returns the request thread.
-        :rtype: object
+        :rtype: PeripheralsData
         """
         kwargs['_return_http_data_only'] = True
-        return self.v1_set_instance_peripherals_with_http_info(instance_id, body, **kwargs)  # noqa: E501
+        return self.v1_set_instance_peripherals_with_http_info(instance_id, peripherals_data, **kwargs)  # noqa: E501
 
-    def v1_set_instance_peripherals_with_http_info(self, instance_id, body, **kwargs):  # noqa: E501
+    def v1_set_instance_peripherals_with_http_info(self, instance_id, peripherals_data, **kwargs):  # noqa: E501
         """Set Instance Peripherals  # noqa: E501
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
 
-        >>> thread = api.v1_set_instance_peripherals_with_http_info(instance_id, body, async_req=True)
+        >>> thread = api.v1_set_instance_peripherals_with_http_info(instance_id, peripherals_data, async_req=True)
         >>> result = thread.get()
 
         :param instance_id: Instance ID - uuid (required)
         :type instance_id: str
-        :param body: New peripherals state (required)
-        :type body: str
+        :param peripherals_data: New peripherals state (required)
+        :type peripherals_data: PeripheralsData
         :param async_req: Whether to execute the request asynchronously.
         :type async_req: bool, optional
         :param _return_http_data_only: response data without head status code
@@ -3926,14 +3926,14 @@ class ArmApi(object):
         :return: Returns the result object.
                  If the method is called asynchronously,
                  returns the request thread.
-        :rtype: tuple(object, status_code(int), headers(HTTPHeaderDict))
+        :rtype: tuple(PeripheralsData, status_code(int), headers(HTTPHeaderDict))
         """
 
         local_var_params = locals()
 
         all_params = [
             'instance_id',
-            'body'
+            'peripherals_data'
         ]
         all_params.extend(
             [
@@ -3959,10 +3959,10 @@ class ArmApi(object):
         if self.api_client.client_side_validation and ('instance_id' not in local_var_params or  # noqa: E501
                                                         local_var_params['instance_id'] is None):  # noqa: E501
             raise ApiValueError("Missing the required parameter `instance_id` when calling `v1_set_instance_peripherals`")  # noqa: E501
-        # verify the required parameter 'body' is set
-        if self.api_client.client_side_validation and ('body' not in local_var_params or  # noqa: E501
-                                                        local_var_params['body'] is None):  # noqa: E501
-            raise ApiValueError("Missing the required parameter `body` when calling `v1_set_instance_peripherals`")  # noqa: E501
+        # verify the required parameter 'peripherals_data' is set
+        if self.api_client.client_side_validation and ('peripherals_data' not in local_var_params or  # noqa: E501
+                                                        local_var_params['peripherals_data'] is None):  # noqa: E501
+            raise ApiValueError("Missing the required parameter `peripherals_data` when calling `v1_set_instance_peripherals`")  # noqa: E501
 
         collection_formats = {}
 
@@ -3978,8 +3978,8 @@ class ArmApi(object):
         local_var_files = {}
 
         body_params = None
-        if 'body' in local_var_params:
-            body_params = local_var_params['body']
+        if 'peripherals_data' in local_var_params:
+            body_params = local_var_params['peripherals_data']
         # HTTP header `Accept`
         header_params['Accept'] = self.api_client.select_header_accept(
             ['application/json'])  # noqa: E501
@@ -3994,7 +3994,7 @@ class ArmApi(object):
         auth_settings = ['BearerAuth']  # noqa: E501
 
         response_types_map = {
-            200: "object",
+            200: "PeripheralsData",
             403: "ApiError",
             404: "UserError",
         }

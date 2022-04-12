@@ -41,12 +41,8 @@ class TestInstanceBootOptions(unittest.TestCase):
                 udid = '', 
                 ecid = '', 
                 random_seed = '', 
-                no_snapshot_mount = True, 
                 pac = True, 
-                aprr = True, 
-                cdhashes = [
-                    ''
-                    ]
+                aprr = True
             )
         else :
             return InstanceBootOptions(

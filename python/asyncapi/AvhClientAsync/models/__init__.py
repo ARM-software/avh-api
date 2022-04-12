@@ -35,6 +35,7 @@ from AvhClientAsync.models.instance_state import InstanceState
 from AvhClientAsync.models.instance_stop_options import InstanceStopOptions
 from AvhClientAsync.models.model import Model
 from AvhClientAsync.models.model_software import ModelSoftware
+from AvhClientAsync.models.peripherals_data import PeripheralsData
 from AvhClientAsync.models.project import Project
 from AvhClientAsync.models.project_quota import ProjectQuota
 from AvhClientAsync.models.project_settings import ProjectSettings
