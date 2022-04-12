@@ -19,11 +19,15 @@ ctx.check_hostname = False
 ctx.verify_mode = ssl.CERT_NONE
 
 if len(sys.argv) < 3:
-  print('Usage: %s <ApiEndpoint> <ApiToken>', sys.argv[0])
+  print('Usage: %s <ApiEndpoint> <ApiToken> [vmName]', sys.argv[0])
   exit(-1)
 
 apiEndpoint = sys.argv[1]
 apiToken = sys.argv[2]
+if len(sys.argv) > 3:
+  vmName = sys.argv[3]
+else:
+  vmName = 'STM32U5-BSP-Test'
 
 async def waitForState(instance, state):
   global api_instance
@@ -141,7 +145,7 @@ async def main():
   
     print('Creating a new instance...')
     api_response = await api_instance.v1_create_instance({
-      "name": 'STM32U5-BSP-Test',
+      "name": vmName,
       "project": projectId,
       "flavor": chosenModel.flavor,
       "os": version
