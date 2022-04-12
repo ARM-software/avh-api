@@ -111,7 +111,7 @@ class Instance(ModelNormal):
             'panicked': (bool, none_type,),  # noqa: E501
             'created': (datetime, none_type,),  # noqa: E501
             'model': (str, none_type,),  # noqa: E501
-            'ipsw': (str, none_type,),  # noqa: E501
+            'fwpackage': (str, none_type,),  # noqa: E501
             'os': (str, none_type,),  # noqa: E501
             'agent': (str, none_type,),  # noqa: E501
             'netmon': (InstanceNetmonState,),  # noqa: E501
@@ -144,7 +144,7 @@ class Instance(ModelNormal):
         'panicked': 'panicked',  # noqa: E501
         'created': 'created',  # noqa: E501
         'model': 'model',  # noqa: E501
-        'ipsw': 'ipsw',  # noqa: E501
+        'fwpackage': 'fwpackage',  # noqa: E501
         'os': 'os',  # noqa: E501
         'agent': 'agent',  # noqa: E501
         'netmon': 'netmon',  # noqa: E501
@@ -212,7 +212,7 @@ class Instance(ModelNormal):
             panicked (bool, none_type): [optional]  # noqa: E501
             created (datetime, none_type): Time instance was created. [optional]  # noqa: E501
             model (str, none_type): Model of virtual machine device. [optional]  # noqa: E501
-            ipsw (str, none_type): URL that ipsw used to create this instance is available at. [optional]  # noqa: E501
+            fwpackage (str, none_type): URL that package used to create this instance is available at. [optional]  # noqa: E501
             os (str, none_type): [optional]  # noqa: E501
             agent (str, none_type): [optional]  # noqa: E501
             netmon (InstanceNetmonState): [optional]  # noqa: E501
@@ -318,7 +318,7 @@ class Instance(ModelNormal):
             panicked (bool, none_type): [optional]  # noqa: E501
             created (datetime, none_type): Time instance was created. [optional]  # noqa: E501
             model (str, none_type): Model of virtual machine device. [optional]  # noqa: E501
-            ipsw (str, none_type): URL that ipsw used to create this instance is available at. [optional]  # noqa: E501
+            fwpackage (str, none_type): URL that package used to create this instance is available at. [optional]  # noqa: E501
             os (str, none_type): [optional]  # noqa: E501
             agent (str, none_type): [optional]  # noqa: E501
             netmon (InstanceNetmonState): [optional]  # noqa: E501

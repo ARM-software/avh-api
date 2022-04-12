@@ -39,7 +39,7 @@ class TestImage(unittest.TestCase):
                 status = '', 
                 id = '', 
                 name = '', 
-                type = 'iotfirmware', 
+                type = 'fwbinary', 
                 size = 1.337, 
                 project = '', 
                 created_at = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), 

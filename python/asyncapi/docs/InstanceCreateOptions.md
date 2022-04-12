@@ -11,10 +11,8 @@ Name | Type | Description | Notes
 **os** | **str** | OS Version | 
 **osbuild** | **str** | OS Build | [optional] 
 **patches** | **list[str]** | list of patches to apply | [optional] 
-**ipsw** | **str** | URL or image id | [optional] 
-**ipsw_sha1** | **str** |  | [optional] 
-**ipsw_md5** | **str** |  | [optional] 
-**orig_ipsw_url** | **str** | URL that ipsw used to create this instance is available at | [optional] 
+**fwpackage** | **str** | URL or image id | [optional] 
+**orig_fw_package_url** | **str** | URL that firmware package used to create this instance is available at | [optional] 
 **encrypt** | **bool** |  | [optional] 
 **override_wifi_mac** | **str** |  | [optional] 
 **volume** | [**VolumeOptions**](VolumeOptions.md) |  | [optional] 

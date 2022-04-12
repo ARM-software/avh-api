@@ -54,7 +54,7 @@ class Instance(object):
         'panicked': 'bool',
         'created': 'datetime',
         'model': 'str',
-        'ipsw': 'str',
+        'fwpackage': 'str',
         'os': 'str',
         'agent': 'str',
         'netmon': 'InstanceNetmonState',
@@ -82,7 +82,7 @@ class Instance(object):
         'panicked': 'panicked',
         'created': 'created',
         'model': 'model',
-        'ipsw': 'ipsw',
+        'fwpackage': 'fwpackage',
         'os': 'os',
         'agent': 'agent',
         'netmon': 'netmon',
@@ -91,7 +91,7 @@ class Instance(object):
         'patches': 'patches'
     }
 
-    def __init__(self, id=None, name=None, key=None, flavor=None, type=None, project=None, state=None, state_changed=None, user_task=None, task_state=None, error=None, boot_options=None, service_ip=None, wifi_ip=None, services=None, panicked=None, created=None, model=None, ipsw=None, os=None, agent=None, netmon=None, expose_port=None, fault=None, patches=None, local_vars_configuration=None):  # noqa: E501
+    def __init__(self, id=None, name=None, key=None, flavor=None, type=None, project=None, state=None, state_changed=None, user_task=None, task_state=None, error=None, boot_options=None, service_ip=None, wifi_ip=None, services=None, panicked=None, created=None, model=None, fwpackage=None, os=None, agent=None, netmon=None, expose_port=None, fault=None, patches=None, local_vars_configuration=None):  # noqa: E501
         """Instance - a model defined in OpenAPI"""  # noqa: E501
         if local_vars_configuration is None:
             local_vars_configuration = Configuration.get_default_copy()
@@ -115,7 +115,7 @@ class Instance(object):
         self._panicked = None
         self._created = None
         self._model = None
-        self._ipsw = None
+        self._fwpackage = None
         self._os = None
         self._agent = None
         self._netmon = None
@@ -145,7 +145,7 @@ class Instance(object):
         self.panicked = panicked
         self.created = created
         self.model = model
-        self.ipsw = ipsw
+        self.fwpackage = fwpackage
         self.os = os
         self.agent = agent
         if netmon is not None:
@@ -559,27 +559,27 @@ class Instance(object):
         self._model = model
 
     @property
-    def ipsw(self):
-        """Gets the ipsw of this Instance.  # noqa: E501
+    def fwpackage(self):
+        """Gets the fwpackage of this Instance.  # noqa: E501
 
-        URL that ipsw used to create this instance is available at  # noqa: E501
+        URL that package used to create this instance is available at  # noqa: E501
 
-        :return: The ipsw of this Instance.  # noqa: E501
+        :return: The fwpackage of this Instance.  # noqa: E501
         :rtype: str
         """
-        return self._ipsw
+        return self._fwpackage
 
-    @ipsw.setter
-    def ipsw(self, ipsw):
-        """Sets the ipsw of this Instance.
+    @fwpackage.setter
+    def fwpackage(self, fwpackage):
+        """Sets the fwpackage of this Instance.
 
-        URL that ipsw used to create this instance is available at  # noqa: E501
+        URL that package used to create this instance is available at  # noqa: E501
 
-        :param ipsw: The ipsw of this Instance.  # noqa: E501
-        :type ipsw: str
+        :param fwpackage: The fwpackage of this Instance.  # noqa: E501
+        :type fwpackage: str
         """
 
-        self._ipsw = ipsw
+        self._fwpackage = fwpackage
 
     @property
     def os(self):

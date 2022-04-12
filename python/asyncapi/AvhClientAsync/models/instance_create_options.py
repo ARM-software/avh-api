@@ -43,10 +43,8 @@ class InstanceCreateOptions(object):
         'os': 'str',
         'osbuild': 'str',
         'patches': 'list[str]',
-        'ipsw': 'str',
-        'ipsw_sha1': 'str',
-        'ipsw_md5': 'str',
-        'orig_ipsw_url': 'str',
+        'fwpackage': 'str',
+        'orig_fw_package_url': 'str',
         'encrypt': 'bool',
         'override_wifi_mac': 'str',
         'volume': 'VolumeOptions',
@@ -63,10 +61,8 @@ class InstanceCreateOptions(object):
         'os': 'os',
         'osbuild': 'osbuild',
         'patches': 'patches',
-        'ipsw': 'ipsw',
-        'ipsw_sha1': 'ipswSHA1',
-        'ipsw_md5': 'ipswMD5',
-        'orig_ipsw_url': 'origIpswUrl',
+        'fwpackage': 'fwpackage',
+        'orig_fw_package_url': 'origFwPackageUrl',
         'encrypt': 'encrypt',
         'override_wifi_mac': 'overrideWifiMAC',
         'volume': 'volume',
@@ -75,7 +71,7 @@ class InstanceCreateOptions(object):
         'device': 'device'
     }
 
-    def __init__(self, name=None, key=None, flavor=None, project=None, os=None, osbuild=None, patches=None, ipsw=None, ipsw_sha1=None, ipsw_md5=None, orig_ipsw_url=None, encrypt=None, override_wifi_mac=None, volume=None, snapshot=None, boot_options=None, device=None, local_vars_configuration=None):  # noqa: E501
+    def __init__(self, name=None, key=None, flavor=None, project=None, os=None, osbuild=None, patches=None, fwpackage=None, orig_fw_package_url=None, encrypt=None, override_wifi_mac=None, volume=None, snapshot=None, boot_options=None, device=None, local_vars_configuration=None):  # noqa: E501
         """InstanceCreateOptions - a model defined in OpenAPI"""  # noqa: E501
         if local_vars_configuration is None:
             local_vars_configuration = Configuration.get_default_copy()
@@ -88,10 +84,8 @@ class InstanceCreateOptions(object):
         self._os = None
         self._osbuild = None
         self._patches = None
-        self._ipsw = None
-        self._ipsw_sha1 = None
-        self._ipsw_md5 = None
-        self._orig_ipsw_url = None
+        self._fwpackage = None
+        self._orig_fw_package_url = None
         self._encrypt = None
         self._override_wifi_mac = None
         self._volume = None
@@ -107,10 +101,8 @@ class InstanceCreateOptions(object):
         self.os = os
         self.osbuild = osbuild
         self.patches = patches
-        self.ipsw = ipsw
-        self.ipsw_sha1 = ipsw_sha1
-        self.ipsw_md5 = ipsw_md5
-        self.orig_ipsw_url = orig_ipsw_url
+        self.fwpackage = fwpackage
+        self.orig_fw_package_url = orig_fw_package_url
         self.encrypt = encrypt
         self.override_wifi_mac = override_wifi_mac
         if volume is not None:
@@ -289,92 +281,50 @@ class InstanceCreateOptions(object):
         self._patches = patches
 
     @property
-    def ipsw(self):
-        """Gets the ipsw of this InstanceCreateOptions.  # noqa: E501
+    def fwpackage(self):
+        """Gets the fwpackage of this InstanceCreateOptions.  # noqa: E501
 
         URL or image id  # noqa: E501
 
-        :return: The ipsw of this InstanceCreateOptions.  # noqa: E501
+        :return: The fwpackage of this InstanceCreateOptions.  # noqa: E501
         :rtype: str
         """
-        return self._ipsw
+        return self._fwpackage
 
-    @ipsw.setter
-    def ipsw(self, ipsw):
-        """Sets the ipsw of this InstanceCreateOptions.
+    @fwpackage.setter
+    def fwpackage(self, fwpackage):
+        """Sets the fwpackage of this InstanceCreateOptions.
 
         URL or image id  # noqa: E501
 
-        :param ipsw: The ipsw of this InstanceCreateOptions.  # noqa: E501
-        :type ipsw: str
+        :param fwpackage: The fwpackage of this InstanceCreateOptions.  # noqa: E501
+        :type fwpackage: str
         """
 
-        self._ipsw = ipsw
+        self._fwpackage = fwpackage
 
     @property
-    def ipsw_sha1(self):
-        """Gets the ipsw_sha1 of this InstanceCreateOptions.  # noqa: E501
+    def orig_fw_package_url(self):
+        """Gets the orig_fw_package_url of this InstanceCreateOptions.  # noqa: E501
 
+        URL that firmware package used to create this instance is available at  # noqa: E501
 
-        :return: The ipsw_sha1 of this InstanceCreateOptions.  # noqa: E501
+        :return: The orig_fw_package_url of this InstanceCreateOptions.  # noqa: E501
         :rtype: str
         """
-        return self._ipsw_sha1
+        return self._orig_fw_package_url
 
-    @ipsw_sha1.setter
-    def ipsw_sha1(self, ipsw_sha1):
-        """Sets the ipsw_sha1 of this InstanceCreateOptions.
+    @orig_fw_package_url.setter
+    def orig_fw_package_url(self, orig_fw_package_url):
+        """Sets the orig_fw_package_url of this InstanceCreateOptions.
 
+        URL that firmware package used to create this instance is available at  # noqa: E501
 
-        :param ipsw_sha1: The ipsw_sha1 of this InstanceCreateOptions.  # noqa: E501
-        :type ipsw_sha1: str
+        :param orig_fw_package_url: The orig_fw_package_url of this InstanceCreateOptions.  # noqa: E501
+        :type orig_fw_package_url: str
         """
 
-        self._ipsw_sha1 = ipsw_sha1
-
-    @property
-    def ipsw_md5(self):
-        """Gets the ipsw_md5 of this InstanceCreateOptions.  # noqa: E501
-
-
-        :return: The ipsw_md5 of this InstanceCreateOptions.  # noqa: E501
-        :rtype: str
-        """
-        return self._ipsw_md5
-
-    @ipsw_md5.setter
-    def ipsw_md5(self, ipsw_md5):
-        """Sets the ipsw_md5 of this InstanceCreateOptions.
-
-
-        :param ipsw_md5: The ipsw_md5 of this InstanceCreateOptions.  # noqa: E501
-        :type ipsw_md5: str
-        """
-
-        self._ipsw_md5 = ipsw_md5
-
-    @property
-    def orig_ipsw_url(self):
-        """Gets the orig_ipsw_url of this InstanceCreateOptions.  # noqa: E501
-
-        URL that ipsw used to create this instance is available at  # noqa: E501
-
-        :return: The orig_ipsw_url of this InstanceCreateOptions.  # noqa: E501
-        :rtype: str
-        """
-        return self._orig_ipsw_url
-
-    @orig_ipsw_url.setter
-    def orig_ipsw_url(self, orig_ipsw_url):
-        """Sets the orig_ipsw_url of this InstanceCreateOptions.
-
-        URL that ipsw used to create this instance is available at  # noqa: E501
-
-        :param orig_ipsw_url: The orig_ipsw_url of this InstanceCreateOptions.  # noqa: E501
-        :type orig_ipsw_url: str
-        """
-
-        self._orig_ipsw_url = orig_ipsw_url
+        self._orig_fw_package_url = orig_fw_package_url
 
     @property
     def encrypt(self):

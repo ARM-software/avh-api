@@ -169,7 +169,7 @@ class Image(object):
         :param type: The type of this Image.  # noqa: E501
         :type type: str
         """
-        allowed_values = [None,"iotfirmware", "kernel", "fwbinary", "devicetree", "ramdisk", "loaderfile", "sepfw", "seprom", "bootrom", "llb", "iboot", "ibootdata", "fw", "partition/  * @property {string} self"]  # noqa: E501
+        allowed_values = [None,"fwbinary", "kernel", "devicetree", "ramdisk", "loaderfile", "sepfw", "seprom", "bootrom", "llb", "iboot", "ibootdata", "fwpackage", "partition/  * @property {string} self"]  # noqa: E501
         if self.local_vars_configuration.client_side_validation and type not in allowed_values:  # noqa: E501
             raise ValueError(
                 "Invalid value for `type` ({0}), must be one of {1}"  # noqa: E501

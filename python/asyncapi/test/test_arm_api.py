@@ -273,13 +273,6 @@ class TestArmApi(unittest.TestCase):
         """
         pass
 
-    def test_v1_users_login(self):
-        """Test case for v1_users_login
-
-        Log In  # noqa: E501
-        """
-        pass
-
 
 if __name__ == '__main__':
     unittest.main()

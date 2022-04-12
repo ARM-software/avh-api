@@ -98,10 +98,8 @@ class InstanceCreateOptions(ModelNormal):
             'key': (str, none_type,),  # noqa: E501
             'osbuild': (str, none_type,),  # noqa: E501
             'patches': ([str], none_type,),  # noqa: E501
-            'ipsw': (str, none_type,),  # noqa: E501
-            'ipsw_sha1': (str, none_type,),  # noqa: E501
-            'ipsw_md5': (str, none_type,),  # noqa: E501
-            'orig_ipsw_url': (str, none_type,),  # noqa: E501
+            'fwpackage': (str, none_type,),  # noqa: E501
+            'orig_fw_package_url': (str, none_type,),  # noqa: E501
             'encrypt': (bool, none_type,),  # noqa: E501
             'override_wifi_mac': (str, none_type,),  # noqa: E501
             'volume': (VolumeOptions,),  # noqa: E501
@@ -123,10 +121,8 @@ class InstanceCreateOptions(ModelNormal):
         'key': 'key',  # noqa: E501
         'osbuild': 'osbuild',  # noqa: E501
         'patches': 'patches',  # noqa: E501
-        'ipsw': 'ipsw',  # noqa: E501
-        'ipsw_sha1': 'ipswSHA1',  # noqa: E501
-        'ipsw_md5': 'ipswMD5',  # noqa: E501
-        'orig_ipsw_url': 'origIpswUrl',  # noqa: E501
+        'fwpackage': 'fwpackage',  # noqa: E501
+        'orig_fw_package_url': 'origFwPackageUrl',  # noqa: E501
         'encrypt': 'encrypt',  # noqa: E501
         'override_wifi_mac': 'overrideWifiMAC',  # noqa: E501
         'volume': 'volume',  # noqa: E501
@@ -185,10 +181,8 @@ class InstanceCreateOptions(ModelNormal):
             key (str, none_type): Key used to encrypt the Instance. [optional]  # noqa: E501
             osbuild (str, none_type): OS Build. [optional]  # noqa: E501
             patches ([str], none_type): list of patches to apply. [optional]  # noqa: E501
-            ipsw (str, none_type): URL or image id. [optional]  # noqa: E501
-            ipsw_sha1 (str, none_type): [optional]  # noqa: E501
-            ipsw_md5 (str, none_type): [optional]  # noqa: E501
-            orig_ipsw_url (str, none_type): URL that ipsw used to create this instance is available at. [optional]  # noqa: E501
+            fwpackage (str, none_type): URL or image id. [optional]  # noqa: E501
+            orig_fw_package_url (str, none_type): URL that firmware package used to create this instance is available at. [optional]  # noqa: E501
             encrypt (bool, none_type): [optional]  # noqa: E501
             override_wifi_mac (str, none_type): [optional]  # noqa: E501
             volume (VolumeOptions): [optional]  # noqa: E501
@@ -288,10 +282,8 @@ class InstanceCreateOptions(ModelNormal):
             key (str, none_type): Key used to encrypt the Instance. [optional]  # noqa: E501
             osbuild (str, none_type): OS Build. [optional]  # noqa: E501
             patches ([str], none_type): list of patches to apply. [optional]  # noqa: E501
-            ipsw (str, none_type): URL or image id. [optional]  # noqa: E501
-            ipsw_sha1 (str, none_type): [optional]  # noqa: E501
-            ipsw_md5 (str, none_type): [optional]  # noqa: E501
-            orig_ipsw_url (str, none_type): URL that ipsw used to create this instance is available at. [optional]  # noqa: E501
+            fwpackage (str, none_type): URL or image id. [optional]  # noqa: E501
+            orig_fw_package_url (str, none_type): URL that firmware package used to create this instance is available at. [optional]  # noqa: E501
             encrypt (bool, none_type): [optional]  # noqa: E501
             override_wifi_mac (str, none_type): [optional]  # noqa: E501
             volume (VolumeOptions): [optional]  # noqa: E501

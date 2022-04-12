@@ -39,11 +39,10 @@ Method | HTTP request | Description
 [**v1_stop_instance**](ArmApi.md#v1_stop_instance) | **POST** /v1/instances/{instanceId}/stop | Stop an Instance
 [**v1_unpause_instance**](ArmApi.md#v1_unpause_instance) | **POST** /v1/instances/{instanceId}/unpause | Unpause an Instance
 [**v1_upload_image_data**](ArmApi.md#v1_upload_image_data) | **POST** /v1/images/{imageId} | Upload Image Data
-[**v1_users_login**](ArmApi.md#v1_users_login) | **POST** /v1/users/login | Log In
 
 
 # **v1_auth_login**
-> Token v1_auth_login(body)
+> Token v1_auth_login(api_token)
 
 Log In
 
@@ -66,14 +65,13 @@ configuration = AvhClientAsync.Configuration(
 with AvhClientAsync.ApiClient() as api_client:
     # Create an instance of the API class
     api_instance = AvhClientAsync.ArmApi(api_client)
-    body = {
-  "username": "admin",
-  "password": "password"
-} # object | Authorization data ( Credentials|ApiToken|Token )
+    api_token = {
+  "apiToken": "<token>"
+} # ApiToken | Authorization Data
 
     try:
         # Log In
-        api_response = api_instance.v1_auth_login(body)
+        api_response = api_instance.v1_auth_login(api_token)
         pprint(api_response)
     except ApiException as e:
         print("Exception when calling ArmApi->v1_auth_login: %s\n" % e)
@@ -83,7 +81,7 @@ with AvhClientAsync.ApiClient() as api_client:
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **body** | **object**| Authorization data ( Credentials|ApiToken|Token ) | 
+ **api_token** | [**ApiToken**](ApiToken.md)| Authorization Data | 
 
 ### Return type
 
@@ -2590,70 +2588,6 @@ Name | Type | Description  | Notes
 **200** | application/json |  -  |
 **404** | application/json |  -  |
 **409** | Conflict |  -  |
-
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
-
-# **v1_users_login**
-> Token v1_users_login(credentials)
-
-Log In
-
-### Example
-
-```python
-from __future__ import print_function
-import time
-import AvhClientAsync
-from AvhClientAsync.rest import ApiException
-from pprint import pprint
-# Defining the host is optional and defaults to https://app.avh.arm.com/api
-# See configuration.py for a list of all supported configuration parameters.
-configuration = AvhClientAsync.Configuration(
-    host = "https://app.avh.arm.com/api"
-)
-
-
-# Enter a context with an instance of the API client
-with AvhClientAsync.ApiClient() as api_client:
-    # Create an instance of the API class
-    api_instance = AvhClientAsync.ArmApi(api_client)
-    credentials = {
-  "username": "admin",
-  "password": "password"
-} # Credentials | Authorization data
-
-    try:
-        # Log In
-        api_response = api_instance.v1_users_login(credentials)
-        pprint(api_response)
-    except ApiException as e:
-        print("Exception when calling ArmApi->v1_users_login: %s\n" % e)
-```
-
-### Parameters
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **credentials** | [**Credentials**](Credentials.md)| Authorization data | 
-
-### Return type
-
-[**Token**](Token.md)
-
-### Authorization
-
-No authorization required
-
-### HTTP request headers
-
- - **Content-Type**: application/json
- - **Accept**: application/json
-
-### HTTP response details
-| Status code | Description | Response headers |
-|-------------|-------------|------------------|
-**200** | User Authorization |  -  |
-**403** | Forbidden |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 

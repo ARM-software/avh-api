@@ -22,7 +22,7 @@ Name | Type | Description | Notes
 **panicked** | **bool, none_type** |  | [optional] 
 **created** | **datetime, none_type** | Time instance was created | [optional] 
 **model** | **str, none_type** | Model of virtual machine device | [optional] 
-**ipsw** | **str, none_type** | URL that ipsw used to create this instance is available at | [optional] 
+**fwpackage** | **str, none_type** | URL that package used to create this instance is available at | [optional] 
 **os** | **str, none_type** |  | [optional] 
 **agent** | **str, none_type** |  | [optional] 
 **netmon** | [**InstanceNetmonState**](InstanceNetmonState.md) |  | [optional] 

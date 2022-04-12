@@ -57,7 +57,7 @@ class Image(ModelNormal):
     allowed_values = {
         ('type',): {
             'None': None,
-            'IOTFIRMWARE': "iotfirmware",
+            'FWBINARY': "fwbinary",
             'KERNEL': "kernel",
             'DEVICETREE': "devicetree",
             'RAMDISK': "ramdisk",
@@ -68,7 +68,7 @@ class Image(ModelNormal):
             'LLB': "llb",
             'IBOOT': "iboot",
             'IBOOTDATA': "ibootdata",
-            'FW': "fw",
+            'FWPACKAGE': "fwpackage",
             'PARTITION/_*_@PROPERTY_{STRING}_SELF': "partition/  * @property {string} self",
         },
     }

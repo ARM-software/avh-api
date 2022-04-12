@@ -254,10 +254,8 @@ with AvhClient.ApiClient(configuration) as api_client:
         patches=[
             "patches_example",
         ],
-        ipsw="ipsw_example",
-        ipsw_sha1="ipsw_sha1_example",
-        ipsw_md5="ipsw_md5_example",
-        orig_ipsw_url="orig_ipsw_url_example",
+        fwpackage="fwpackage_example",
+        orig_fw_package_url="orig_fw_package_url_example",
         encrypt=True,
         override_wifi_mac="override_wifi_mac_example",
         volume=VolumeOptions(

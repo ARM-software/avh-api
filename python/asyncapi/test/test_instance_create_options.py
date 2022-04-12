@@ -45,10 +45,8 @@ class TestInstanceCreateOptions(unittest.TestCase):
                 patches = [
                     ''
                     ], 
-                ipsw = '', 
-                ipsw_sha1 = '', 
-                ipsw_md5 = '', 
-                orig_ipsw_url = '', 
+                fwpackage = '', 
+                orig_fw_package_url = '', 
                 encrypt = True, 
                 override_wifi_mac = '', 
                 volume = AvhClientAsync.models.volume_options.VolumeOptions(

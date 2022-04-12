@@ -64,14 +64,13 @@ configuration = AvhClientAsync.Configuration(
 with AvhClientAsync.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = AvhClientAsync.ArmApi(api_client)
-    body = {
-  "username": "admin",
-  "password": "password"
-} # object | Authorization data ( Credentials|ApiToken|Token )
+    api_token = {
+  "apiToken": "<token>"
+} # ApiToken | Authorization Data
 
     try:
         # Log In
-        api_response = api_instance.v1_auth_login(body)
+        api_response = api_instance.v1_auth_login(api_token)
         pprint(api_response)
     except ApiException as e:
         print("Exception when calling ArmApi->v1_auth_login: %s\n" % e)
@@ -119,7 +118,6 @@ Class | Method | HTTP request | Description
 *ArmApi* | [**v1_stop_instance**](docs/ArmApi.md#v1_stop_instance) | **POST** /v1/instances/{instanceId}/stop | Stop an Instance
 *ArmApi* | [**v1_unpause_instance**](docs/ArmApi.md#v1_unpause_instance) | **POST** /v1/instances/{instanceId}/unpause | Unpause an Instance
 *ArmApi* | [**v1_upload_image_data**](docs/ArmApi.md#v1_upload_image_data) | **POST** /v1/images/{imageId} | Upload Image Data
-*ArmApi* | [**v1_users_login**](docs/ArmApi.md#v1_users_login) | **POST** /v1/users/login | Log In
 
 
 ## Documentation For Models
