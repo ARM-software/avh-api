@@ -7,6 +7,7 @@ gitrepo:
 	cp -a ../api gitrepo/api
 	cd gitrepo; \
 	  git init; \
+	  rm -f README.md Makefile; \
 	  mkdir -p .github/workflows; \
 	  mv github_workflow.yml .github/workflows/avh_build_and_test.yml; \
 	  git add .; \

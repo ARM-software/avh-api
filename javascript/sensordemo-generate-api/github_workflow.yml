@@ -6,6 +6,10 @@ on:
   push:
     paths-ignore:
     - '**.md'
+  create:
+    paths-ignore:
+    - '**.md'
+
 jobs:
   Build:
     runs-on: [self-hosted, Linux, ARM64]
