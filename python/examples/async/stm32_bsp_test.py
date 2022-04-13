@@ -141,14 +141,20 @@ async def main():
 
     print('Finding software for our model...')
     api_response = await api_instance.v1_get_model_software(model.model)
-    version = api_response[0].version
-  
+    chosenSoftware = None
+    for software in api_response:
+      if software.filename.startswith('STM32U5-WiFiBasics'):
+        # This software package is compatible with our bsp.elf image
+        chosenSoftware = software
+        break
+
     print('Creating a new instance...')
     api_response = await api_instance.v1_create_instance({
       "name": vmName,
       "project": projectId,
       "flavor": chosenModel.flavor,
-      "os": version
+      "os": chosenSoftware.version,
+      "osbuild": chosenSoftware.buildid
     })
     instance = api_response
 
@@ -180,6 +186,7 @@ async def main():
       pprint(gpios)
 
     except Exception as e:      
+      print('Encountered error; cleaning up...')
       error = e
 
     print('Deleting instance...')
