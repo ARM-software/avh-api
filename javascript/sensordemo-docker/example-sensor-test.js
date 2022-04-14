@@ -68,7 +68,7 @@ async function setup_instance() {
     name: "STM32U5-test",
     flavor: 'stm32u5-b-u585i-iot02a',
     os: '1.1.0',
-    osbuild: '1.1.0-WS'
+    osbuild: 'WS'
   })
 
   console.log('Waiting for instance to finish creating...')
