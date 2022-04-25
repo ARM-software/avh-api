@@ -1,4 +1,4 @@
-# ArmApi.SnapshotStatus
+# AvhApi.SnapshotStatus
 
 ## Properties
 

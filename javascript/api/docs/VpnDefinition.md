@@ -1,4 +1,4 @@
-# ArmApi.VpnDefinition
+# AvhApi.VpnDefinition
 
 ## Properties
 

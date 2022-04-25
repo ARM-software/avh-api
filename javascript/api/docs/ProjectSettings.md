@@ -1,4 +1,4 @@
-# ArmApi.ProjectSettings
+# AvhApi.ProjectSettings
 
 ## Properties
 

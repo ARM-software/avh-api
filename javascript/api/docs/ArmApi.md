@@ -1,4 +1,4 @@
-# ArmApi.ArmApi
+# AvhApi.ArmApi
 
 All URIs are relative to *https://app.avh.arm.com/api*
 
@@ -22,6 +22,7 @@ Method | HTTP request | Description
 [**v1GetModels**](ArmApi.md#v1GetModels) | **GET** /v1/models | Get Supported Models
 [**v1GetProject**](ArmApi.md#v1GetProject) | **GET** /v1/projects/{projectId} | Get Project
 [**v1GetProjectInstances**](ArmApi.md#v1GetProjectInstances) | **GET** /v1/projects/{projectId}/instances | Get Instances in Project
+[**v1GetProjectVpnConfig**](ArmApi.md#v1GetProjectVpnConfig) | **GET** /v1/projects/{projectId}/vpnconfig/{format} | Get Project VPN Configuration
 [**v1GetProjects**](ArmApi.md#v1GetProjects) | **GET** /v1/projects | Get Projects
 [**v1GetSnapshot**](ArmApi.md#v1GetSnapshot) | **GET** /v1/instances/{instanceId}/snapshots/{snapshotId} | Get Instance Snapshots
 [**v1GetSnapshots**](ArmApi.md#v1GetSnapshots) | **GET** /v1/instances/{instanceId}/snapshots | Get Instance Snapshots
@@ -51,9 +52,9 @@ Log In
 ### Example
 
 ```javascript
-import ArmApi from 'arm_api';
+import AvhApi from '@arm-avh/avh-api';
 
-let apiInstance = new ArmApi.ArmApi();
+let apiInstance = new AvhApi.ArmApi();
 let apiToken = {
   "apiToken": "<token>"
 }; // ApiToken | Authorization Data
@@ -95,13 +96,13 @@ Create a new Image
 ### Example
 
 ```javascript
-import ArmApi from 'arm_api';
-let defaultClient = ArmApi.ApiClient.instance;
-// Configure Bearer (JWT) access token for authorization: BearerAuth
+import AvhApi from '@arm-avh/avh-api';
+let defaultClient = AvhApi.ApiClient.instance;
+// Configure Bearer (ApiToken or JWT) access token for authorization: BearerAuth
 let BearerAuth = defaultClient.authentications['BearerAuth'];
 BearerAuth.accessToken = "YOUR ACCESS TOKEN"
 
-let apiInstance = new ArmApi.ArmApi();
+let apiInstance = new AvhApi.ArmApi();
 let type = "type_example"; // String | Image type
 let encoding = "encoding_example"; // String | How the file is stored
 let opts = {
@@ -153,17 +154,18 @@ Create Instance
 ### Example
 
 ```javascript
-import ArmApi from 'arm_api';
-let defaultClient = ArmApi.ApiClient.instance;
-// Configure Bearer (JWT) access token for authorization: BearerAuth
+import AvhApi from '@arm-avh/avh-api';
+let defaultClient = AvhApi.ApiClient.instance;
+// Configure Bearer (ApiToken or JWT) access token for authorization: BearerAuth
 let BearerAuth = defaultClient.authentications['BearerAuth'];
 BearerAuth.accessToken = "YOUR ACCESS TOKEN"
 
-let apiInstance = new ArmApi.ArmApi();
+let apiInstance = new AvhApi.ArmApi();
 let instanceCreateOptions = {
- "project": "d59db33d-27bd-4b22-878d-49e4758a648e",
- "flavor": "iphone6s",
- "os": "12.0"
+  "project": "<your_project_id>",
+  "name": "rpi4b Created via API",
+  "flavor": "rpi4b",
+  "os": "11.2.0"
 }; // InstanceCreateOptions | The vm definition to create
 apiInstance.v1CreateInstance(instanceCreateOptions).then((data) => {
   console.log('API called successfully. Returned data: ' + data);
@@ -203,15 +205,15 @@ Create Instance Snapshot
 ### Example
 
 ```javascript
-import ArmApi from 'arm_api';
-let defaultClient = ArmApi.ApiClient.instance;
-// Configure Bearer (JWT) access token for authorization: BearerAuth
+import AvhApi from '@arm-avh/avh-api';
+let defaultClient = AvhApi.ApiClient.instance;
+// Configure Bearer (ApiToken or JWT) access token for authorization: BearerAuth
 let BearerAuth = defaultClient.authentications['BearerAuth'];
 BearerAuth.accessToken = "YOUR ACCESS TOKEN"
 
-let apiInstance = new ArmApi.ArmApi();
+let apiInstance = new AvhApi.ArmApi();
 let instanceId = "instanceId_example"; // String | Instance ID - uuid
-let snapshotCreationOptions = new ArmApi.SnapshotCreationOptions(); // SnapshotCreationOptions | 
+let snapshotCreationOptions = new AvhApi.SnapshotCreationOptions(); // SnapshotCreationOptions | 
 apiInstance.v1CreateSnapshot(instanceId, snapshotCreationOptions).then((data) => {
   console.log('API called successfully. Returned data: ' + data);
 }, (error) => {
@@ -251,13 +253,13 @@ Delete Image
 ### Example
 
 ```javascript
-import ArmApi from 'arm_api';
-let defaultClient = ArmApi.ApiClient.instance;
-// Configure Bearer (JWT) access token for authorization: BearerAuth
+import AvhApi from '@arm-avh/avh-api';
+let defaultClient = AvhApi.ApiClient.instance;
+// Configure Bearer (ApiToken or JWT) access token for authorization: BearerAuth
 let BearerAuth = defaultClient.authentications['BearerAuth'];
 BearerAuth.accessToken = "YOUR ACCESS TOKEN"
 
-let apiInstance = new ArmApi.ArmApi();
+let apiInstance = new AvhApi.ArmApi();
 let imageId = "imageId_example"; // String | Image ID - uuid
 apiInstance.v1DeleteImage(imageId).then(() => {
   console.log('API called successfully.');
@@ -297,13 +299,13 @@ Remove Instance
 ### Example
 
 ```javascript
-import ArmApi from 'arm_api';
-let defaultClient = ArmApi.ApiClient.instance;
-// Configure Bearer (JWT) access token for authorization: BearerAuth
+import AvhApi from '@arm-avh/avh-api';
+let defaultClient = AvhApi.ApiClient.instance;
+// Configure Bearer (ApiToken or JWT) access token for authorization: BearerAuth
 let BearerAuth = defaultClient.authentications['BearerAuth'];
 BearerAuth.accessToken = "YOUR ACCESS TOKEN"
 
-let apiInstance = new ArmApi.ArmApi();
+let apiInstance = new AvhApi.ArmApi();
 let instanceId = "instanceId_example"; // String | Instance ID
 apiInstance.v1DeleteInstance(instanceId).then(() => {
   console.log('API called successfully.');
@@ -343,13 +345,13 @@ Get Image Metadata
 ### Example
 
 ```javascript
-import ArmApi from 'arm_api';
-let defaultClient = ArmApi.ApiClient.instance;
-// Configure Bearer (JWT) access token for authorization: BearerAuth
+import AvhApi from '@arm-avh/avh-api';
+let defaultClient = AvhApi.ApiClient.instance;
+// Configure Bearer (ApiToken or JWT) access token for authorization: BearerAuth
 let BearerAuth = defaultClient.authentications['BearerAuth'];
 BearerAuth.accessToken = "YOUR ACCESS TOKEN"
 
-let apiInstance = new ArmApi.ArmApi();
+let apiInstance = new AvhApi.ArmApi();
 let imageId = "imageId_example"; // String | Image ID - uuid
 apiInstance.v1GetImage(imageId).then((data) => {
   console.log('API called successfully. Returned data: ' + data);
@@ -389,13 +391,13 @@ Get all Images Metadata
 ### Example
 
 ```javascript
-import ArmApi from 'arm_api';
-let defaultClient = ArmApi.ApiClient.instance;
-// Configure Bearer (JWT) access token for authorization: BearerAuth
+import AvhApi from '@arm-avh/avh-api';
+let defaultClient = AvhApi.ApiClient.instance;
+// Configure Bearer (ApiToken or JWT) access token for authorization: BearerAuth
 let BearerAuth = defaultClient.authentications['BearerAuth'];
 BearerAuth.accessToken = "YOUR ACCESS TOKEN"
 
-let apiInstance = new ArmApi.ArmApi();
+let apiInstance = new AvhApi.ArmApi();
 let opts = {
   'project': "project_example" // String | Optionally filter by project - uuid
 };
@@ -437,13 +439,13 @@ Get Instance
 ### Example
 
 ```javascript
-import ArmApi from 'arm_api';
-let defaultClient = ArmApi.ApiClient.instance;
-// Configure Bearer (JWT) access token for authorization: BearerAuth
+import AvhApi from '@arm-avh/avh-api';
+let defaultClient = AvhApi.ApiClient.instance;
+// Configure Bearer (ApiToken or JWT) access token for authorization: BearerAuth
 let BearerAuth = defaultClient.authentications['BearerAuth'];
 BearerAuth.accessToken = "YOUR ACCESS TOKEN"
 
-let apiInstance = new ArmApi.ArmApi();
+let apiInstance = new AvhApi.ArmApi();
 let instanceId = "instanceId_example"; // String | Instance ID
 let opts = {
   'returnAttr': ["null"] // [String] | Attributes to include in instance return
@@ -487,13 +489,13 @@ Get console websocket URL
 ### Example
 
 ```javascript
-import ArmApi from 'arm_api';
-let defaultClient = ArmApi.ApiClient.instance;
-// Configure Bearer (JWT) access token for authorization: BearerAuth
+import AvhApi from '@arm-avh/avh-api';
+let defaultClient = AvhApi.ApiClient.instance;
+// Configure Bearer (ApiToken or JWT) access token for authorization: BearerAuth
 let BearerAuth = defaultClient.authentications['BearerAuth'];
 BearerAuth.accessToken = "YOUR ACCESS TOKEN"
 
-let apiInstance = new ArmApi.ArmApi();
+let apiInstance = new AvhApi.ArmApi();
 let instanceId = "instanceId_example"; // String | Instance ID - uuid
 apiInstance.v1GetInstanceConsole(instanceId).then((data) => {
   console.log('API called successfully. Returned data: ' + data);
@@ -533,13 +535,13 @@ Get Instance GPIOs
 ### Example
 
 ```javascript
-import ArmApi from 'arm_api';
-let defaultClient = ArmApi.ApiClient.instance;
-// Configure Bearer (JWT) access token for authorization: BearerAuth
+import AvhApi from '@arm-avh/avh-api';
+let defaultClient = AvhApi.ApiClient.instance;
+// Configure Bearer (ApiToken or JWT) access token for authorization: BearerAuth
 let BearerAuth = defaultClient.authentications['BearerAuth'];
 BearerAuth.accessToken = "YOUR ACCESS TOKEN"
 
-let apiInstance = new ArmApi.ArmApi();
+let apiInstance = new AvhApi.ArmApi();
 let instanceId = "instanceId_example"; // String | Instance ID - uuid
 apiInstance.v1GetInstanceGpios(instanceId).then((data) => {
   console.log('API called successfully. Returned data: ' + data);
@@ -579,13 +581,13 @@ Get Instance Peripherals
 ### Example
 
 ```javascript
-import ArmApi from 'arm_api';
-let defaultClient = ArmApi.ApiClient.instance;
-// Configure Bearer (JWT) access token for authorization: BearerAuth
+import AvhApi from '@arm-avh/avh-api';
+let defaultClient = AvhApi.ApiClient.instance;
+// Configure Bearer (ApiToken or JWT) access token for authorization: BearerAuth
 let BearerAuth = defaultClient.authentications['BearerAuth'];
 BearerAuth.accessToken = "YOUR ACCESS TOKEN"
 
-let apiInstance = new ArmApi.ArmApi();
+let apiInstance = new AvhApi.ArmApi();
 let instanceId = "instanceId_example"; // String | Instance ID - uuid
 apiInstance.v1GetInstancePeripherals(instanceId).then((data) => {
   console.log('API called successfully. Returned data: ' + data);
@@ -625,13 +627,13 @@ Get state of Instance
 ### Example
 
 ```javascript
-import ArmApi from 'arm_api';
-let defaultClient = ArmApi.ApiClient.instance;
-// Configure Bearer (JWT) access token for authorization: BearerAuth
+import AvhApi from '@arm-avh/avh-api';
+let defaultClient = AvhApi.ApiClient.instance;
+// Configure Bearer (ApiToken or JWT) access token for authorization: BearerAuth
 let BearerAuth = defaultClient.authentications['BearerAuth'];
 BearerAuth.accessToken = "YOUR ACCESS TOKEN"
 
-let apiInstance = new ArmApi.ArmApi();
+let apiInstance = new AvhApi.ArmApi();
 let instanceId = "instanceId_example"; // String | Instance ID - uuid
 apiInstance.v1GetInstanceState(instanceId).then((data) => {
   console.log('API called successfully. Returned data: ' + data);
@@ -671,13 +673,13 @@ Get Instances
 ### Example
 
 ```javascript
-import ArmApi from 'arm_api';
-let defaultClient = ArmApi.ApiClient.instance;
-// Configure Bearer (JWT) access token for authorization: BearerAuth
+import AvhApi from '@arm-avh/avh-api';
+let defaultClient = AvhApi.ApiClient.instance;
+// Configure Bearer (ApiToken or JWT) access token for authorization: BearerAuth
 let BearerAuth = defaultClient.authentications['BearerAuth'];
 BearerAuth.accessToken = "YOUR ACCESS TOKEN"
 
-let apiInstance = new ArmApi.ArmApi();
+let apiInstance = new AvhApi.ArmApi();
 let opts = {
   'name': "name_example", // String | Optionally filter by project name
   'returnAttr': ["null"] // [String] | Attributes to include in instance return
@@ -721,13 +723,13 @@ Get Software for Model
 ### Example
 
 ```javascript
-import ArmApi from 'arm_api';
-let defaultClient = ArmApi.ApiClient.instance;
-// Configure Bearer (JWT) access token for authorization: BearerAuth
+import AvhApi from '@arm-avh/avh-api';
+let defaultClient = AvhApi.ApiClient.instance;
+// Configure Bearer (ApiToken or JWT) access token for authorization: BearerAuth
 let BearerAuth = defaultClient.authentications['BearerAuth'];
 BearerAuth.accessToken = "YOUR ACCESS TOKEN"
 
-let apiInstance = new ArmApi.ArmApi();
+let apiInstance = new AvhApi.ArmApi();
 let model = "model_example"; // String | Model to list available software for
 apiInstance.v1GetModelSoftware(model).then((data) => {
   console.log('API called successfully. Returned data: ' + data);
@@ -767,13 +769,13 @@ Get Supported Models
 ### Example
 
 ```javascript
-import ArmApi from 'arm_api';
-let defaultClient = ArmApi.ApiClient.instance;
-// Configure Bearer (JWT) access token for authorization: BearerAuth
+import AvhApi from '@arm-avh/avh-api';
+let defaultClient = AvhApi.ApiClient.instance;
+// Configure Bearer (ApiToken or JWT) access token for authorization: BearerAuth
 let BearerAuth = defaultClient.authentications['BearerAuth'];
 BearerAuth.accessToken = "YOUR ACCESS TOKEN"
 
-let apiInstance = new ArmApi.ArmApi();
+let apiInstance = new AvhApi.ArmApi();
 apiInstance.v1GetModels().then((data) => {
   console.log('API called successfully. Returned data: ' + data);
 }, (error) => {
@@ -809,13 +811,13 @@ Get Project
 ### Example
 
 ```javascript
-import ArmApi from 'arm_api';
-let defaultClient = ArmApi.ApiClient.instance;
-// Configure Bearer (JWT) access token for authorization: BearerAuth
+import AvhApi from '@arm-avh/avh-api';
+let defaultClient = AvhApi.ApiClient.instance;
+// Configure Bearer (ApiToken or JWT) access token for authorization: BearerAuth
 let BearerAuth = defaultClient.authentications['BearerAuth'];
 BearerAuth.accessToken = "YOUR ACCESS TOKEN"
 
-let apiInstance = new ArmApi.ArmApi();
+let apiInstance = new AvhApi.ArmApi();
 let projectId = "projectId_example"; // String | Project ID - uuid
 apiInstance.v1GetProject(projectId).then((data) => {
   console.log('API called successfully. Returned data: ' + data);
@@ -855,13 +857,13 @@ Get Instances in Project
 ### Example
 
 ```javascript
-import ArmApi from 'arm_api';
-let defaultClient = ArmApi.ApiClient.instance;
-// Configure Bearer (JWT) access token for authorization: BearerAuth
+import AvhApi from '@arm-avh/avh-api';
+let defaultClient = AvhApi.ApiClient.instance;
+// Configure Bearer (ApiToken or JWT) access token for authorization: BearerAuth
 let BearerAuth = defaultClient.authentications['BearerAuth'];
 BearerAuth.accessToken = "YOUR ACCESS TOKEN"
 
-let apiInstance = new ArmApi.ArmApi();
+let apiInstance = new AvhApi.ArmApi();
 let projectId = "projectId_example"; // String | Project ID - uuid
 let opts = {
   'name': "name_example", // String | Filter by project name
@@ -898,6 +900,54 @@ Name | Type | Description  | Notes
 - **Accept**: application/json
 
 
+## v1GetProjectVpnConfig
+
+> String v1GetProjectVpnConfig(projectId, format)
+
+Get Project VPN Configuration
+
+### Example
+
+```javascript
+import AvhApi from '@arm-avh/avh-api';
+let defaultClient = AvhApi.ApiClient.instance;
+// Configure Bearer (ApiToken or JWT) access token for authorization: BearerAuth
+let BearerAuth = defaultClient.authentications['BearerAuth'];
+BearerAuth.accessToken = "YOUR ACCESS TOKEN"
+
+let apiInstance = new AvhApi.ArmApi();
+let projectId = "projectId_example"; // String | Project ID - uuid
+let format = "format_example"; // String | VPN Config format
+apiInstance.v1GetProjectVpnConfig(projectId, format).then((data) => {
+  console.log('API called successfully. Returned data: ' + data);
+}, (error) => {
+  console.error(error);
+});
+
+```
+
+### Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **projectId** | **String**| Project ID - uuid | 
+ **format** | **String**| VPN Config format | 
+
+### Return type
+
+**String**
+
+### Authorization
+
+[BearerAuth](../README.md#BearerAuth)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/x-openvpn-profile, application/json
+
+
 ## v1GetProjects
 
 > [Project] v1GetProjects(opts)
@@ -907,13 +957,13 @@ Get Projects
 ### Example
 
 ```javascript
-import ArmApi from 'arm_api';
-let defaultClient = ArmApi.ApiClient.instance;
-// Configure Bearer (JWT) access token for authorization: BearerAuth
+import AvhApi from '@arm-avh/avh-api';
+let defaultClient = AvhApi.ApiClient.instance;
+// Configure Bearer (ApiToken or JWT) access token for authorization: BearerAuth
 let BearerAuth = defaultClient.authentications['BearerAuth'];
 BearerAuth.accessToken = "YOUR ACCESS TOKEN"
 
-let apiInstance = new ArmApi.ArmApi();
+let apiInstance = new AvhApi.ArmApi();
 let opts = {
   'name': "name_example", // String | Filter by project name
   'idsOnly': true // Boolean | Only include id of project in results
@@ -957,13 +1007,13 @@ Get Instance Snapshots
 ### Example
 
 ```javascript
-import ArmApi from 'arm_api';
-let defaultClient = ArmApi.ApiClient.instance;
-// Configure Bearer (JWT) access token for authorization: BearerAuth
+import AvhApi from '@arm-avh/avh-api';
+let defaultClient = AvhApi.ApiClient.instance;
+// Configure Bearer (ApiToken or JWT) access token for authorization: BearerAuth
 let BearerAuth = defaultClient.authentications['BearerAuth'];
 BearerAuth.accessToken = "YOUR ACCESS TOKEN"
 
-let apiInstance = new ArmApi.ArmApi();
+let apiInstance = new AvhApi.ArmApi();
 let instanceId = "instanceId_example"; // String | Instance ID - uuid
 let snapshotId = "snapshotId_example"; // String | Snapshot ID - uuid
 apiInstance.v1GetSnapshot(instanceId, snapshotId).then((data) => {
@@ -1005,13 +1055,13 @@ Get Instance Snapshots
 ### Example
 
 ```javascript
-import ArmApi from 'arm_api';
-let defaultClient = ArmApi.ApiClient.instance;
-// Configure Bearer (JWT) access token for authorization: BearerAuth
+import AvhApi from '@arm-avh/avh-api';
+let defaultClient = AvhApi.ApiClient.instance;
+// Configure Bearer (ApiToken or JWT) access token for authorization: BearerAuth
 let BearerAuth = defaultClient.authentications['BearerAuth'];
 BearerAuth.accessToken = "YOUR ACCESS TOKEN"
 
-let apiInstance = new ArmApi.ArmApi();
+let apiInstance = new AvhApi.ArmApi();
 let instanceId = "instanceId_example"; // String | Instance ID - uuid
 apiInstance.v1GetSnapshots(instanceId).then((data) => {
   console.log('API called successfully. Returned data: ' + data);
@@ -1051,13 +1101,13 @@ Update Instance
 ### Example
 
 ```javascript
-import ArmApi from 'arm_api';
-let defaultClient = ArmApi.ApiClient.instance;
-// Configure Bearer (JWT) access token for authorization: BearerAuth
+import AvhApi from '@arm-avh/avh-api';
+let defaultClient = AvhApi.ApiClient.instance;
+// Configure Bearer (ApiToken or JWT) access token for authorization: BearerAuth
 let BearerAuth = defaultClient.authentications['BearerAuth'];
 BearerAuth.accessToken = "YOUR ACCESS TOKEN"
 
-let apiInstance = new ArmApi.ArmApi();
+let apiInstance = new AvhApi.ArmApi();
 let instanceId = "instanceId_example"; // String | Instance ID
 let body = {
  "name": "New Name"
@@ -1101,13 +1151,13 @@ Pause an Instance
 ### Example
 
 ```javascript
-import ArmApi from 'arm_api';
-let defaultClient = ArmApi.ApiClient.instance;
-// Configure Bearer (JWT) access token for authorization: BearerAuth
+import AvhApi from '@arm-avh/avh-api';
+let defaultClient = AvhApi.ApiClient.instance;
+// Configure Bearer (ApiToken or JWT) access token for authorization: BearerAuth
 let BearerAuth = defaultClient.authentications['BearerAuth'];
 BearerAuth.accessToken = "YOUR ACCESS TOKEN"
 
-let apiInstance = new ArmApi.ArmApi();
+let apiInstance = new AvhApi.ArmApi();
 let instanceId = "instanceId_example"; // String | Instance ID - uuid
 apiInstance.v1PauseInstance(instanceId).then(() => {
   console.log('API called successfully.');
@@ -1149,9 +1199,9 @@ Check if  API is ready for queries
 ### Example
 
 ```javascript
-import ArmApi from 'arm_api';
+import AvhApi from '@arm-avh/avh-api';
 
-let apiInstance = new ArmApi.ArmApi();
+let apiInstance = new AvhApi.ArmApi();
 apiInstance.v1Ready().then(() => {
   console.log('API called successfully.');
 }, (error) => {
@@ -1187,13 +1237,13 @@ Reboot an Instance
 ### Example
 
 ```javascript
-import ArmApi from 'arm_api';
-let defaultClient = ArmApi.ApiClient.instance;
-// Configure Bearer (JWT) access token for authorization: BearerAuth
+import AvhApi from '@arm-avh/avh-api';
+let defaultClient = AvhApi.ApiClient.instance;
+// Configure Bearer (ApiToken or JWT) access token for authorization: BearerAuth
 let BearerAuth = defaultClient.authentications['BearerAuth'];
 BearerAuth.accessToken = "YOUR ACCESS TOKEN"
 
-let apiInstance = new ArmApi.ArmApi();
+let apiInstance = new AvhApi.ArmApi();
 let instanceId = "instanceId_example"; // String | Instance ID - uuid
 apiInstance.v1RebootInstance(instanceId).then(() => {
   console.log('API called successfully.');
@@ -1233,13 +1283,13 @@ Restore a Snapshot
 ### Example
 
 ```javascript
-import ArmApi from 'arm_api';
-let defaultClient = ArmApi.ApiClient.instance;
-// Configure Bearer (JWT) access token for authorization: BearerAuth
+import AvhApi from '@arm-avh/avh-api';
+let defaultClient = AvhApi.ApiClient.instance;
+// Configure Bearer (ApiToken or JWT) access token for authorization: BearerAuth
 let BearerAuth = defaultClient.authentications['BearerAuth'];
 BearerAuth.accessToken = "YOUR ACCESS TOKEN"
 
-let apiInstance = new ArmApi.ArmApi();
+let apiInstance = new AvhApi.ArmApi();
 let instanceId = "instanceId_example"; // String | Instance ID - uuid
 let snapshotId = "snapshotId_example"; // String | Snapshot ID - uuid
 apiInstance.v1RestoreSnapshot(instanceId, snapshotId).then(() => {
@@ -1281,13 +1331,13 @@ Set Instance GPIOs
 ### Example
 
 ```javascript
-import ArmApi from 'arm_api';
-let defaultClient = ArmApi.ApiClient.instance;
-// Configure Bearer (JWT) access token for authorization: BearerAuth
+import AvhApi from '@arm-avh/avh-api';
+let defaultClient = AvhApi.ApiClient.instance;
+// Configure Bearer (ApiToken or JWT) access token for authorization: BearerAuth
 let BearerAuth = defaultClient.authentications['BearerAuth'];
 BearerAuth.accessToken = "YOUR ACCESS TOKEN"
 
-let apiInstance = new ArmApi.ArmApi();
+let apiInstance = new AvhApi.ArmApi();
 let instanceId = "instanceId_example"; // String | Instance ID - uuid
 let requestBody = {
   "button": {
@@ -1343,13 +1393,13 @@ Set Instance Peripherals
 ### Example
 
 ```javascript
-import ArmApi from 'arm_api';
-let defaultClient = ArmApi.ApiClient.instance;
-// Configure Bearer (JWT) access token for authorization: BearerAuth
+import AvhApi from '@arm-avh/avh-api';
+let defaultClient = AvhApi.ApiClient.instance;
+// Configure Bearer (ApiToken or JWT) access token for authorization: BearerAuth
 let BearerAuth = defaultClient.authentications['BearerAuth'];
 BearerAuth.accessToken = "YOUR ACCESS TOKEN"
 
-let apiInstance = new ArmApi.ArmApi();
+let apiInstance = new AvhApi.ArmApi();
 let instanceId = "instanceId_example"; // String | Instance ID - uuid
 let peripheralsData = {
   "acceleration": [0, 9.81, 0],
@@ -1401,15 +1451,15 @@ Set state of Instance
 ### Example
 
 ```javascript
-import ArmApi from 'arm_api';
-let defaultClient = ArmApi.ApiClient.instance;
-// Configure Bearer (JWT) access token for authorization: BearerAuth
+import AvhApi from '@arm-avh/avh-api';
+let defaultClient = AvhApi.ApiClient.instance;
+// Configure Bearer (ApiToken or JWT) access token for authorization: BearerAuth
 let BearerAuth = defaultClient.authentications['BearerAuth'];
 BearerAuth.accessToken = "YOUR ACCESS TOKEN"
 
-let apiInstance = new ArmApi.ArmApi();
+let apiInstance = new AvhApi.ArmApi();
 let instanceId = "instanceId_example"; // String | Instance ID - uuid
-let v1SetStateBody = new ArmApi.V1SetStateBody(); // V1SetStateBody | Desired State
+let v1SetStateBody = new AvhApi.V1SetStateBody(); // V1SetStateBody | Desired State
 apiInstance.v1SetInstanceState(instanceId, v1SetStateBody).then(() => {
   console.log('API called successfully.');
 }, (error) => {
@@ -1449,13 +1499,13 @@ Delete a Snapshot
 ### Example
 
 ```javascript
-import ArmApi from 'arm_api';
-let defaultClient = ArmApi.ApiClient.instance;
-// Configure Bearer (JWT) access token for authorization: BearerAuth
+import AvhApi from '@arm-avh/avh-api';
+let defaultClient = AvhApi.ApiClient.instance;
+// Configure Bearer (ApiToken or JWT) access token for authorization: BearerAuth
 let BearerAuth = defaultClient.authentications['BearerAuth'];
 BearerAuth.accessToken = "YOUR ACCESS TOKEN"
 
-let apiInstance = new ArmApi.ArmApi();
+let apiInstance = new AvhApi.ArmApi();
 let instanceId = "instanceId_example"; // String | Instance ID - uuid
 let snapshotId = "snapshotId_example"; // String | Snapshot ID - uuid
 apiInstance.v1SnapshotDelete(instanceId, snapshotId).then(() => {
@@ -1497,16 +1547,16 @@ Rename a Snapshot
 ### Example
 
 ```javascript
-import ArmApi from 'arm_api';
-let defaultClient = ArmApi.ApiClient.instance;
-// Configure Bearer (JWT) access token for authorization: BearerAuth
+import AvhApi from '@arm-avh/avh-api';
+let defaultClient = AvhApi.ApiClient.instance;
+// Configure Bearer (ApiToken or JWT) access token for authorization: BearerAuth
 let BearerAuth = defaultClient.authentications['BearerAuth'];
 BearerAuth.accessToken = "YOUR ACCESS TOKEN"
 
-let apiInstance = new ArmApi.ArmApi();
+let apiInstance = new AvhApi.ArmApi();
 let instanceId = "instanceId_example"; // String | Instance ID - uuid
 let snapshotId = "snapshotId_example"; // String | Snapshot ID - uuid
-let snapshotCreationOptions = new ArmApi.SnapshotCreationOptions(); // SnapshotCreationOptions | 
+let snapshotCreationOptions = new AvhApi.SnapshotCreationOptions(); // SnapshotCreationOptions | 
 apiInstance.v1SnapshotRename(instanceId, snapshotId, snapshotCreationOptions).then((data) => {
   console.log('API called successfully. Returned data: ' + data);
 }, (error) => {
@@ -1547,16 +1597,16 @@ Start an Instance
 ### Example
 
 ```javascript
-import ArmApi from 'arm_api';
-let defaultClient = ArmApi.ApiClient.instance;
-// Configure Bearer (JWT) access token for authorization: BearerAuth
+import AvhApi from '@arm-avh/avh-api';
+let defaultClient = AvhApi.ApiClient.instance;
+// Configure Bearer (ApiToken or JWT) access token for authorization: BearerAuth
 let BearerAuth = defaultClient.authentications['BearerAuth'];
 BearerAuth.accessToken = "YOUR ACCESS TOKEN"
 
-let apiInstance = new ArmApi.ArmApi();
+let apiInstance = new AvhApi.ArmApi();
 let instanceId = "instanceId_example"; // String | Instance ID - uuid
 let opts = {
-  'instanceStartOptions': new ArmApi.InstanceStartOptions() // InstanceStartOptions | Start options
+  'instanceStartOptions': new AvhApi.InstanceStartOptions() // InstanceStartOptions | Start options
 };
 apiInstance.v1StartInstance(instanceId, opts).then(() => {
   console.log('API called successfully.');
@@ -1597,16 +1647,16 @@ Stop an Instance
 ### Example
 
 ```javascript
-import ArmApi from 'arm_api';
-let defaultClient = ArmApi.ApiClient.instance;
-// Configure Bearer (JWT) access token for authorization: BearerAuth
+import AvhApi from '@arm-avh/avh-api';
+let defaultClient = AvhApi.ApiClient.instance;
+// Configure Bearer (ApiToken or JWT) access token for authorization: BearerAuth
 let BearerAuth = defaultClient.authentications['BearerAuth'];
 BearerAuth.accessToken = "YOUR ACCESS TOKEN"
 
-let apiInstance = new ArmApi.ArmApi();
+let apiInstance = new AvhApi.ArmApi();
 let instanceId = "instanceId_example"; // String | Instance ID - uuid
 let opts = {
-  'instanceStopOptions': new ArmApi.InstanceStopOptions() // InstanceStopOptions | Stop options
+  'instanceStopOptions': new AvhApi.InstanceStopOptions() // InstanceStopOptions | Stop options
 };
 apiInstance.v1StopInstance(instanceId, opts).then(() => {
   console.log('API called successfully.');
@@ -1647,13 +1697,13 @@ Unpause an Instance
 ### Example
 
 ```javascript
-import ArmApi from 'arm_api';
-let defaultClient = ArmApi.ApiClient.instance;
-// Configure Bearer (JWT) access token for authorization: BearerAuth
+import AvhApi from '@arm-avh/avh-api';
+let defaultClient = AvhApi.ApiClient.instance;
+// Configure Bearer (ApiToken or JWT) access token for authorization: BearerAuth
 let BearerAuth = defaultClient.authentications['BearerAuth'];
 BearerAuth.accessToken = "YOUR ACCESS TOKEN"
 
-let apiInstance = new ArmApi.ArmApi();
+let apiInstance = new AvhApi.ArmApi();
 let instanceId = "instanceId_example"; // String | Instance ID - uuid
 apiInstance.v1UnpauseInstance(instanceId).then(() => {
   console.log('API called successfully.');
@@ -1695,13 +1745,13 @@ If the active project has enough remaining quota, updates an Image with the cont
 ### Example
 
 ```javascript
-import ArmApi from 'arm_api';
-let defaultClient = ArmApi.ApiClient.instance;
-// Configure Bearer (JWT) access token for authorization: BearerAuth
+import AvhApi from '@arm-avh/avh-api';
+let defaultClient = AvhApi.ApiClient.instance;
+// Configure Bearer (ApiToken or JWT) access token for authorization: BearerAuth
 let BearerAuth = defaultClient.authentications['BearerAuth'];
 BearerAuth.accessToken = "YOUR ACCESS TOKEN"
 
-let apiInstance = new ArmApi.ArmApi();
+let apiInstance = new AvhApi.ArmApi();
 let imageId = "imageId_example"; // String | Image ID - uuid
 let body = "body_example"; // String | Uploaded Image
 apiInstance.v1UploadImageData(imageId, body).then((data) => {

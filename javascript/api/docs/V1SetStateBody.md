@@ -1,4 +1,4 @@
-# ArmApi.V1SetStateBody
+# AvhApi.V1SetStateBody
 
 ## Properties
 

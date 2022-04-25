@@ -1,4 +1,4 @@
-# ArmApi.Image
+# AvhApi.Image
 
 ## Properties
 
@@ -8,7 +8,9 @@ Name | Type | Description | Notes
 **id** | **String** | Image ID | [optional] 
 **name** | **String** |  | [optional] 
 **type** | **String** | Type of image | [optional] 
-**size** | **Number** | //  * @property {number} checksum/  * @property {string} encoding | [optional] 
+**filename** | **String** |  | [optional] 
+**uniqueid** | **String** |  | [optional] 
+**size** | **Number** |  | [optional] 
 **project** | **String** | project ID | [optional] 
 **createdAt** | **Date** | When Image was created | [optional] 
 **updatedAt** | **Date** | When Image was last updated | [optional] 
@@ -42,7 +44,7 @@ Name | Type | Description | Notes
 
 * `fwpackage` (value: `"fwpackage"`)
 
-* `partition/  * @property {string} self` (value: `"partition/  * @property {string} self"`)
+* `partition` (value: `"partition"`)
 
 
 

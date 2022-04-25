@@ -1,4 +1,4 @@
-# ArmApi.GpioStateDefinition
+# AvhApi.GpioStateDefinition
 
 ## Properties
 

@@ -1,4 +1,4 @@
-# ArmApi.PeripheralsData
+# AvhApi.PeripheralsData
 
 ## Properties
 

@@ -1,4 +1,4 @@
-# ArmApi.ProjectQuota
+# AvhApi.ProjectQuota
 
 ## Properties
 

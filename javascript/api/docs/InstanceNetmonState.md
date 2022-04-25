@@ -1,4 +1,4 @@
-# ArmApi.InstanceNetmonState
+# AvhApi.InstanceNetmonState
 
 ## Properties
 

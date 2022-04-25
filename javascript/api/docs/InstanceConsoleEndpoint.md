@@ -1,4 +1,4 @@
-# ArmApi.InstanceConsoleEndpoint
+# AvhApi.InstanceConsoleEndpoint
 
 ## Properties
 

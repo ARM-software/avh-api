@@ -1,4 +1,4 @@
-# ArmApi.UserError
+# AvhApi.UserError
 
 ## Properties
 

@@ -1,4 +1,4 @@
-# ArmApi.ApiNotFoundError
+# AvhApi.ApiNotFoundError
 
 ## Properties
 

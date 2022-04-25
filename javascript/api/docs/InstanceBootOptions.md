@@ -1,4 +1,4 @@
-# ArmApi.InstanceBootOptions
+# AvhApi.InstanceBootOptions
 
 ## Properties
 

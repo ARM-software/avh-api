@@ -42,7 +42,7 @@ git_push.sh
 mocha.opts
 package.json
 src/ApiClient.js
-src/Arm/ArmApi.js
+src/Avh/ArmApi.js
 src/index.js
 src/model/ApiConflictError.js
 src/model/ApiError.js
