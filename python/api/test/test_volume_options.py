@@ -11,8 +11,8 @@
 import sys
 import unittest
 
-import AvhClient
-from AvhClient.model.volume_options import VolumeOptions
+import avh_api
+from avh_api.model.volume_options import VolumeOptions
 
 
 class TestVolumeOptions(unittest.TestCase):

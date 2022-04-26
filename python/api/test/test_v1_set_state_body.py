@@ -11,10 +11,10 @@
 import sys
 import unittest
 
-import AvhClient
-from AvhClient.model.instance_state import InstanceState
+import avh_api
+from avh_api.model.instance_state import InstanceState
 globals()['InstanceState'] = InstanceState
-from AvhClient.model.v1_set_state_body import V1SetStateBody
+from avh_api.model.v1_set_state_body import V1SetStateBody
 
 
 class TestV1SetStateBody(unittest.TestCase):

@@ -11,8 +11,8 @@
 import sys
 import unittest
 
-import AvhClient
-from AvhClient.model.image import Image
+import avh_api
+from avh_api.model.image import Image
 
 
 class TestImage(unittest.TestCase):

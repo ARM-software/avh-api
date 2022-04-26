@@ -15,9 +15,9 @@ from __future__ import absolute_import
 import unittest
 import datetime
 
-import AvhClientAsync
-from AvhClientAsync.models.model_software import ModelSoftware  # noqa: E501
-from AvhClientAsync.rest import ApiException
+import avh_api_async
+from avh_api_async.models.model_software import ModelSoftware  # noqa: E501
+from avh_api_async.rest import ApiException
 
 class TestModelSoftware(unittest.TestCase):
     """ModelSoftware unit test stubs"""
@@ -33,7 +33,7 @@ class TestModelSoftware(unittest.TestCase):
             include_option is a boolean, when False only required
             params are included, when True both required and
             optional params are included """
-        # model = AvhClientAsync.models.model_software.ModelSoftware()  # noqa: E501
+        # model = avh_api_async.models.model_software.ModelSoftware()  # noqa: E501
         if include_optional :
             return ModelSoftware(
                 name = '', 
@@ -42,7 +42,7 @@ class TestModelSoftware(unittest.TestCase):
                 cpid = 1.337, 
                 bdid = 1.337, 
                 firmwares = [
-                    AvhClientAsync.models.firmware.Firmware(
+                    avh_api_async.models.firmware.Firmware(
                         version = '', 
                         buildid = '', 
                         android_flavor = '', 
@@ -52,7 +52,7 @@ class TestModelSoftware(unittest.TestCase):
                         md5sum = '', 
                         size = 56, 
                         unique_id = '', 
-                        metadata = AvhClientAsync.models.metadata.metadata(), 
+                        metadata = avh_api_async.models.metadata.metadata(), 
                         releasedate = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), 
                         uploaddate = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), 
                         url = '', 

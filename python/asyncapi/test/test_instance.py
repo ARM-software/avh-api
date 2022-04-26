@@ -15,9 +15,9 @@ from __future__ import absolute_import
 import unittest
 import datetime
 
-import AvhClientAsync
-from AvhClientAsync.models.instance import Instance  # noqa: E501
-from AvhClientAsync.rest import ApiException
+import avh_api_async
+from avh_api_async.models.instance import Instance  # noqa: E501
+from avh_api_async.rest import ApiException
 
 class TestInstance(unittest.TestCase):
     """Instance unit test stubs"""
@@ -33,7 +33,7 @@ class TestInstance(unittest.TestCase):
             include_option is a boolean, when False only required
             params are included, when True both required and
             optional params are included """
-        # model = AvhClientAsync.models.instance.Instance()  # noqa: E501
+        # model = avh_api_async.models.instance.Instance()  # noqa: E501
         if include_optional :
             return Instance(
                 id = '', 
@@ -47,7 +47,7 @@ class TestInstance(unittest.TestCase):
                 user_task = '', 
                 task_state = '', 
                 error = '', 
-                boot_options = AvhClientAsync.models.instance_boot_options.InstanceBootOptions(
+                boot_options = avh_api_async.models.instance_boot_options.InstanceBootOptions(
                     boot_args = '', 
                     restore_boot_args = '', 
                     udid = '', 
@@ -57,8 +57,8 @@ class TestInstance(unittest.TestCase):
                     aprr = True, ), 
                 service_ip = '', 
                 wifi_ip = '', 
-                services = AvhClientAsync.models.instance_services.InstanceServices(
-                    vpn = AvhClientAsync.models.vpn_definition.VpnDefinition(
+                services = avh_api_async.models.instance_services.InstanceServices(
+                    vpn = avh_api_async.models.vpn_definition.VpnDefinition(
                         proxy = [
                             ''
                             ], 
@@ -71,7 +71,7 @@ class TestInstance(unittest.TestCase):
                 fwpackage = '', 
                 os = '', 
                 agent = '', 
-                netmon = AvhClientAsync.models.instance_netmon_state.InstanceNetmonState(
+                netmon = avh_api_async.models.instance_netmon_state.InstanceNetmonState(
                     enabled = True, ), 
                 expose_port = '', 
                 fault = True, 

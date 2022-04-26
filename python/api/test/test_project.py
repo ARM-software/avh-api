@@ -11,14 +11,14 @@
 import sys
 import unittest
 
-import AvhClient
-from AvhClient.model.project_quota import ProjectQuota
-from AvhClient.model.project_settings import ProjectSettings
-from AvhClient.model.project_usage import ProjectUsage
+import avh_api
+from avh_api.model.project_quota import ProjectQuota
+from avh_api.model.project_settings import ProjectSettings
+from avh_api.model.project_usage import ProjectUsage
 globals()['ProjectQuota'] = ProjectQuota
 globals()['ProjectSettings'] = ProjectSettings
 globals()['ProjectUsage'] = ProjectUsage
-from AvhClient.model.project import Project
+from avh_api.model.project import Project
 
 
 class TestProject(unittest.TestCase):

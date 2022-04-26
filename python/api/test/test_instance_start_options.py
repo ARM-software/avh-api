@@ -11,8 +11,8 @@
 import sys
 import unittest
 
-import AvhClient
-from AvhClient.model.instance_start_options import InstanceStartOptions
+import avh_api
+from avh_api.model.instance_start_options import InstanceStartOptions
 
 
 class TestInstanceStartOptions(unittest.TestCase):

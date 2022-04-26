@@ -11,8 +11,8 @@
 import sys
 import unittest
 
-import AvhClient
-from AvhClient.model.api_not_found_error import ApiNotFoundError
+import avh_api
+from avh_api.model.api_not_found_error import ApiNotFoundError
 
 
 class TestApiNotFoundError(unittest.TestCase):

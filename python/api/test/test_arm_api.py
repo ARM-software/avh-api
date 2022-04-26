@@ -10,8 +10,8 @@
 
 import unittest
 
-import AvhClient
-from AvhClient.api.arm_api import ArmApi  # noqa: E501
+import avh_api
+from avh_api.api.arm_api import ArmApi  # noqa: E501
 
 
 class TestArmApi(unittest.TestCase):

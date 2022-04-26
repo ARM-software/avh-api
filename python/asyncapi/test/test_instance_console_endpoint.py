@@ -15,9 +15,9 @@ from __future__ import absolute_import
 import unittest
 import datetime
 
-import AvhClientAsync
-from AvhClientAsync.models.instance_console_endpoint import InstanceConsoleEndpoint  # noqa: E501
-from AvhClientAsync.rest import ApiException
+import avh_api_async
+from avh_api_async.models.instance_console_endpoint import InstanceConsoleEndpoint  # noqa: E501
+from avh_api_async.rest import ApiException
 
 class TestInstanceConsoleEndpoint(unittest.TestCase):
     """InstanceConsoleEndpoint unit test stubs"""
@@ -33,7 +33,7 @@ class TestInstanceConsoleEndpoint(unittest.TestCase):
             include_option is a boolean, when False only required
             params are included, when True both required and
             optional params are included """
-        # model = AvhClientAsync.models.instance_console_endpoint.InstanceConsoleEndpoint()  # noqa: E501
+        # model = avh_api_async.models.instance_console_endpoint.InstanceConsoleEndpoint()  # noqa: E501
         if include_optional :
             return InstanceConsoleEndpoint(
                 url = ''

@@ -11,8 +11,8 @@
 import sys
 import unittest
 
-import AvhClient
-from AvhClient.model.project_settings import ProjectSettings
+import avh_api
+from avh_api.model.project_settings import ProjectSettings
 
 
 class TestProjectSettings(unittest.TestCase):

@@ -11,8 +11,8 @@
 import sys
 import unittest
 
-import AvhClient
-from AvhClient.model.instance_console_endpoint import InstanceConsoleEndpoint
+import avh_api
+from avh_api.model.instance_console_endpoint import InstanceConsoleEndpoint
 
 
 class TestInstanceConsoleEndpoint(unittest.TestCase):

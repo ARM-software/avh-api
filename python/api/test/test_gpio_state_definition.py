@@ -11,10 +11,10 @@
 import sys
 import unittest
 
-import AvhClient
-from AvhClient.model.bit import Bit
+import avh_api
+from avh_api.model.bit import Bit
 globals()['Bit'] = Bit
-from AvhClient.model.gpio_state_definition import GpioStateDefinition
+from avh_api.model.gpio_state_definition import GpioStateDefinition
 
 
 class TestGpioStateDefinition(unittest.TestCase):

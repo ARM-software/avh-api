@@ -11,10 +11,10 @@
 import sys
 import unittest
 
-import AvhClient
-from AvhClient.model.gpio_state_definition import GpioStateDefinition
+import avh_api
+from avh_api.model.gpio_state_definition import GpioStateDefinition
 globals()['GpioStateDefinition'] = GpioStateDefinition
-from AvhClient.model.gpios_state import GpiosState
+from avh_api.model.gpios_state import GpiosState
 
 
 class TestGpiosState(unittest.TestCase):

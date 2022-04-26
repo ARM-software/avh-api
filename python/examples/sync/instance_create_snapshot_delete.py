@@ -4,10 +4,10 @@ from websockets import client as ws
 import time
 import sys
 
-import AvhClient
-from AvhClient.api import arm_api
-from AvhClient.model.instance_console_endpoint import InstanceConsoleEndpoint
-from AvhClient.model.instance_state import InstanceState
+import avh_api as AvhAPI
+from avh_api.api import arm_api
+from avh_api.model.instance_console_endpoint import InstanceConsoleEndpoint
+from avh_api.model.instance_state import InstanceState
 from pprint import pprint
 if len(sys.argv) < 3:
   print('Usage: %s <ApiEndpoint> <ApiToken>', sys.argv[0])
@@ -52,12 +52,12 @@ async def connectWiFi(consoleEndpoint: InstanceConsoleEndpoint):
 
 # Defining the host is optional and defaults to https://app.avh.arm.com/api
 # See configuration.py for a list of all supported configuration parameters.
-configuration = AvhClient.Configuration(
+configuration = AvhAPI.Configuration(
     host = apiEndpoint
 )
 
 # Enter a context with an instance of the API client
-with AvhClient.ApiClient(configuration=configuration) as api_client:
+with AvhAPI.ApiClient(configuration=configuration) as api_client:
   status = 0
   # Create an instance of the API class
   api_instance = arm_api.ArmApi(api_client)
@@ -71,7 +71,7 @@ with AvhClient.ApiClient(configuration=configuration) as api_client:
       })
       print('Logged in')
       configuration.access_token = token_response.token
-  except AvhClient.ApiException as e:
+  except AvhAPI.ApiException as e:
       print("Exception when calling v1_auth_login: %s\n" % e)
       exit(1)
   
@@ -102,7 +102,7 @@ with AvhClient.ApiClient(configuration=configuration) as api_client:
       "os": version
     })
     instance = api_response
-  except AvhClient.ApiException as e:
+  except AvhAPI.ApiException as e:
     print("Exception when calling v1_create_instance: %s\n" % e)
     exit(1)
 

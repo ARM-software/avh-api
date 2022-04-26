@@ -15,9 +15,9 @@ from __future__ import absolute_import
 import unittest
 import datetime
 
-import AvhClientAsync
-from AvhClientAsync.models.project_settings import ProjectSettings  # noqa: E501
-from AvhClientAsync.rest import ApiException
+import avh_api_async
+from avh_api_async.models.project_settings import ProjectSettings  # noqa: E501
+from avh_api_async.rest import ApiException
 
 class TestProjectSettings(unittest.TestCase):
     """ProjectSettings unit test stubs"""
@@ -33,7 +33,7 @@ class TestProjectSettings(unittest.TestCase):
             include_option is a boolean, when False only required
             params are included, when True both required and
             optional params are included """
-        # model = AvhClientAsync.models.project_settings.ProjectSettings()  # noqa: E501
+        # model = avh_api_async.models.project_settings.ProjectSettings()  # noqa: E501
         if include_optional :
             return ProjectSettings(
                 version = 1.337, 

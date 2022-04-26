@@ -15,9 +15,9 @@ from __future__ import absolute_import
 import unittest
 import datetime
 
-import AvhClientAsync
-from AvhClientAsync.models.image import Image  # noqa: E501
-from AvhClientAsync.rest import ApiException
+import avh_api_async
+from avh_api_async.models.image import Image  # noqa: E501
+from avh_api_async.rest import ApiException
 
 class TestImage(unittest.TestCase):
     """Image unit test stubs"""
@@ -33,7 +33,7 @@ class TestImage(unittest.TestCase):
             include_option is a boolean, when False only required
             params are included, when True both required and
             optional params are included """
-        # model = AvhClientAsync.models.image.Image()  # noqa: E501
+        # model = avh_api_async.models.image.Image()  # noqa: E501
         if include_optional :
             return Image(
                 status = '', 

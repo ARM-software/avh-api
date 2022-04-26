@@ -3,7 +3,7 @@ import re
 from websockets import client as ws
 import sys
 
-import AvhClientAsync
+import avh_api_async as AvhAPIAsync
 from pprint import pprint
 
 if len(sys.argv) < 3:
@@ -141,13 +141,13 @@ async def main():
   global exitStatus
   global api_instance
 
-  configuration = AvhClientAsync.Configuration(
+  configuration = AvhAPIAsync.Configuration(
       host = apiEndpoint
   )
   # Enter a context with an instance of the API client
-  async with AvhClientAsync.ApiClient(configuration=configuration) as api_client:
+  async with AvhAPIAsync.ApiClient(configuration=configuration) as api_client:
     # Create an instance of the API class
-    api_instance = AvhClientAsync.ArmApi(api_client)
+    api_instance = AvhAPIAsync.ArmApi(api_client)
 
     # Log In
     print('Logging in...')

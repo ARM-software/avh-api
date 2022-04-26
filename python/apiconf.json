@@ -1,5 +1,5 @@
 {
-  "packageName": "AvhClient",
+  "packageName": "avh_api",
   "disallowAdditionalPropertiesIfNotPresent": false,
   "pythonAttrNoneIfUnset": true
 }

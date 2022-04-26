@@ -15,9 +15,9 @@ from __future__ import absolute_import
 import unittest
 import datetime
 
-import AvhClientAsync
-from AvhClientAsync.models.snapshot import Snapshot  # noqa: E501
-from AvhClientAsync.rest import ApiException
+import avh_api_async
+from avh_api_async.models.snapshot import Snapshot  # noqa: E501
+from avh_api_async.rest import ApiException
 
 class TestSnapshot(unittest.TestCase):
     """Snapshot unit test stubs"""
@@ -33,13 +33,13 @@ class TestSnapshot(unittest.TestCase):
             include_option is a boolean, when False only required
             params are included, when True both required and
             optional params are included """
-        # model = AvhClientAsync.models.snapshot.Snapshot()  # noqa: E501
+        # model = avh_api_async.models.snapshot.Snapshot()  # noqa: E501
         if include_optional :
             return Snapshot(
                 id = '', 
                 name = '', 
                 instance = '', 
-                status = AvhClientAsync.models.snapshot_status.SnapshotStatus(
+                status = avh_api_async.models.snapshot_status.SnapshotStatus(
                     task = '', 
                     created = True, ), 
                 date = 1.337, 

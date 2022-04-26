@@ -24,10 +24,10 @@ asyncapi: asyncapiconf.json openapi.json
 	touch $@
 
 $(wildcard examples/sync/*.py): api/build
-	PYTHONPATH="$(PWD)/api" python3 $@ "$(API)" "$(APITOKEN)"
+	PYTHONPATH="$(PWD)/api" python3 $@ "$(APITOKEN)" "$(API)"
 
 $(wildcard examples/async/*.py): asyncapi/build
-	PYTHONPATH="$(PWD)/asyncapi" python3 $@ "$(API)" "$(APITOKEN)"
+	PYTHONPATH="$(PWD)/asyncapi" python3 $@ "$(APITOKEN)" "$(API)"
 
 clean:
 	rm -rf api

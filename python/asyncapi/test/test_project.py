@@ -15,9 +15,9 @@ from __future__ import absolute_import
 import unittest
 import datetime
 
-import AvhClientAsync
-from AvhClientAsync.models.project import Project  # noqa: E501
-from AvhClientAsync.rest import ApiException
+import avh_api_async
+from avh_api_async.models.project import Project  # noqa: E501
+from avh_api_async.rest import ApiException
 
 class TestProject(unittest.TestCase):
     """Project unit test stubs"""
@@ -33,20 +33,20 @@ class TestProject(unittest.TestCase):
             include_option is a boolean, when False only required
             params are included, when True both required and
             optional params are included """
-        # model = AvhClientAsync.models.project.Project()  # noqa: E501
+        # model = avh_api_async.models.project.Project()  # noqa: E501
         if include_optional :
             return Project(
                 id = '', 
                 name = '', 
-                settings = AvhClientAsync.models.project_settings.ProjectSettings(
+                settings = avh_api_async.models.project_settings.ProjectSettings(
                     version = 1.337, 
                     internet_access = True, 
                     dhcp = True, ), 
-                quotas = AvhClientAsync.models.project_quota.ProjectQuota(
+                quotas = avh_api_async.models.project_quota.ProjectQuota(
                     cores = 1.337, 
                     instances = 1.337, 
                     ram = 1.337, ), 
-                quotas_used = AvhClientAsync.models.project_usage.ProjectUsage(
+                quotas_used = avh_api_async.models.project_usage.ProjectUsage(
                     cores = 1.337, 
                     instances = 1.337, 
                     ram = 1.337, 

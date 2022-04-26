@@ -11,8 +11,8 @@
 import sys
 import unittest
 
-import AvhClient
-from AvhClient.model.bit import Bit
+import avh_api
+from avh_api.model.bit import Bit
 
 
 class TestBit(unittest.TestCase):

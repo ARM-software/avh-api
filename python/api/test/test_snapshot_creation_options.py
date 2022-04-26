@@ -11,8 +11,8 @@
 import sys
 import unittest
 
-import AvhClient
-from AvhClient.model.snapshot_creation_options import SnapshotCreationOptions
+import avh_api
+from avh_api.model.snapshot_creation_options import SnapshotCreationOptions
 
 
 class TestSnapshotCreationOptions(unittest.TestCase):

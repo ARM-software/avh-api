@@ -1,16 +1,10 @@
 import asyncio
-import io
 import os
-from posixpath import dirname
 import re
 from websockets import client as ws
-from os import environ
-import time
 import sys
 
-import AvhClientAsync
-from AvhClientAsync.models import InstanceState
-from AvhClientAsync.rest import ApiException
+import avh_api_async as AvhAPI
 from pprint import pprint
 
 import ssl
@@ -108,13 +102,13 @@ async def main():
   global exitStatus
   global api_instance
 
-  configuration = AvhClientAsync.Configuration(
+  configuration = AvhAPI.Configuration(
       host = apiEndpoint
   )
   # Enter a context with an instance of the API client
-  async with AvhClientAsync.ApiClient(configuration=configuration) as api_client:
+  async with AvhAPI.ApiClient(configuration=configuration) as api_client:
     # Create an instance of the API class
-    api_instance = AvhClientAsync.ArmApi(api_client)
+    api_instance = AvhAPI.ArmApi(api_client)
 
     # Log In
     token_response = await api_instance.v1_auth_login({

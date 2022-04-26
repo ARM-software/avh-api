@@ -11,8 +11,8 @@
 import sys
 import unittest
 
-import AvhClient
-from AvhClient.model.project_usage import ProjectUsage
+import avh_api
+from avh_api.model.project_usage import ProjectUsage
 
 
 class TestProjectUsage(unittest.TestCase):

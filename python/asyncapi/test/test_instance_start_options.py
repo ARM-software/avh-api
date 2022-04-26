@@ -15,9 +15,9 @@ from __future__ import absolute_import
 import unittest
 import datetime
 
-import AvhClientAsync
-from AvhClientAsync.models.instance_start_options import InstanceStartOptions  # noqa: E501
-from AvhClientAsync.rest import ApiException
+import avh_api_async
+from avh_api_async.models.instance_start_options import InstanceStartOptions  # noqa: E501
+from avh_api_async.rest import ApiException
 
 class TestInstanceStartOptions(unittest.TestCase):
     """InstanceStartOptions unit test stubs"""
@@ -33,7 +33,7 @@ class TestInstanceStartOptions(unittest.TestCase):
             include_option is a boolean, when False only required
             params are included, when True both required and
             optional params are included """
-        # model = AvhClientAsync.models.instance_start_options.InstanceStartOptions()  # noqa: E501
+        # model = avh_api_async.models.instance_start_options.InstanceStartOptions()  # noqa: E501
         if include_optional :
             return InstanceStartOptions(
                 paused = True

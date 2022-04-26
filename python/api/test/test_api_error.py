@@ -11,8 +11,8 @@
 import sys
 import unittest
 
-import AvhClient
-from AvhClient.model.api_error import ApiError
+import avh_api
+from avh_api.model.api_error import ApiError
 
 
 class TestApiError(unittest.TestCase):

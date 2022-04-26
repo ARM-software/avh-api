@@ -11,8 +11,8 @@
 import sys
 import unittest
 
-import AvhClient
-from AvhClient.model.peripherals_data import PeripheralsData
+import avh_api
+from avh_api.model.peripherals_data import PeripheralsData
 
 
 class TestPeripheralsData(unittest.TestCase):

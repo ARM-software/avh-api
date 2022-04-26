@@ -11,8 +11,8 @@
 import sys
 import unittest
 
-import AvhClient
-from AvhClient.model.model import Model
+import avh_api
+from avh_api.model.model import Model
 
 
 class TestModel(unittest.TestCase):

@@ -14,16 +14,16 @@ from __future__ import absolute_import
 
 import unittest
 
-import AvhClientAsync
-from AvhClientAsync.api.arm_api import ArmApi  # noqa: E501
-from AvhClientAsync.rest import ApiException
+import avh_api_async
+from avh_api_async.api.arm_api import ArmApi  # noqa: E501
+from avh_api_async.rest import ApiException
 
 
 class TestArmApi(unittest.TestCase):
     """ArmApi unit test stubs"""
 
     def setUp(self):
-        self.api = AvhClientAsync.api.arm_api.ArmApi()  # noqa: E501
+        self.api = avh_api_async.api.arm_api.ArmApi()  # noqa: E501
 
     def tearDown(self):
         pass

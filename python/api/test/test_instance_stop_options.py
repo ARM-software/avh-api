@@ -11,8 +11,8 @@
 import sys
 import unittest
 
-import AvhClient
-from AvhClient.model.instance_stop_options import InstanceStopOptions
+import avh_api
+from avh_api.model.instance_stop_options import InstanceStopOptions
 
 
 class TestInstanceStopOptions(unittest.TestCase):
