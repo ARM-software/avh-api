@@ -22,6 +22,7 @@ Method | HTTP request | Description
 [**v1_get_models**](ArmApi.md#v1_get_models) | **GET** /v1/models | Get Supported Models
 [**v1_get_project**](ArmApi.md#v1_get_project) | **GET** /v1/projects/{projectId} | Get Project
 [**v1_get_project_instances**](ArmApi.md#v1_get_project_instances) | **GET** /v1/projects/{projectId}/instances | Get Instances in Project
+[**v1_get_project_vpn_config**](ArmApi.md#v1_get_project_vpn_config) | **GET** /v1/projects/{projectId}/vpnconfig/{format} | Get Project VPN Configuration
 [**v1_get_projects**](ArmApi.md#v1_get_projects) | **GET** /v1/projects | Get Projects
 [**v1_get_snapshot**](ArmApi.md#v1_get_snapshot) | **GET** /v1/instances/{instanceId}/snapshots/{snapshotId} | Get Instance Snapshots
 [**v1_get_snapshots**](ArmApi.md#v1_get_snapshots) | **GET** /v1/instances/{instanceId}/snapshots | Get Instance Snapshots
@@ -111,7 +112,7 @@ Create a new Image
 
 ### Example
 
-* Bearer (JWT) Authentication (BearerAuth):
+* Bearer (ApiToken or JWT) Authentication (BearerAuth):
 ```python
 from __future__ import print_function
 import time
@@ -129,7 +130,7 @@ configuration = avh_api_async.Configuration(
 # Examples for each auth method are provided below, use the example that
 # satisfies your auth use case.
 
-# Configure Bearer authorization (JWT): BearerAuth
+# Configure Bearer authorization (ApiToken or JWT): BearerAuth
 configuration = avh_api_async.Configuration(
     access_token = 'YOUR_BEARER_TOKEN'
 )
@@ -192,7 +193,7 @@ Create Instance
 
 ### Example
 
-* Bearer (JWT) Authentication (BearerAuth):
+* Bearer (ApiToken or JWT) Authentication (BearerAuth):
 ```python
 from __future__ import print_function
 import time
@@ -210,7 +211,7 @@ configuration = avh_api_async.Configuration(
 # Examples for each auth method are provided below, use the example that
 # satisfies your auth use case.
 
-# Configure Bearer authorization (JWT): BearerAuth
+# Configure Bearer authorization (ApiToken or JWT): BearerAuth
 configuration = avh_api_async.Configuration(
     access_token = 'YOUR_BEARER_TOKEN'
 )
@@ -220,9 +221,10 @@ with avh_api_async.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = avh_api_async.ArmApi(api_client)
     instance_create_options = {
- "project": "d59db33d-27bd-4b22-878d-49e4758a648e",
- "flavor": "iphone6s",
- "os": "12.0"
+  "project": "<your_project_id>",
+  "name": "rpi4b Created via API",
+  "flavor": "rpi4b",
+  "os": "11.2.0"
 } # InstanceCreateOptions | The vm definition to create
 
     try:
@@ -268,7 +270,7 @@ Create Instance Snapshot
 
 ### Example
 
-* Bearer (JWT) Authentication (BearerAuth):
+* Bearer (ApiToken or JWT) Authentication (BearerAuth):
 ```python
 from __future__ import print_function
 import time
@@ -286,7 +288,7 @@ configuration = avh_api_async.Configuration(
 # Examples for each auth method are provided below, use the example that
 # satisfies your auth use case.
 
-# Configure Bearer authorization (JWT): BearerAuth
+# Configure Bearer authorization (ApiToken or JWT): BearerAuth
 configuration = avh_api_async.Configuration(
     access_token = 'YOUR_BEARER_TOKEN'
 )
@@ -342,7 +344,7 @@ Delete Image
 
 ### Example
 
-* Bearer (JWT) Authentication (BearerAuth):
+* Bearer (ApiToken or JWT) Authentication (BearerAuth):
 ```python
 from __future__ import print_function
 import time
@@ -360,7 +362,7 @@ configuration = avh_api_async.Configuration(
 # Examples for each auth method are provided below, use the example that
 # satisfies your auth use case.
 
-# Configure Bearer authorization (JWT): BearerAuth
+# Configure Bearer authorization (ApiToken or JWT): BearerAuth
 configuration = avh_api_async.Configuration(
     access_token = 'YOUR_BEARER_TOKEN'
 )
@@ -412,7 +414,7 @@ Remove Instance
 
 ### Example
 
-* Bearer (JWT) Authentication (BearerAuth):
+* Bearer (ApiToken or JWT) Authentication (BearerAuth):
 ```python
 from __future__ import print_function
 import time
@@ -430,7 +432,7 @@ configuration = avh_api_async.Configuration(
 # Examples for each auth method are provided below, use the example that
 # satisfies your auth use case.
 
-# Configure Bearer authorization (JWT): BearerAuth
+# Configure Bearer authorization (ApiToken or JWT): BearerAuth
 configuration = avh_api_async.Configuration(
     access_token = 'YOUR_BEARER_TOKEN'
 )
@@ -483,7 +485,7 @@ Get Image Metadata
 
 ### Example
 
-* Bearer (JWT) Authentication (BearerAuth):
+* Bearer (ApiToken or JWT) Authentication (BearerAuth):
 ```python
 from __future__ import print_function
 import time
@@ -501,7 +503,7 @@ configuration = avh_api_async.Configuration(
 # Examples for each auth method are provided below, use the example that
 # satisfies your auth use case.
 
-# Configure Bearer authorization (JWT): BearerAuth
+# Configure Bearer authorization (ApiToken or JWT): BearerAuth
 configuration = avh_api_async.Configuration(
     access_token = 'YOUR_BEARER_TOKEN'
 )
@@ -554,7 +556,7 @@ Get all Images Metadata
 
 ### Example
 
-* Bearer (JWT) Authentication (BearerAuth):
+* Bearer (ApiToken or JWT) Authentication (BearerAuth):
 ```python
 from __future__ import print_function
 import time
@@ -572,7 +574,7 @@ configuration = avh_api_async.Configuration(
 # Examples for each auth method are provided below, use the example that
 # satisfies your auth use case.
 
-# Configure Bearer authorization (JWT): BearerAuth
+# Configure Bearer authorization (ApiToken or JWT): BearerAuth
 configuration = avh_api_async.Configuration(
     access_token = 'YOUR_BEARER_TOKEN'
 )
@@ -624,7 +626,7 @@ Get Instance
 
 ### Example
 
-* Bearer (JWT) Authentication (BearerAuth):
+* Bearer (ApiToken or JWT) Authentication (BearerAuth):
 ```python
 from __future__ import print_function
 import time
@@ -642,7 +644,7 @@ configuration = avh_api_async.Configuration(
 # Examples for each auth method are provided below, use the example that
 # satisfies your auth use case.
 
-# Configure Bearer authorization (JWT): BearerAuth
+# Configure Bearer authorization (ApiToken or JWT): BearerAuth
 configuration = avh_api_async.Configuration(
     access_token = 'YOUR_BEARER_TOKEN'
 )
@@ -698,7 +700,7 @@ Get console websocket URL
 
 ### Example
 
-* Bearer (JWT) Authentication (BearerAuth):
+* Bearer (ApiToken or JWT) Authentication (BearerAuth):
 ```python
 from __future__ import print_function
 import time
@@ -716,7 +718,7 @@ configuration = avh_api_async.Configuration(
 # Examples for each auth method are provided below, use the example that
 # satisfies your auth use case.
 
-# Configure Bearer authorization (JWT): BearerAuth
+# Configure Bearer authorization (ApiToken or JWT): BearerAuth
 configuration = avh_api_async.Configuration(
     access_token = 'YOUR_BEARER_TOKEN'
 )
@@ -770,7 +772,7 @@ Get Instance GPIOs
 
 ### Example
 
-* Bearer (JWT) Authentication (BearerAuth):
+* Bearer (ApiToken or JWT) Authentication (BearerAuth):
 ```python
 from __future__ import print_function
 import time
@@ -788,7 +790,7 @@ configuration = avh_api_async.Configuration(
 # Examples for each auth method are provided below, use the example that
 # satisfies your auth use case.
 
-# Configure Bearer authorization (JWT): BearerAuth
+# Configure Bearer authorization (ApiToken or JWT): BearerAuth
 configuration = avh_api_async.Configuration(
     access_token = 'YOUR_BEARER_TOKEN'
 )
@@ -842,7 +844,7 @@ Get Instance Peripherals
 
 ### Example
 
-* Bearer (JWT) Authentication (BearerAuth):
+* Bearer (ApiToken or JWT) Authentication (BearerAuth):
 ```python
 from __future__ import print_function
 import time
@@ -860,7 +862,7 @@ configuration = avh_api_async.Configuration(
 # Examples for each auth method are provided below, use the example that
 # satisfies your auth use case.
 
-# Configure Bearer authorization (JWT): BearerAuth
+# Configure Bearer authorization (ApiToken or JWT): BearerAuth
 configuration = avh_api_async.Configuration(
     access_token = 'YOUR_BEARER_TOKEN'
 )
@@ -914,7 +916,7 @@ Get state of Instance
 
 ### Example
 
-* Bearer (JWT) Authentication (BearerAuth):
+* Bearer (ApiToken or JWT) Authentication (BearerAuth):
 ```python
 from __future__ import print_function
 import time
@@ -932,7 +934,7 @@ configuration = avh_api_async.Configuration(
 # Examples for each auth method are provided below, use the example that
 # satisfies your auth use case.
 
-# Configure Bearer authorization (JWT): BearerAuth
+# Configure Bearer authorization (ApiToken or JWT): BearerAuth
 configuration = avh_api_async.Configuration(
     access_token = 'YOUR_BEARER_TOKEN'
 )
@@ -986,7 +988,7 @@ Get Instances
 
 ### Example
 
-* Bearer (JWT) Authentication (BearerAuth):
+* Bearer (ApiToken or JWT) Authentication (BearerAuth):
 ```python
 from __future__ import print_function
 import time
@@ -1004,7 +1006,7 @@ configuration = avh_api_async.Configuration(
 # Examples for each auth method are provided below, use the example that
 # satisfies your auth use case.
 
-# Configure Bearer authorization (JWT): BearerAuth
+# Configure Bearer authorization (ApiToken or JWT): BearerAuth
 configuration = avh_api_async.Configuration(
     access_token = 'YOUR_BEARER_TOKEN'
 )
@@ -1059,7 +1061,7 @@ Get Software for Model
 
 ### Example
 
-* Bearer (JWT) Authentication (BearerAuth):
+* Bearer (ApiToken or JWT) Authentication (BearerAuth):
 ```python
 from __future__ import print_function
 import time
@@ -1077,7 +1079,7 @@ configuration = avh_api_async.Configuration(
 # Examples for each auth method are provided below, use the example that
 # satisfies your auth use case.
 
-# Configure Bearer authorization (JWT): BearerAuth
+# Configure Bearer authorization (ApiToken or JWT): BearerAuth
 configuration = avh_api_async.Configuration(
     access_token = 'YOUR_BEARER_TOKEN'
 )
@@ -1129,7 +1131,7 @@ Get Supported Models
 
 ### Example
 
-* Bearer (JWT) Authentication (BearerAuth):
+* Bearer (ApiToken or JWT) Authentication (BearerAuth):
 ```python
 from __future__ import print_function
 import time
@@ -1147,7 +1149,7 @@ configuration = avh_api_async.Configuration(
 # Examples for each auth method are provided below, use the example that
 # satisfies your auth use case.
 
-# Configure Bearer authorization (JWT): BearerAuth
+# Configure Bearer authorization (ApiToken or JWT): BearerAuth
 configuration = avh_api_async.Configuration(
     access_token = 'YOUR_BEARER_TOKEN'
 )
@@ -1195,7 +1197,7 @@ Get Project
 
 ### Example
 
-* Bearer (JWT) Authentication (BearerAuth):
+* Bearer (ApiToken or JWT) Authentication (BearerAuth):
 ```python
 from __future__ import print_function
 import time
@@ -1213,7 +1215,7 @@ configuration = avh_api_async.Configuration(
 # Examples for each auth method are provided below, use the example that
 # satisfies your auth use case.
 
-# Configure Bearer authorization (JWT): BearerAuth
+# Configure Bearer authorization (ApiToken or JWT): BearerAuth
 configuration = avh_api_async.Configuration(
     access_token = 'YOUR_BEARER_TOKEN'
 )
@@ -1255,6 +1257,7 @@ Name | Type | Description  | Notes
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | OK |  -  |
+**403** | Forbidden |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
@@ -1265,7 +1268,7 @@ Get Instances in Project
 
 ### Example
 
-* Bearer (JWT) Authentication (BearerAuth):
+* Bearer (ApiToken or JWT) Authentication (BearerAuth):
 ```python
 from __future__ import print_function
 import time
@@ -1283,7 +1286,7 @@ configuration = avh_api_async.Configuration(
 # Examples for each auth method are provided below, use the example that
 # satisfies your auth use case.
 
-# Configure Bearer authorization (JWT): BearerAuth
+# Configure Bearer authorization (ApiToken or JWT): BearerAuth
 configuration = avh_api_async.Configuration(
     access_token = 'YOUR_BEARER_TOKEN'
 )
@@ -1333,14 +1336,14 @@ Name | Type | Description  | Notes
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-# **v1_get_projects**
-> list[Project] v1_get_projects(name=name, ids_only=ids_only)
+# **v1_get_project_vpn_config**
+> str v1_get_project_vpn_config(project_id, format)
 
-Get Projects
+Get Project VPN Configuration
 
 ### Example
 
-* Bearer (JWT) Authentication (BearerAuth):
+* Bearer (ApiToken or JWT) Authentication (BearerAuth):
 ```python
 from __future__ import print_function
 import time
@@ -1358,7 +1361,80 @@ configuration = avh_api_async.Configuration(
 # Examples for each auth method are provided below, use the example that
 # satisfies your auth use case.
 
-# Configure Bearer authorization (JWT): BearerAuth
+# Configure Bearer authorization (ApiToken or JWT): BearerAuth
+configuration = avh_api_async.Configuration(
+    access_token = 'YOUR_BEARER_TOKEN'
+)
+
+# Enter a context with an instance of the API client
+with avh_api_async.ApiClient(configuration) as api_client:
+    # Create an instance of the API class
+    api_instance = avh_api_async.ArmApi(api_client)
+    project_id = 'project_id_example' # str | Project ID - uuid
+format = 'format_example' # str | VPN Config format
+
+    try:
+        # Get Project VPN Configuration
+        api_response = api_instance.v1_get_project_vpn_config(project_id, format)
+        pprint(api_response)
+    except ApiException as e:
+        print("Exception when calling ArmApi->v1_get_project_vpn_config: %s\n" % e)
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **project_id** | **str**| Project ID - uuid | 
+ **format** | **str**| VPN Config format | 
+
+### Return type
+
+**str**
+
+### Authorization
+
+[BearerAuth](../README.md#BearerAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/x-openvpn-profile, application/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+**200** | OpenVPN Configuration |  -  |
+**403** | Forbidden |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **v1_get_projects**
+> list[Project] v1_get_projects(name=name, ids_only=ids_only)
+
+Get Projects
+
+### Example
+
+* Bearer (ApiToken or JWT) Authentication (BearerAuth):
+```python
+from __future__ import print_function
+import time
+import avh_api_async
+from avh_api_async.rest import ApiException
+from pprint import pprint
+# Defining the host is optional and defaults to https://app.avh.arm.com/api
+# See configuration.py for a list of all supported configuration parameters.
+configuration = avh_api_async.Configuration(
+    host = "https://app.avh.arm.com/api"
+)
+
+# The client must configure the authentication and authorization parameters
+# in accordance with the API server security policy.
+# Examples for each auth method are provided below, use the example that
+# satisfies your auth use case.
+
+# Configure Bearer authorization (ApiToken or JWT): BearerAuth
 configuration = avh_api_async.Configuration(
     access_token = 'YOUR_BEARER_TOKEN'
 )
@@ -1414,7 +1490,7 @@ Get Instance Snapshots
 
 ### Example
 
-* Bearer (JWT) Authentication (BearerAuth):
+* Bearer (ApiToken or JWT) Authentication (BearerAuth):
 ```python
 from __future__ import print_function
 import time
@@ -1432,7 +1508,7 @@ configuration = avh_api_async.Configuration(
 # Examples for each auth method are provided below, use the example that
 # satisfies your auth use case.
 
-# Configure Bearer authorization (JWT): BearerAuth
+# Configure Bearer authorization (ApiToken or JWT): BearerAuth
 configuration = avh_api_async.Configuration(
     access_token = 'YOUR_BEARER_TOKEN'
 )
@@ -1488,7 +1564,7 @@ Get Instance Snapshots
 
 ### Example
 
-* Bearer (JWT) Authentication (BearerAuth):
+* Bearer (ApiToken or JWT) Authentication (BearerAuth):
 ```python
 from __future__ import print_function
 import time
@@ -1506,7 +1582,7 @@ configuration = avh_api_async.Configuration(
 # Examples for each auth method are provided below, use the example that
 # satisfies your auth use case.
 
-# Configure Bearer authorization (JWT): BearerAuth
+# Configure Bearer authorization (ApiToken or JWT): BearerAuth
 configuration = avh_api_async.Configuration(
     access_token = 'YOUR_BEARER_TOKEN'
 )
@@ -1560,7 +1636,7 @@ Update Instance
 
 ### Example
 
-* Bearer (JWT) Authentication (BearerAuth):
+* Bearer (ApiToken or JWT) Authentication (BearerAuth):
 ```python
 from __future__ import print_function
 import time
@@ -1578,7 +1654,7 @@ configuration = avh_api_async.Configuration(
 # Examples for each auth method are provided below, use the example that
 # satisfies your auth use case.
 
-# Configure Bearer authorization (JWT): BearerAuth
+# Configure Bearer authorization (ApiToken or JWT): BearerAuth
 configuration = avh_api_async.Configuration(
     access_token = 'YOUR_BEARER_TOKEN'
 )
@@ -1636,7 +1712,7 @@ Pause an Instance
 
 ### Example
 
-* Bearer (JWT) Authentication (BearerAuth):
+* Bearer (ApiToken or JWT) Authentication (BearerAuth):
 ```python
 from __future__ import print_function
 import time
@@ -1654,7 +1730,7 @@ configuration = avh_api_async.Configuration(
 # Examples for each auth method are provided below, use the example that
 # satisfies your auth use case.
 
-# Configure Bearer authorization (JWT): BearerAuth
+# Configure Bearer authorization (ApiToken or JWT): BearerAuth
 configuration = avh_api_async.Configuration(
     access_token = 'YOUR_BEARER_TOKEN'
 )
@@ -1765,7 +1841,7 @@ Reboot an Instance
 
 ### Example
 
-* Bearer (JWT) Authentication (BearerAuth):
+* Bearer (ApiToken or JWT) Authentication (BearerAuth):
 ```python
 from __future__ import print_function
 import time
@@ -1783,7 +1859,7 @@ configuration = avh_api_async.Configuration(
 # Examples for each auth method are provided below, use the example that
 # satisfies your auth use case.
 
-# Configure Bearer authorization (JWT): BearerAuth
+# Configure Bearer authorization (ApiToken or JWT): BearerAuth
 configuration = avh_api_async.Configuration(
     access_token = 'YOUR_BEARER_TOKEN'
 )
@@ -1836,7 +1912,7 @@ Restore a Snapshot
 
 ### Example
 
-* Bearer (JWT) Authentication (BearerAuth):
+* Bearer (ApiToken or JWT) Authentication (BearerAuth):
 ```python
 from __future__ import print_function
 import time
@@ -1854,7 +1930,7 @@ configuration = avh_api_async.Configuration(
 # Examples for each auth method are provided below, use the example that
 # satisfies your auth use case.
 
-# Configure Bearer authorization (JWT): BearerAuth
+# Configure Bearer authorization (ApiToken or JWT): BearerAuth
 configuration = avh_api_async.Configuration(
     access_token = 'YOUR_BEARER_TOKEN'
 )
@@ -1909,7 +1985,7 @@ Set Instance GPIOs
 
 ### Example
 
-* Bearer (JWT) Authentication (BearerAuth):
+* Bearer (ApiToken or JWT) Authentication (BearerAuth):
 ```python
 from __future__ import print_function
 import time
@@ -1927,7 +2003,7 @@ configuration = avh_api_async.Configuration(
 # Examples for each auth method are provided below, use the example that
 # satisfies your auth use case.
 
-# Configure Bearer authorization (JWT): BearerAuth
+# Configure Bearer authorization (ApiToken or JWT): BearerAuth
 configuration = avh_api_async.Configuration(
     access_token = 'YOUR_BEARER_TOKEN'
 )
@@ -1997,7 +2073,7 @@ Set Instance Peripherals
 
 ### Example
 
-* Bearer (JWT) Authentication (BearerAuth):
+* Bearer (ApiToken or JWT) Authentication (BearerAuth):
 ```python
 from __future__ import print_function
 import time
@@ -2015,7 +2091,7 @@ configuration = avh_api_async.Configuration(
 # Examples for each auth method are provided below, use the example that
 # satisfies your auth use case.
 
-# Configure Bearer authorization (JWT): BearerAuth
+# Configure Bearer authorization (ApiToken or JWT): BearerAuth
 configuration = avh_api_async.Configuration(
     access_token = 'YOUR_BEARER_TOKEN'
 )
@@ -2081,7 +2157,7 @@ Set state of Instance
 
 ### Example
 
-* Bearer (JWT) Authentication (BearerAuth):
+* Bearer (ApiToken or JWT) Authentication (BearerAuth):
 ```python
 from __future__ import print_function
 import time
@@ -2099,7 +2175,7 @@ configuration = avh_api_async.Configuration(
 # Examples for each auth method are provided below, use the example that
 # satisfies your auth use case.
 
-# Configure Bearer authorization (JWT): BearerAuth
+# Configure Bearer authorization (ApiToken or JWT): BearerAuth
 configuration = avh_api_async.Configuration(
     access_token = 'YOUR_BEARER_TOKEN'
 )
@@ -2156,7 +2232,7 @@ Delete a Snapshot
 
 ### Example
 
-* Bearer (JWT) Authentication (BearerAuth):
+* Bearer (ApiToken or JWT) Authentication (BearerAuth):
 ```python
 from __future__ import print_function
 import time
@@ -2174,7 +2250,7 @@ configuration = avh_api_async.Configuration(
 # Examples for each auth method are provided below, use the example that
 # satisfies your auth use case.
 
-# Configure Bearer authorization (JWT): BearerAuth
+# Configure Bearer authorization (ApiToken or JWT): BearerAuth
 configuration = avh_api_async.Configuration(
     access_token = 'YOUR_BEARER_TOKEN'
 )
@@ -2229,7 +2305,7 @@ Rename a Snapshot
 
 ### Example
 
-* Bearer (JWT) Authentication (BearerAuth):
+* Bearer (ApiToken or JWT) Authentication (BearerAuth):
 ```python
 from __future__ import print_function
 import time
@@ -2247,7 +2323,7 @@ configuration = avh_api_async.Configuration(
 # Examples for each auth method are provided below, use the example that
 # satisfies your auth use case.
 
-# Configure Bearer authorization (JWT): BearerAuth
+# Configure Bearer authorization (ApiToken or JWT): BearerAuth
 configuration = avh_api_async.Configuration(
     access_token = 'YOUR_BEARER_TOKEN'
 )
@@ -2305,7 +2381,7 @@ Start an Instance
 
 ### Example
 
-* Bearer (JWT) Authentication (BearerAuth):
+* Bearer (ApiToken or JWT) Authentication (BearerAuth):
 ```python
 from __future__ import print_function
 import time
@@ -2323,7 +2399,7 @@ configuration = avh_api_async.Configuration(
 # Examples for each auth method are provided below, use the example that
 # satisfies your auth use case.
 
-# Configure Bearer authorization (JWT): BearerAuth
+# Configure Bearer authorization (ApiToken or JWT): BearerAuth
 configuration = avh_api_async.Configuration(
     access_token = 'YOUR_BEARER_TOKEN'
 )
@@ -2379,7 +2455,7 @@ Stop an Instance
 
 ### Example
 
-* Bearer (JWT) Authentication (BearerAuth):
+* Bearer (ApiToken or JWT) Authentication (BearerAuth):
 ```python
 from __future__ import print_function
 import time
@@ -2397,7 +2473,7 @@ configuration = avh_api_async.Configuration(
 # Examples for each auth method are provided below, use the example that
 # satisfies your auth use case.
 
-# Configure Bearer authorization (JWT): BearerAuth
+# Configure Bearer authorization (ApiToken or JWT): BearerAuth
 configuration = avh_api_async.Configuration(
     access_token = 'YOUR_BEARER_TOKEN'
 )
@@ -2453,7 +2529,7 @@ Unpause an Instance
 
 ### Example
 
-* Bearer (JWT) Authentication (BearerAuth):
+* Bearer (ApiToken or JWT) Authentication (BearerAuth):
 ```python
 from __future__ import print_function
 import time
@@ -2471,7 +2547,7 @@ configuration = avh_api_async.Configuration(
 # Examples for each auth method are provided below, use the example that
 # satisfies your auth use case.
 
-# Configure Bearer authorization (JWT): BearerAuth
+# Configure Bearer authorization (ApiToken or JWT): BearerAuth
 configuration = avh_api_async.Configuration(
     access_token = 'YOUR_BEARER_TOKEN'
 )
@@ -2526,7 +2602,7 @@ If the active project has enough remaining quota, updates an Image with the cont
 
 ### Example
 
-* Bearer (JWT) Authentication (BearerAuth):
+* Bearer (ApiToken or JWT) Authentication (BearerAuth):
 ```python
 from __future__ import print_function
 import time
@@ -2544,7 +2620,7 @@ configuration = avh_api_async.Configuration(
 # Examples for each auth method are provided below, use the example that
 # satisfies your auth use case.
 
-# Configure Bearer authorization (JWT): BearerAuth
+# Configure Bearer authorization (ApiToken or JWT): BearerAuth
 configuration = avh_api_async.Configuration(
     access_token = 'YOUR_BEARER_TOKEN'
 )

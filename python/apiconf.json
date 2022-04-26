@@ -1,5 +1,6 @@
 {
   "packageName": "avh_api",
+  "packageVersion": "1.0.1",
   "disallowAdditionalPropertiesIfNotPresent": false,
   "pythonAttrNoneIfUnset": true
 }
