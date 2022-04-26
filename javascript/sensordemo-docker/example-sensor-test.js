@@ -3,7 +3,11 @@ const split2 = require("split2");
 const wsstream = require("websocket-stream");
 const { createReadStream } = require("fs");
 const { PromiseSocket } = require("promise-socket")
-const { ArmApi, ApiClient } = require('arm_api');
+const { ArmApi, ApiClient } = require('@arm-avh/avh-api');
+const { writeFile } = require('fs/promises');
+const { promisify } = require("util");
+const { spawn, ChildProcess } = require("child_process");
+const exec = promisify(require("child_process").exec);
 const BearerAuth = ApiClient.instance.authentications['BearerAuth']
 const api = new ArmApi()
 const CONFIGURATION = {
@@ -48,6 +52,36 @@ async function readPressureSensor(instance) {
 
 async function readTemperatureSensor(instance) {
   return await readSensor(instance.wifiIp, "Temperature")
+}
+
+/** @type {ChildProcess} */
+let openVpn
+async function startVpn(instance) {
+  if (openVpn && openVpn.kill(0)) {
+    console.log('OpenVPN already started')
+    throw new Error('OpenVPN already started')
+  }
+  if (instance.state !== 'on') {
+    console.log('Instance must be started to connect VPN', instance)
+    throw new Error('Instance must be started to connect VPN')
+  }
+
+  const config = await api.v1GetProjectVpnConfig(instance.project, 'ovpn')
+  console.log('Got OpenVPN Config')
+  await writeFile('./vpnconfig.ovpn', config)
+
+  openVpn = spawn('openvpn', ['--config', 'vpnconfig.ovpn'])
+  openVpn.stdout.on('data', (data) => console.log(data.toString()))
+  openVpn.stderr.on('data', (data) => console.log(data.toString()))
+  for (let i=0; i<10; i++) {
+    // Wait for openvpn link to establish
+    console.log('Waiting for VPN link to establish...')
+    try {
+      await exec(`ping -c 1 ${instance.wifiIp}`)
+      return true
+    } catch (_) {}
+  }
+  return false
 }
 
 function sleep(ms) {
@@ -210,8 +244,15 @@ describe("stm sensor check", function () {
     wifiIp = await waitForWifi(instance.id)
     instance = await api.v1GetInstance(instance.id)
     assert(wifiIp === instance.wifiIp)
-  })
+  });
+  it('Is reachable over VPN', async () => {
+    console.log('Connecting VPN...')
+    instance = await waitForState({ id: instance.id }, state => state === 'on')
+    const vpnStarted = await startVpn(instance)
+    assert(vpnStarted)
+  });
   it("sets and gets the sensors", async () => {
+    console.log('Testing sensors...')
     instance = await waitForState({ id: instance.id }, state => state === 'on')
     const hasValidatedSensors = await validateSensors(instance)
     assert(hasValidatedSensors);
@@ -219,7 +260,10 @@ describe("stm sensor check", function () {
 
   after(async () => {
     if (instance) {
-      await api.v1DeleteInstance(instance.id);
+      await api.v1DeleteInstance(instance.id)
+    }
+    if (openVpn) {
+      openVpn.kill(9)
     }
   });
 });

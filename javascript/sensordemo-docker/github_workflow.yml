@@ -12,7 +12,7 @@ on:
 
 jobs:
   Build:
-    runs-on: [self-hosted, Linux, ARM64]
+    runs-on: ubuntu-20.04
     env:
       API_ENDPOINT: ${{ secrets.API_ENDPOINT }}
       API_TOKEN: ${{ secrets.API_TOKEN }}

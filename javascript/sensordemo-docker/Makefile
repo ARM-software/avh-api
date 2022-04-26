@@ -4,7 +4,6 @@ all:
 
 gitrepo:
 	git archive HEAD --prefix="gitrepo/" | tar -xf -
-	cp -a ../api gitrepo/api
 	cd gitrepo; \
 	  git init; \
 	  rm -f README.md Makefile; \

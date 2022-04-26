@@ -10,7 +10,7 @@
     "test": "mocha --reporter json --reporter-option output=$REPORT_PATH"
   },
   "dependencies": {
-    "arm_api": "file:../api",
+    "@arm-avh/avh-api": "^1.0.1",
     "mocha": "^9.2.2",
     "promise-socket": "^7.0.0",
     "split2": "^4.1.0",

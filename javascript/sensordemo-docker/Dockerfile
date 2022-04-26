@@ -7,6 +7,8 @@ RUN apt-get -qqy update && \
     ca-certificates \
     curl \
     wget \
+    iputils-ping \
+    openvpn \
     iproute2 \ 
     jq \
     unzip \
@@ -55,16 +57,10 @@ RUN echo PLATFORM: ${TARGETARCH};  \
       
 ENV PATH="/opt/build/gcc-arm-none-eabi-10.3-2021.10/bin/:$PATH"
 
-WORKDIR /opt
-COPY api/ api/
-
-WORKDIR /opt/api
-RUN npm install
-RUN npm run-script build
-
 WORKDIR /opt/test/
-COPY package*json ./
+COPY package.json ./
 COPY example-sensor-test.js test/index.js
+RUN npm install
 
 WORKDIR /opt/build/
 
