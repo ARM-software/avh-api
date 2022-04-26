@@ -9,6 +9,6 @@
   "author": "",
   "license": "Apache-2.0",
   "dependencies": {
-    "arm_api": "file:../api"
+    "@arm-avh/avh-api": "^1.0.1"
   }
 }
