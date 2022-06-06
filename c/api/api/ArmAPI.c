@@ -104,12 +104,14 @@ ArmAPI_v1AuthLogin(apiClient_t *apiClient, object_t * body )
                     localVarBodyParameters,
                     "POST");
 
-    if (apiClient->response_code == 200) {
-        printf("%s\n","User Authorization");
-    }
-    if (apiClient->response_code == 403) {
-        printf("%s\n","Forbidden");
-    }
+    // uncomment below to debug the error response
+    //if (apiClient->response_code == 200) {
+    //    printf("%s\n","User Authorization");
+    //}
+    // uncomment below to debug the error response
+    //if (apiClient->response_code == 403) {
+    //    printf("%s\n","Forbidden");
+    //}
     //nonprimitive not container
     cJSON *ArmAPIlocalVarJSON = cJSON_Parse(apiClient->dataReceived);
     token_t *elementToReturn = token_parseFromJSON(ArmAPIlocalVarJSON);
@@ -178,7 +180,7 @@ ArmAPI_v1CreateImage(apiClient_t *apiClient, char * type , arm_api_v1CreateImage
     char *keyForm_encoding = NULL;
     arm_api_v1CreateImage_encoding_e valueForm_encoding = 0;
     keyValuePair_t *keyPairForm_encoding = 0;
-    if (encoding != NULL)
+    if (encoding != 0)
     {
         keyForm_encoding = strdup("encoding");
         valueForm_encoding = (encoding);
@@ -245,12 +247,14 @@ ArmAPI_v1CreateImage(apiClient_t *apiClient, char * type , arm_api_v1CreateImage
                     localVarBodyParameters,
                     "POST");
 
-    if (apiClient->response_code == 200) {
-        printf("%s\n","application/json");
-    }
-    if (apiClient->response_code == 404) {
-        printf("%s\n","application/json");
-    }
+    // uncomment below to debug the error response
+    //if (apiClient->response_code == 200) {
+    //    printf("%s\n","application/json");
+    //}
+    // uncomment below to debug the error response
+    //if (apiClient->response_code == 404) {
+    //    printf("%s\n","application/json");
+    //}
     //nonprimitive not container
     cJSON *ArmAPIlocalVarJSON = cJSON_Parse(apiClient->dataReceived);
     image_t *elementToReturn = image_parseFromJSON(ArmAPIlocalVarJSON);
@@ -285,8 +289,7 @@ ArmAPI_v1CreateImage(apiClient_t *apiClient, char * type , arm_api_v1CreateImage
         keyForm_encoding = NULL;
     }
     if (valueForm_encoding) {
-        free(valueForm_encoding);
-        valueForm_encoding = NULL;
+        valueForm_encoding = 0;
     }
     free(keyPairForm_encoding);
     if (keyForm_name) {
@@ -370,15 +373,18 @@ ArmAPI_v1CreateInstance(apiClient_t *apiClient, instance_create_options_t * inst
                     localVarBodyParameters,
                     "POST");
 
-    if (apiClient->response_code == 200) {
-        printf("%s\n","Accepted");
-    }
-    if (apiClient->response_code == 400) {
-        printf("%s\n","Bad Request");
-    }
-    if (apiClient->response_code == 403) {
-        printf("%s\n","Forbidden");
-    }
+    // uncomment below to debug the error response
+    //if (apiClient->response_code == 200) {
+    //    printf("%s\n","Accepted");
+    //}
+    // uncomment below to debug the error response
+    //if (apiClient->response_code == 400) {
+    //    printf("%s\n","Bad Request");
+    //}
+    // uncomment below to debug the error response
+    //if (apiClient->response_code == 403) {
+    //    printf("%s\n","Forbidden");
+    //}
     //nonprimitive not container
     cJSON *ArmAPIlocalVarJSON = cJSON_Parse(apiClient->dataReceived);
     instance_return_t *elementToReturn = instance_return_parseFromJSON(ArmAPIlocalVarJSON);
@@ -461,15 +467,18 @@ ArmAPI_v1CreateSnapshot(apiClient_t *apiClient, char * instanceId , snapshot_cre
                     localVarBodyParameters,
                     "POST");
 
-    if (apiClient->response_code == 200) {
-        printf("%s\n","application/json");
-    }
-    if (apiClient->response_code == 403) {
-        printf("%s\n","Forbidden");
-    }
-    if (apiClient->response_code == 404) {
-        printf("%s\n","Not Found");
-    }
+    // uncomment below to debug the error response
+    //if (apiClient->response_code == 200) {
+    //    printf("%s\n","application/json");
+    //}
+    // uncomment below to debug the error response
+    //if (apiClient->response_code == 403) {
+    //    printf("%s\n","Forbidden");
+    //}
+    // uncomment below to debug the error response
+    //if (apiClient->response_code == 404) {
+    //    printf("%s\n","Not Found");
+    //}
     //nonprimitive not container
     cJSON *ArmAPIlocalVarJSON = cJSON_Parse(apiClient->dataReceived);
     snapshot_t *elementToReturn = snapshot_parseFromJSON(ArmAPIlocalVarJSON);
@@ -543,12 +552,14 @@ ArmAPI_v1DeleteImage(apiClient_t *apiClient, char * imageId )
                     localVarBodyParameters,
                     "DELETE");
 
-    if (apiClient->response_code == 204) {
-        printf("%s\n","Success");
-    }
-    if (apiClient->response_code == 404) {
-        printf("%s\n","Not Found");
-    }
+    // uncomment below to debug the error response
+    //if (apiClient->response_code == 204) {
+    //    printf("%s\n","Success");
+    //}
+    // uncomment below to debug the error response
+    //if (apiClient->response_code == 404) {
+    //    printf("%s\n","Not Found");
+    //}
     //No return type
 end:
     if (apiClient->dataReceived) {
@@ -606,15 +617,18 @@ ArmAPI_v1DeleteInstance(apiClient_t *apiClient, char * instanceId )
                     localVarBodyParameters,
                     "DELETE");
 
-    if (apiClient->response_code == 204) {
-        printf("%s\n","Accepted");
-    }
-    if (apiClient->response_code == 403) {
-        printf("%s\n","Forbidden");
-    }
-    if (apiClient->response_code == 404) {
-        printf("%s\n","Not Found");
-    }
+    // uncomment below to debug the error response
+    //if (apiClient->response_code == 204) {
+    //    printf("%s\n","Accepted");
+    //}
+    // uncomment below to debug the error response
+    //if (apiClient->response_code == 403) {
+    //    printf("%s\n","Forbidden");
+    //}
+    // uncomment below to debug the error response
+    //if (apiClient->response_code == 404) {
+    //    printf("%s\n","Not Found");
+    //}
     //No return type
 end:
     if (apiClient->dataReceived) {
@@ -672,12 +686,14 @@ ArmAPI_v1GetImage(apiClient_t *apiClient, char * imageId )
                     localVarBodyParameters,
                     "GET");
 
-    if (apiClient->response_code == 200) {
-        printf("%s\n","application/json");
-    }
-    if (apiClient->response_code == 404) {
-        printf("%s\n","application/json");
-    }
+    // uncomment below to debug the error response
+    //if (apiClient->response_code == 200) {
+    //    printf("%s\n","application/json");
+    //}
+    // uncomment below to debug the error response
+    //if (apiClient->response_code == 404) {
+    //    printf("%s\n","application/json");
+    //}
     //nonprimitive not container
     cJSON *ArmAPIlocalVarJSON = cJSON_Parse(apiClient->dataReceived);
     image_t *elementToReturn = image_parseFromJSON(ArmAPIlocalVarJSON);
@@ -748,9 +764,10 @@ ArmAPI_v1GetImages(apiClient_t *apiClient, char * project )
                     localVarBodyParameters,
                     "GET");
 
-    if (apiClient->response_code == 200) {
-        printf("%s\n","application/json");
-    }
+    // uncomment below to debug the error response
+    //if (apiClient->response_code == 200) {
+    //    printf("%s\n","application/json");
+    //}
     //nonprimitive not container
     cJSON *ArmAPIlocalVarJSON = cJSON_Parse(apiClient->dataReceived);
     image_t *elementToReturn = image_parseFromJSON(ArmAPIlocalVarJSON);
@@ -836,15 +853,18 @@ ArmAPI_v1GetInstance(apiClient_t *apiClient, char * instanceId , list_t * return
                     localVarBodyParameters,
                     "GET");
 
-    if (apiClient->response_code == 200) {
-        printf("%s\n","Success");
-    }
-    if (apiClient->response_code == 403) {
-        printf("%s\n","Forbidden");
-    }
-    if (apiClient->response_code == 404) {
-        printf("%s\n","Not Found");
-    }
+    // uncomment below to debug the error response
+    //if (apiClient->response_code == 200) {
+    //    printf("%s\n","Success");
+    //}
+    // uncomment below to debug the error response
+    //if (apiClient->response_code == 403) {
+    //    printf("%s\n","Forbidden");
+    //}
+    // uncomment below to debug the error response
+    //if (apiClient->response_code == 404) {
+    //    printf("%s\n","Not Found");
+    //}
     //nonprimitive not container
     cJSON *ArmAPIlocalVarJSON = cJSON_Parse(apiClient->dataReceived);
     instance_t *elementToReturn = instance_parseFromJSON(ArmAPIlocalVarJSON);
@@ -913,15 +933,18 @@ ArmAPI_v1GetInstanceConsole(apiClient_t *apiClient, char * instanceId )
                     localVarBodyParameters,
                     "GET");
 
-    if (apiClient->response_code == 200) {
-        printf("%s\n","OK");
-    }
-    if (apiClient->response_code == 403) {
-        printf("%s\n","Forbidden");
-    }
-    if (apiClient->response_code == 404) {
-        printf("%s\n","Not Found");
-    }
+    // uncomment below to debug the error response
+    //if (apiClient->response_code == 200) {
+    //    printf("%s\n","OK");
+    //}
+    // uncomment below to debug the error response
+    //if (apiClient->response_code == 403) {
+    //    printf("%s\n","Forbidden");
+    //}
+    // uncomment below to debug the error response
+    //if (apiClient->response_code == 404) {
+    //    printf("%s\n","Not Found");
+    //}
     //nonprimitive not container
     cJSON *ArmAPIlocalVarJSON = cJSON_Parse(apiClient->dataReceived);
     instance_console_endpoint_t *elementToReturn = instance_console_endpoint_parseFromJSON(ArmAPIlocalVarJSON);
@@ -990,15 +1013,18 @@ ArmAPI_v1GetInstancePeripherals(apiClient_t *apiClient, char * instanceId )
                     localVarBodyParameters,
                     "GET");
 
-    if (apiClient->response_code == 200) {
-        printf("%s\n","Current Peripherals State");
-    }
-    if (apiClient->response_code == 403) {
-        printf("%s\n","Forbidden");
-    }
-    if (apiClient->response_code == 404) {
-        printf("%s\n","Not Found");
-    }
+    // uncomment below to debug the error response
+    //if (apiClient->response_code == 200) {
+    //    printf("%s\n","Current Peripherals State");
+    //}
+    // uncomment below to debug the error response
+    //if (apiClient->response_code == 403) {
+    //    printf("%s\n","Forbidden");
+    //}
+    // uncomment below to debug the error response
+    //if (apiClient->response_code == 404) {
+    //    printf("%s\n","Not Found");
+    //}
     //nonprimitive not container
     cJSON *ArmAPIlocalVarJSON = cJSON_Parse(apiClient->dataReceived);
     object_t *elementToReturn = object_parseFromJSON(ArmAPIlocalVarJSON);
@@ -1029,7 +1055,7 @@ end:
 
 // Get state of Instance
 //
-instance_state_t*
+arm_api_instance_state__e
 ArmAPI_v1GetInstanceState(apiClient_t *apiClient, char * instanceId )
 {
     list_t    *localVarQueryParameters = NULL;
@@ -1067,20 +1093,23 @@ ArmAPI_v1GetInstanceState(apiClient_t *apiClient, char * instanceId )
                     localVarBodyParameters,
                     "GET");
 
-    if (apiClient->response_code == 200) {
-        printf("%s\n","Current Instance State");
-    }
-    if (apiClient->response_code == 403) {
-        printf("%s\n","Forbidden");
-    }
-    if (apiClient->response_code == 404) {
-        printf("%s\n","Not Found");
-    }
+    // uncomment below to debug the error response
+    //if (apiClient->response_code == 200) {
+    //    printf("%s\n","Current Instance State");
+    //}
+    // uncomment below to debug the error response
+    //if (apiClient->response_code == 403) {
+    //    printf("%s\n","Forbidden");
+    //}
+    // uncomment below to debug the error response
+    //if (apiClient->response_code == 404) {
+    //    printf("%s\n","Not Found");
+    //}
     //nonprimitive not container
     cJSON *ArmAPIlocalVarJSON = cJSON_Parse(apiClient->dataReceived);
-    instance_state_t *elementToReturn = instance_state_parseFromJSON(ArmAPIlocalVarJSON);
+    arm_api_instance_state__e elementToReturn = instance_state_parseFromJSON(ArmAPIlocalVarJSON);
     cJSON_Delete(ArmAPIlocalVarJSON);
-    if(elementToReturn == NULL) {
+    if(elementToReturn == 0) {
         // return 0;
     }
 
@@ -1100,7 +1129,7 @@ ArmAPI_v1GetInstanceState(apiClient_t *apiClient, char * instanceId )
     return elementToReturn;
 end:
     free(localVarPath);
-    return NULL;
+    return 0;
 
 }
 
@@ -1152,12 +1181,14 @@ ArmAPI_v1GetInstances(apiClient_t *apiClient, char * name , list_t * returnAttr 
                     localVarBodyParameters,
                     "GET");
 
-    if (apiClient->response_code == 200) {
-        printf("%s\n","Success");
-    }
-    if (apiClient->response_code == 403) {
-        printf("%s\n","Forbidden");
-    }
+    // uncomment below to debug the error response
+    //if (apiClient->response_code == 200) {
+    //    printf("%s\n","Success");
+    //}
+    // uncomment below to debug the error response
+    //if (apiClient->response_code == 403) {
+    //    printf("%s\n","Forbidden");
+    //}
     cJSON *ArmAPIlocalVarJSON = cJSON_Parse(apiClient->dataReceived);
     if(!cJSON_IsArray(ArmAPIlocalVarJSON)) {
         return 0;//nonprimitive container
@@ -1247,9 +1278,10 @@ ArmAPI_v1GetModelSoftware(apiClient_t *apiClient, char * model )
                     localVarBodyParameters,
                     "GET");
 
-    if (apiClient->response_code == 200) {
-        printf("%s\n","Supported software loads for this model");
-    }
+    // uncomment below to debug the error response
+    //if (apiClient->response_code == 200) {
+    //    printf("%s\n","Supported software loads for this model");
+    //}
     cJSON *ArmAPIlocalVarJSON = cJSON_Parse(apiClient->dataReceived);
     if(!cJSON_IsArray(ArmAPIlocalVarJSON)) {
         return 0;//nonprimitive container
@@ -1318,9 +1350,10 @@ ArmAPI_v1GetModels(apiClient_t *apiClient)
                     localVarBodyParameters,
                     "GET");
 
-    if (apiClient->response_code == 200) {
-        printf("%s\n","Supported device configurations");
-    }
+    // uncomment below to debug the error response
+    //if (apiClient->response_code == 200) {
+    //    printf("%s\n","Supported device configurations");
+    //}
     cJSON *ArmAPIlocalVarJSON = cJSON_Parse(apiClient->dataReceived);
     if(!cJSON_IsArray(ArmAPIlocalVarJSON)) {
         return 0;//nonprimitive container
@@ -1398,9 +1431,10 @@ ArmAPI_v1GetProject(apiClient_t *apiClient, char * projectId )
                     localVarBodyParameters,
                     "GET");
 
-    if (apiClient->response_code == 200) {
-        printf("%s\n","OK");
-    }
+    // uncomment below to debug the error response
+    //if (apiClient->response_code == 200) {
+    //    printf("%s\n","OK");
+    //}
     //nonprimitive not container
     cJSON *ArmAPIlocalVarJSON = cJSON_Parse(apiClient->dataReceived);
     project_t *elementToReturn = project_parseFromJSON(ArmAPIlocalVarJSON);
@@ -1487,12 +1521,14 @@ ArmAPI_v1GetProjectInstances(apiClient_t *apiClient, char * projectId , char * n
                     localVarBodyParameters,
                     "GET");
 
-    if (apiClient->response_code == 200) {
-        printf("%s\n","Success");
-    }
-    if (apiClient->response_code == 403) {
-        printf("%s\n","Forbidden");
-    }
+    // uncomment below to debug the error response
+    //if (apiClient->response_code == 200) {
+    //    printf("%s\n","Success");
+    //}
+    // uncomment below to debug the error response
+    //if (apiClient->response_code == 403) {
+    //    printf("%s\n","Forbidden");
+    //}
     cJSON *ArmAPIlocalVarJSON = cJSON_Parse(apiClient->dataReceived);
     if(!cJSON_IsArray(ArmAPIlocalVarJSON)) {
         return 0;//nonprimitive container
@@ -1598,15 +1634,18 @@ ArmAPI_v1GetProjects(apiClient_t *apiClient, char * name , int ids_only )
                     localVarBodyParameters,
                     "GET");
 
-    if (apiClient->response_code == 200) {
-        printf("%s\n","Projects");
-    }
-    if (apiClient->response_code == 403) {
-        printf("%s\n","Forbidden");
-    }
-    if (apiClient->response_code == 404) {
-        printf("%s\n","No Projects Found");
-    }
+    // uncomment below to debug the error response
+    //if (apiClient->response_code == 200) {
+    //    printf("%s\n","Projects");
+    //}
+    // uncomment below to debug the error response
+    //if (apiClient->response_code == 403) {
+    //    printf("%s\n","Forbidden");
+    //}
+    // uncomment below to debug the error response
+    //if (apiClient->response_code == 404) {
+    //    printf("%s\n","No Projects Found");
+    //}
     cJSON *ArmAPIlocalVarJSON = cJSON_Parse(apiClient->dataReceived);
     if(!cJSON_IsArray(ArmAPIlocalVarJSON)) {
         return 0;//nonprimitive container
@@ -1718,15 +1757,18 @@ ArmAPI_v1GetSnapshot(apiClient_t *apiClient, char * instanceId , char * snapshot
                     localVarBodyParameters,
                     "GET");
 
-    if (apiClient->response_code == 200) {
-        printf("%s\n","application/json");
-    }
-    if (apiClient->response_code == 403) {
-        printf("%s\n","Forbidden");
-    }
-    if (apiClient->response_code == 404) {
-        printf("%s\n","Not Found");
-    }
+    // uncomment below to debug the error response
+    //if (apiClient->response_code == 200) {
+    //    printf("%s\n","application/json");
+    //}
+    // uncomment below to debug the error response
+    //if (apiClient->response_code == 403) {
+    //    printf("%s\n","Forbidden");
+    //}
+    // uncomment below to debug the error response
+    //if (apiClient->response_code == 404) {
+    //    printf("%s\n","Not Found");
+    //}
     //nonprimitive not container
     cJSON *ArmAPIlocalVarJSON = cJSON_Parse(apiClient->dataReceived);
     snapshot_t *elementToReturn = snapshot_parseFromJSON(ArmAPIlocalVarJSON);
@@ -1796,15 +1838,18 @@ ArmAPI_v1GetSnapshots(apiClient_t *apiClient, char * instanceId )
                     localVarBodyParameters,
                     "GET");
 
-    if (apiClient->response_code == 200) {
-        printf("%s\n","application/json");
-    }
-    if (apiClient->response_code == 403) {
-        printf("%s\n","Forbidden");
-    }
-    if (apiClient->response_code == 404) {
-        printf("%s\n","Not Found");
-    }
+    // uncomment below to debug the error response
+    //if (apiClient->response_code == 200) {
+    //    printf("%s\n","application/json");
+    //}
+    // uncomment below to debug the error response
+    //if (apiClient->response_code == 403) {
+    //    printf("%s\n","Forbidden");
+    //}
+    // uncomment below to debug the error response
+    //if (apiClient->response_code == 404) {
+    //    printf("%s\n","Not Found");
+    //}
     cJSON *ArmAPIlocalVarJSON = cJSON_Parse(apiClient->dataReceived);
     if(!cJSON_IsArray(ArmAPIlocalVarJSON)) {
         return 0;//nonprimitive container
@@ -1893,15 +1938,18 @@ ArmAPI_v1PatchInstance(apiClient_t *apiClient, char * instanceId , object_t * bo
                     localVarBodyParameters,
                     "PATCH");
 
-    if (apiClient->response_code == 200) {
-        printf("%s\n","application/json");
-    }
-    if (apiClient->response_code == 403) {
-        printf("%s\n","Forbidden");
-    }
-    if (apiClient->response_code == 404) {
-        printf("%s\n","Not Found");
-    }
+    // uncomment below to debug the error response
+    //if (apiClient->response_code == 200) {
+    //    printf("%s\n","application/json");
+    //}
+    // uncomment below to debug the error response
+    //if (apiClient->response_code == 403) {
+    //    printf("%s\n","Forbidden");
+    //}
+    // uncomment below to debug the error response
+    //if (apiClient->response_code == 404) {
+    //    printf("%s\n","Not Found");
+    //}
     //nonprimitive not container
     cJSON *ArmAPIlocalVarJSON = cJSON_Parse(apiClient->dataReceived);
     object_t *elementToReturn = object_parseFromJSON(ArmAPIlocalVarJSON);
@@ -1975,15 +2023,18 @@ ArmAPI_v1PauseInstance(apiClient_t *apiClient, char * instanceId )
                     localVarBodyParameters,
                     "POST");
 
-    if (apiClient->response_code == 204) {
-        printf("%s\n","Accepted");
-    }
-    if (apiClient->response_code == 403) {
-        printf("%s\n","Forbidden");
-    }
-    if (apiClient->response_code == 404) {
-        printf("%s\n","Not Found");
-    }
+    // uncomment below to debug the error response
+    //if (apiClient->response_code == 204) {
+    //    printf("%s\n","Accepted");
+    //}
+    // uncomment below to debug the error response
+    //if (apiClient->response_code == 403) {
+    //    printf("%s\n","Forbidden");
+    //}
+    // uncomment below to debug the error response
+    //if (apiClient->response_code == 404) {
+    //    printf("%s\n","Not Found");
+    //}
     //No return type
 end:
     if (apiClient->dataReceived) {
@@ -2033,12 +2084,14 @@ ArmAPI_v1Ready(apiClient_t *apiClient)
                     localVarBodyParameters,
                     "GET");
 
-    if (apiClient->response_code == 204) {
-        printf("%s\n","API is ready for queries");
-    }
-    if (apiClient->response_code == 503) {
-        printf("%s\n","API is not ready");
-    }
+    // uncomment below to debug the error response
+    //if (apiClient->response_code == 204) {
+    //    printf("%s\n","API is ready for queries");
+    //}
+    // uncomment below to debug the error response
+    //if (apiClient->response_code == 503) {
+    //    printf("%s\n","API is not ready");
+    //}
     //No return type
 end:
     if (apiClient->dataReceived) {
@@ -2095,15 +2148,18 @@ ArmAPI_v1RebootInstance(apiClient_t *apiClient, char * instanceId )
                     localVarBodyParameters,
                     "POST");
 
-    if (apiClient->response_code == 204) {
-        printf("%s\n","Accepted");
-    }
-    if (apiClient->response_code == 403) {
-        printf("%s\n","Forbidden");
-    }
-    if (apiClient->response_code == 404) {
-        printf("%s\n","Not Found");
-    }
+    // uncomment below to debug the error response
+    //if (apiClient->response_code == 204) {
+    //    printf("%s\n","Accepted");
+    //}
+    // uncomment below to debug the error response
+    //if (apiClient->response_code == 403) {
+    //    printf("%s\n","Forbidden");
+    //}
+    // uncomment below to debug the error response
+    //if (apiClient->response_code == 404) {
+    //    printf("%s\n","Not Found");
+    //}
     //No return type
 end:
     if (apiClient->dataReceived) {
@@ -2171,15 +2227,18 @@ ArmAPI_v1RestoreSnapshot(apiClient_t *apiClient, char * instanceId , char * snap
                     localVarBodyParameters,
                     "POST");
 
-    if (apiClient->response_code == 204) {
-        printf("%s\n","Accepted");
-    }
-    if (apiClient->response_code == 403) {
-        printf("%s\n","Forbidden");
-    }
-    if (apiClient->response_code == 404) {
-        printf("%s\n","Not Found");
-    }
+    // uncomment below to debug the error response
+    //if (apiClient->response_code == 204) {
+    //    printf("%s\n","Accepted");
+    //}
+    // uncomment below to debug the error response
+    //if (apiClient->response_code == 403) {
+    //    printf("%s\n","Forbidden");
+    //}
+    // uncomment below to debug the error response
+    //if (apiClient->response_code == 404) {
+    //    printf("%s\n","Not Found");
+    //}
     //No return type
 end:
     if (apiClient->dataReceived) {
@@ -2229,13 +2288,7 @@ ArmAPI_v1SetInstancePeripherals(apiClient_t *apiClient, char * instanceId , char
 
 
     // Body Param
-    cJSON *localVarSingleItemJSON_body = NULL;
-    if (body != NULL)
-    {
-        //string
-        localVarSingleItemJSON_body = char_convertToJSON(body);
-        localVarBodyParameters = cJSON_Print(localVarSingleItemJSON_body);
-    }
+    localVarBodyParameters = strdup(body);
     list_addElement(localVarHeaderType,"application/json"); //produces
     list_addElement(localVarContentType,"application/json"); //consumes
     apiClient_invoke(apiClient,
@@ -2248,15 +2301,18 @@ ArmAPI_v1SetInstancePeripherals(apiClient_t *apiClient, char * instanceId , char
                     localVarBodyParameters,
                     "PUT");
 
-    if (apiClient->response_code == 200) {
-        printf("%s\n","Current Peripherals State");
-    }
-    if (apiClient->response_code == 403) {
-        printf("%s\n","Forbidden");
-    }
-    if (apiClient->response_code == 404) {
-        printf("%s\n","Not Found");
-    }
+    // uncomment below to debug the error response
+    //if (apiClient->response_code == 200) {
+    //    printf("%s\n","Current Peripherals State");
+    //}
+    // uncomment below to debug the error response
+    //if (apiClient->response_code == 403) {
+    //    printf("%s\n","Forbidden");
+    //}
+    // uncomment below to debug the error response
+    //if (apiClient->response_code == 404) {
+    //    printf("%s\n","Not Found");
+    //}
     //nonprimitive not container
     cJSON *ArmAPIlocalVarJSON = cJSON_Parse(apiClient->dataReceived);
     object_t *elementToReturn = object_parseFromJSON(ArmAPIlocalVarJSON);
@@ -2278,10 +2334,6 @@ ArmAPI_v1SetInstancePeripherals(apiClient_t *apiClient, char * instanceId , char
     list_freeList(localVarContentType);
     free(localVarPath);
     free(localVarToReplace_instanceId);
-    if (localVarSingleItemJSON_body) {
-        cJSON_Delete(localVarSingleItemJSON_body);
-        localVarSingleItemJSON_body = NULL;
-    }
     free(localVarBodyParameters);
     return elementToReturn;
 end:
@@ -2340,21 +2392,26 @@ ArmAPI_v1SetInstanceState(apiClient_t *apiClient, char * instanceId , v1_set_sta
                     localVarBodyParameters,
                     "PUT");
 
-    if (apiClient->response_code == 204) {
-        printf("%s\n","Accepted");
-    }
-    if (apiClient->response_code == 400) {
-        printf("%s\n","Bad Request");
-    }
-    if (apiClient->response_code == 403) {
-        printf("%s\n","Forbidden");
-    }
-    if (apiClient->response_code == 404) {
-        printf("%s\n","Not Found");
-    }
-    if (apiClient->response_code == 409) {
-        printf("%s\n","Conflict");
-    }
+    // uncomment below to debug the error response
+    //if (apiClient->response_code == 204) {
+    //    printf("%s\n","Accepted");
+    //}
+    // uncomment below to debug the error response
+    //if (apiClient->response_code == 400) {
+    //    printf("%s\n","Bad Request");
+    //}
+    // uncomment below to debug the error response
+    //if (apiClient->response_code == 403) {
+    //    printf("%s\n","Forbidden");
+    //}
+    // uncomment below to debug the error response
+    //if (apiClient->response_code == 404) {
+    //    printf("%s\n","Not Found");
+    //}
+    // uncomment below to debug the error response
+    //if (apiClient->response_code == 409) {
+    //    printf("%s\n","Conflict");
+    //}
     //No return type
 end:
     if (apiClient->dataReceived) {
@@ -2427,15 +2484,18 @@ ArmAPI_v1SnapshotDelete(apiClient_t *apiClient, char * instanceId , char * snaps
                     localVarBodyParameters,
                     "DELETE");
 
-    if (apiClient->response_code == 204) {
-        printf("%s\n","Accepted");
-    }
-    if (apiClient->response_code == 403) {
-        printf("%s\n","Forbidden");
-    }
-    if (apiClient->response_code == 404) {
-        printf("%s\n","Not Found");
-    }
+    // uncomment below to debug the error response
+    //if (apiClient->response_code == 204) {
+    //    printf("%s\n","Accepted");
+    //}
+    // uncomment below to debug the error response
+    //if (apiClient->response_code == 403) {
+    //    printf("%s\n","Forbidden");
+    //}
+    // uncomment below to debug the error response
+    //if (apiClient->response_code == 404) {
+    //    printf("%s\n","Not Found");
+    //}
     //No return type
 end:
     if (apiClient->dataReceived) {
@@ -2514,15 +2574,18 @@ ArmAPI_v1SnapshotRename(apiClient_t *apiClient, char * instanceId , char * snaps
                     localVarBodyParameters,
                     "PATCH");
 
-    if (apiClient->response_code == 200) {
-        printf("%s\n","application/json");
-    }
-    if (apiClient->response_code == 403) {
-        printf("%s\n","Forbidden");
-    }
-    if (apiClient->response_code == 404) {
-        printf("%s\n","Not Found");
-    }
+    // uncomment below to debug the error response
+    //if (apiClient->response_code == 200) {
+    //    printf("%s\n","application/json");
+    //}
+    // uncomment below to debug the error response
+    //if (apiClient->response_code == 403) {
+    //    printf("%s\n","Forbidden");
+    //}
+    // uncomment below to debug the error response
+    //if (apiClient->response_code == 404) {
+    //    printf("%s\n","Not Found");
+    //}
     //nonprimitive not container
     cJSON *ArmAPIlocalVarJSON = cJSON_Parse(apiClient->dataReceived);
     snapshot_t *elementToReturn = snapshot_parseFromJSON(ArmAPIlocalVarJSON);
@@ -2607,18 +2670,22 @@ ArmAPI_v1StartInstance(apiClient_t *apiClient, char * instanceId , instance_star
                     localVarBodyParameters,
                     "POST");
 
-    if (apiClient->response_code == 204) {
-        printf("%s\n","Accepted");
-    }
-    if (apiClient->response_code == 403) {
-        printf("%s\n","Forbidden");
-    }
-    if (apiClient->response_code == 404) {
-        printf("%s\n","Not Found");
-    }
-    if (apiClient->response_code == 409) {
-        printf("%s\n","Conflict");
-    }
+    // uncomment below to debug the error response
+    //if (apiClient->response_code == 204) {
+    //    printf("%s\n","Accepted");
+    //}
+    // uncomment below to debug the error response
+    //if (apiClient->response_code == 403) {
+    //    printf("%s\n","Forbidden");
+    //}
+    // uncomment below to debug the error response
+    //if (apiClient->response_code == 404) {
+    //    printf("%s\n","Not Found");
+    //}
+    // uncomment below to debug the error response
+    //if (apiClient->response_code == 409) {
+    //    printf("%s\n","Conflict");
+    //}
     //No return type
 end:
     if (apiClient->dataReceived) {
@@ -2691,18 +2758,22 @@ ArmAPI_v1StopInstance(apiClient_t *apiClient, char * instanceId , instance_stop_
                     localVarBodyParameters,
                     "POST");
 
-    if (apiClient->response_code == 204) {
-        printf("%s\n","Accepted");
-    }
-    if (apiClient->response_code == 403) {
-        printf("%s\n","Forbidden");
-    }
-    if (apiClient->response_code == 404) {
-        printf("%s\n","Not Found");
-    }
-    if (apiClient->response_code == 409) {
-        printf("%s\n","Conflict");
-    }
+    // uncomment below to debug the error response
+    //if (apiClient->response_code == 204) {
+    //    printf("%s\n","Accepted");
+    //}
+    // uncomment below to debug the error response
+    //if (apiClient->response_code == 403) {
+    //    printf("%s\n","Forbidden");
+    //}
+    // uncomment below to debug the error response
+    //if (apiClient->response_code == 404) {
+    //    printf("%s\n","Not Found");
+    //}
+    // uncomment below to debug the error response
+    //if (apiClient->response_code == 409) {
+    //    printf("%s\n","Conflict");
+    //}
     //No return type
 end:
     if (apiClient->dataReceived) {
@@ -2765,15 +2836,18 @@ ArmAPI_v1UnpauseInstance(apiClient_t *apiClient, char * instanceId )
                     localVarBodyParameters,
                     "POST");
 
-    if (apiClient->response_code == 204) {
-        printf("%s\n","Accepted");
-    }
-    if (apiClient->response_code == 403) {
-        printf("%s\n","Forbidden");
-    }
-    if (apiClient->response_code == 404) {
-        printf("%s\n","Not Found");
-    }
+    // uncomment below to debug the error response
+    //if (apiClient->response_code == 204) {
+    //    printf("%s\n","Accepted");
+    //}
+    // uncomment below to debug the error response
+    //if (apiClient->response_code == 403) {
+    //    printf("%s\n","Forbidden");
+    //}
+    // uncomment below to debug the error response
+    //if (apiClient->response_code == 404) {
+    //    printf("%s\n","Not Found");
+    //}
     //No return type
 end:
     if (apiClient->dataReceived) {
@@ -2824,13 +2898,7 @@ ArmAPI_v1UploadImageData(apiClient_t *apiClient, char * imageId , char * body )
 
 
     // Body Param
-    cJSON *localVarSingleItemJSON_body = NULL;
-    if (body != NULL)
-    {
-        //string
-        localVarSingleItemJSON_body = char_convertToJSON(body);
-        localVarBodyParameters = cJSON_Print(localVarSingleItemJSON_body);
-    }
+    localVarBodyParameters = strdup(body);
     list_addElement(localVarHeaderType,"application/json"); //produces
     list_addElement(localVarContentType,"binary"); //consumes
     apiClient_invoke(apiClient,
@@ -2843,15 +2911,18 @@ ArmAPI_v1UploadImageData(apiClient_t *apiClient, char * imageId , char * body )
                     localVarBodyParameters,
                     "POST");
 
-    if (apiClient->response_code == 200) {
-        printf("%s\n","application/json");
-    }
-    if (apiClient->response_code == 404) {
-        printf("%s\n","application/json");
-    }
-    if (apiClient->response_code == 409) {
-        printf("%s\n","Conflict");
-    }
+    // uncomment below to debug the error response
+    //if (apiClient->response_code == 200) {
+    //    printf("%s\n","application/json");
+    //}
+    // uncomment below to debug the error response
+    //if (apiClient->response_code == 404) {
+    //    printf("%s\n","application/json");
+    //}
+    // uncomment below to debug the error response
+    //if (apiClient->response_code == 409) {
+    //    printf("%s\n","Conflict");
+    //}
     //nonprimitive not container
     cJSON *ArmAPIlocalVarJSON = cJSON_Parse(apiClient->dataReceived);
     image_t *elementToReturn = image_parseFromJSON(ArmAPIlocalVarJSON);
@@ -2873,10 +2944,6 @@ ArmAPI_v1UploadImageData(apiClient_t *apiClient, char * imageId , char * body )
     list_freeList(localVarContentType);
     free(localVarPath);
     free(localVarToReplace_imageId);
-    if (localVarSingleItemJSON_body) {
-        cJSON_Delete(localVarSingleItemJSON_body);
-        localVarSingleItemJSON_body = NULL;
-    }
     free(localVarBodyParameters);
     return elementToReturn;
 end:
@@ -2925,12 +2992,14 @@ ArmAPI_v1UsersLogin(apiClient_t *apiClient, credentials_t * credentials )
                     localVarBodyParameters,
                     "POST");
 
-    if (apiClient->response_code == 200) {
-        printf("%s\n","User Authorization");
-    }
-    if (apiClient->response_code == 403) {
-        printf("%s\n","Forbidden");
-    }
+    // uncomment below to debug the error response
+    //if (apiClient->response_code == 200) {
+    //    printf("%s\n","User Authorization");
+    //}
+    // uncomment below to debug the error response
+    //if (apiClient->response_code == 403) {
+    //    printf("%s\n","Forbidden");
+    //}
     //nonprimitive not container
     cJSON *ArmAPIlocalVarJSON = cJSON_Parse(apiClient->dataReceived);
     token_t *elementToReturn = token_parseFromJSON(ArmAPIlocalVarJSON);

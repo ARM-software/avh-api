@@ -43,18 +43,17 @@ cJSON *token_convertToJSON(token_t *token) {
     if (!token->token) {
         goto fail;
     }
-    
     if(cJSON_AddStringToObject(item, "token", token->token) == NULL) {
     goto fail; //String
     }
 
 
     // token->expiration
-    if(token->expiration) { 
+    if(token->expiration) {
     if(cJSON_AddStringToObject(item, "expiration", token->expiration) == NULL) {
     goto fail; //Date-Time
     }
-     } 
+    }
 
     return item;
 fail:
@@ -70,6 +69,9 @@ token_t *token_parseFromJSON(cJSON *tokenJSON){
 
     // token->token
     cJSON *token = cJSON_GetObjectItemCaseSensitive(tokenJSON, "token");
+    if (cJSON_IsNull(token)) {
+        token = NULL;
+    }
     if (!token) {
         goto end;
     }
@@ -82,6 +84,9 @@ token_t *token_parseFromJSON(cJSON *tokenJSON){
 
     // token->expiration
     cJSON *expiration = cJSON_GetObjectItemCaseSensitive(tokenJSON, "expiration");
+    if (cJSON_IsNull(expiration)) {
+        expiration = NULL;
+    }
     if (expiration) { 
     if(!cJSON_IsString(expiration))
     {

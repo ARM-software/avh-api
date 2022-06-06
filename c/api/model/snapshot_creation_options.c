@@ -37,7 +37,6 @@ cJSON *snapshot_creation_options_convertToJSON(snapshot_creation_options_t *snap
     if (!snapshot_creation_options->name) {
         goto fail;
     }
-    
     if(cJSON_AddStringToObject(item, "name", snapshot_creation_options->name) == NULL) {
     goto fail; //String
     }
@@ -56,6 +55,9 @@ snapshot_creation_options_t *snapshot_creation_options_parseFromJSON(cJSON *snap
 
     // snapshot_creation_options->name
     cJSON *name = cJSON_GetObjectItemCaseSensitive(snapshot_creation_optionsJSON, "name");
+    if (cJSON_IsNull(name)) {
+        name = NULL;
+    }
     if (!name) {
         goto end;
     }

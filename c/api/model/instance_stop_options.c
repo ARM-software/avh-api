@@ -30,11 +30,11 @@ cJSON *instance_stop_options_convertToJSON(instance_stop_options_t *instance_sto
     cJSON *item = cJSON_CreateObject();
 
     // instance_stop_options->soft
-    if(instance_stop_options->soft) { 
+    if(instance_stop_options->soft) {
     if(cJSON_AddBoolToObject(item, "soft", instance_stop_options->soft) == NULL) {
     goto fail; //Bool
     }
-     } 
+    }
 
     return item;
 fail:
@@ -50,6 +50,9 @@ instance_stop_options_t *instance_stop_options_parseFromJSON(cJSON *instance_sto
 
     // instance_stop_options->soft
     cJSON *soft = cJSON_GetObjectItemCaseSensitive(instance_stop_optionsJSON, "soft");
+    if (cJSON_IsNull(soft)) {
+        soft = NULL;
+    }
     if (soft) { 
     if(!cJSON_IsBool(soft))
     {

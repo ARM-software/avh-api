@@ -59,47 +59,47 @@ cJSON *model_software_convertToJSON(model_software_t *model_software) {
     cJSON *item = cJSON_CreateObject();
 
     // model_software->name
-    if(model_software->name) { 
+    if(model_software->name) {
     if(cJSON_AddStringToObject(item, "name", model_software->name) == NULL) {
     goto fail; //String
     }
-     } 
+    }
 
 
     // model_software->board_config
-    if(model_software->board_config) { 
+    if(model_software->board_config) {
     if(cJSON_AddStringToObject(item, "boardConfig", model_software->board_config) == NULL) {
     goto fail; //String
     }
-     } 
+    }
 
 
     // model_software->platform
-    if(model_software->platform) { 
+    if(model_software->platform) {
     if(cJSON_AddStringToObject(item, "platform", model_software->platform) == NULL) {
     goto fail; //String
     }
-     } 
+    }
 
 
     // model_software->cpid
-    if(model_software->cpid) { 
+    if(model_software->cpid) {
     if(cJSON_AddNumberToObject(item, "cpid", model_software->cpid) == NULL) {
     goto fail; //Numeric
     }
-     } 
+    }
 
 
     // model_software->bdid
-    if(model_software->bdid) { 
+    if(model_software->bdid) {
     if(cJSON_AddNumberToObject(item, "bdid", model_software->bdid) == NULL) {
     goto fail; //Numeric
     }
-     } 
+    }
 
 
     // model_software->firmwares
-    if(model_software->firmwares) { 
+    if(model_software->firmwares) {
     cJSON *firmwares = cJSON_AddArrayToObject(item, "firmwares");
     if(firmwares == NULL) {
     goto fail; //nonprimitive container
@@ -115,7 +115,7 @@ cJSON *model_software_convertToJSON(model_software_t *model_software) {
     cJSON_AddItemToArray(firmwares, itemLocal);
     }
     }
-     } 
+    }
 
     return item;
 fail:
@@ -129,8 +129,14 @@ model_software_t *model_software_parseFromJSON(cJSON *model_softwareJSON){
 
     model_software_t *model_software_local_var = NULL;
 
+    // define the local list for model_software->firmwares
+    list_t *firmwaresList = NULL;
+
     // model_software->name
     cJSON *name = cJSON_GetObjectItemCaseSensitive(model_softwareJSON, "name");
+    if (cJSON_IsNull(name)) {
+        name = NULL;
+    }
     if (name) { 
     if(!cJSON_IsString(name))
     {
@@ -140,6 +146,9 @@ model_software_t *model_software_parseFromJSON(cJSON *model_softwareJSON){
 
     // model_software->board_config
     cJSON *board_config = cJSON_GetObjectItemCaseSensitive(model_softwareJSON, "boardConfig");
+    if (cJSON_IsNull(board_config)) {
+        board_config = NULL;
+    }
     if (board_config) { 
     if(!cJSON_IsString(board_config))
     {
@@ -149,6 +158,9 @@ model_software_t *model_software_parseFromJSON(cJSON *model_softwareJSON){
 
     // model_software->platform
     cJSON *platform = cJSON_GetObjectItemCaseSensitive(model_softwareJSON, "platform");
+    if (cJSON_IsNull(platform)) {
+        platform = NULL;
+    }
     if (platform) { 
     if(!cJSON_IsString(platform))
     {
@@ -158,6 +170,9 @@ model_software_t *model_software_parseFromJSON(cJSON *model_softwareJSON){
 
     // model_software->cpid
     cJSON *cpid = cJSON_GetObjectItemCaseSensitive(model_softwareJSON, "cpid");
+    if (cJSON_IsNull(cpid)) {
+        cpid = NULL;
+    }
     if (cpid) { 
     if(!cJSON_IsNumber(cpid))
     {
@@ -167,6 +182,9 @@ model_software_t *model_software_parseFromJSON(cJSON *model_softwareJSON){
 
     // model_software->bdid
     cJSON *bdid = cJSON_GetObjectItemCaseSensitive(model_softwareJSON, "bdid");
+    if (cJSON_IsNull(bdid)) {
+        bdid = NULL;
+    }
     if (bdid) { 
     if(!cJSON_IsNumber(bdid))
     {
@@ -176,9 +194,11 @@ model_software_t *model_software_parseFromJSON(cJSON *model_softwareJSON){
 
     // model_software->firmwares
     cJSON *firmwares = cJSON_GetObjectItemCaseSensitive(model_softwareJSON, "firmwares");
-    list_t *firmwaresList;
+    if (cJSON_IsNull(firmwares)) {
+        firmwares = NULL;
+    }
     if (firmwares) { 
-    cJSON *firmwares_local_nonprimitive;
+    cJSON *firmwares_local_nonprimitive = NULL;
     if(!cJSON_IsArray(firmwares)){
         goto end; //nonprimitive container
     }
@@ -208,6 +228,15 @@ model_software_t *model_software_parseFromJSON(cJSON *model_softwareJSON){
 
     return model_software_local_var;
 end:
+    if (firmwaresList) {
+        listEntry_t *listEntry = NULL;
+        list_ForEach(listEntry, firmwaresList) {
+            firmware_free(listEntry->data);
+            listEntry->data = NULL;
+        }
+        list_freeList(firmwaresList);
+        firmwaresList = NULL;
+    }
     return NULL;
 
 }

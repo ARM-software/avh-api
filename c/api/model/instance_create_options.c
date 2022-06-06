@@ -129,26 +129,25 @@ cJSON *instance_create_options_convertToJSON(instance_create_options_t *instance
     cJSON *item = cJSON_CreateObject();
 
     // instance_create_options->name
-    if(instance_create_options->name) { 
+    if(instance_create_options->name) {
     if(cJSON_AddStringToObject(item, "name", instance_create_options->name) == NULL) {
     goto fail; //String
     }
-     } 
+    }
 
 
     // instance_create_options->key
-    if(instance_create_options->key) { 
+    if(instance_create_options->key) {
     if(cJSON_AddStringToObject(item, "key", instance_create_options->key) == NULL) {
     goto fail; //String
     }
-     } 
+    }
 
 
     // instance_create_options->flavor
     if (!instance_create_options->flavor) {
         goto fail;
     }
-    
     if(cJSON_AddStringToObject(item, "flavor", instance_create_options->flavor) == NULL) {
     goto fail; //String
     }
@@ -158,7 +157,6 @@ cJSON *instance_create_options_convertToJSON(instance_create_options_t *instance
     if (!instance_create_options->project) {
         goto fail;
     }
-    
     if(cJSON_AddStringToObject(item, "project", instance_create_options->project) == NULL) {
     goto fail; //String
     }
@@ -168,22 +166,21 @@ cJSON *instance_create_options_convertToJSON(instance_create_options_t *instance
     if (!instance_create_options->os) {
         goto fail;
     }
-    
     if(cJSON_AddStringToObject(item, "os", instance_create_options->os) == NULL) {
     goto fail; //String
     }
 
 
     // instance_create_options->osbuild
-    if(instance_create_options->osbuild) { 
+    if(instance_create_options->osbuild) {
     if(cJSON_AddStringToObject(item, "osbuild", instance_create_options->osbuild) == NULL) {
     goto fail; //String
     }
-     } 
+    }
 
 
     // instance_create_options->patches
-    if(instance_create_options->patches) { 
+    if(instance_create_options->patches) {
     cJSON *patches = cJSON_AddArrayToObject(item, "patches");
     if(patches == NULL) {
         goto fail; //primitive container
@@ -196,59 +193,59 @@ cJSON *instance_create_options_convertToJSON(instance_create_options_t *instance
         goto fail;
     }
     }
-     } 
+    }
 
 
     // instance_create_options->ipsw
-    if(instance_create_options->ipsw) { 
+    if(instance_create_options->ipsw) {
     if(cJSON_AddStringToObject(item, "ipsw", instance_create_options->ipsw) == NULL) {
     goto fail; //String
     }
-     } 
+    }
 
 
     // instance_create_options->ipsw_sha1
-    if(instance_create_options->ipsw_sha1) { 
+    if(instance_create_options->ipsw_sha1) {
     if(cJSON_AddStringToObject(item, "ipswSHA1", instance_create_options->ipsw_sha1) == NULL) {
     goto fail; //String
     }
-     } 
+    }
 
 
     // instance_create_options->ipsw_md5
-    if(instance_create_options->ipsw_md5) { 
+    if(instance_create_options->ipsw_md5) {
     if(cJSON_AddStringToObject(item, "ipswMD5", instance_create_options->ipsw_md5) == NULL) {
     goto fail; //String
     }
-     } 
+    }
 
 
     // instance_create_options->orig_ipsw_url
-    if(instance_create_options->orig_ipsw_url) { 
+    if(instance_create_options->orig_ipsw_url) {
     if(cJSON_AddStringToObject(item, "origIpswUrl", instance_create_options->orig_ipsw_url) == NULL) {
     goto fail; //String
     }
-     } 
+    }
 
 
     // instance_create_options->encrypt
-    if(instance_create_options->encrypt) { 
+    if(instance_create_options->encrypt) {
     if(cJSON_AddBoolToObject(item, "encrypt", instance_create_options->encrypt) == NULL) {
     goto fail; //Bool
     }
-     } 
+    }
 
 
     // instance_create_options->override_wifi_mac
-    if(instance_create_options->override_wifi_mac) { 
+    if(instance_create_options->override_wifi_mac) {
     if(cJSON_AddStringToObject(item, "overrideWifiMAC", instance_create_options->override_wifi_mac) == NULL) {
     goto fail; //String
     }
-     } 
+    }
 
 
     // instance_create_options->volume
-    if(instance_create_options->volume) { 
+    if(instance_create_options->volume) {
     cJSON *volume_local_JSON = volume_options_convertToJSON(instance_create_options->volume);
     if(volume_local_JSON == NULL) {
     goto fail; //model
@@ -257,19 +254,19 @@ cJSON *instance_create_options_convertToJSON(instance_create_options_t *instance
     if(item->child == NULL) {
     goto fail;
     }
-     } 
+    }
 
 
     // instance_create_options->snapshot
-    if(instance_create_options->snapshot) { 
+    if(instance_create_options->snapshot) {
     if(cJSON_AddStringToObject(item, "snapshot", instance_create_options->snapshot) == NULL) {
     goto fail; //String
     }
-     } 
+    }
 
 
     // instance_create_options->boot_options
-    if(instance_create_options->boot_options) { 
+    if(instance_create_options->boot_options) {
     cJSON *boot_options_local_JSON = instance_boot_options_convertToJSON(instance_create_options->boot_options);
     if(boot_options_local_JSON == NULL) {
     goto fail; //model
@@ -278,11 +275,11 @@ cJSON *instance_create_options_convertToJSON(instance_create_options_t *instance
     if(item->child == NULL) {
     goto fail;
     }
-     } 
+    }
 
 
     // instance_create_options->device
-    if(instance_create_options->device) { 
+    if(instance_create_options->device) {
     cJSON *device_local_JSON = model_convertToJSON(instance_create_options->device);
     if(device_local_JSON == NULL) {
     goto fail; //model
@@ -291,7 +288,7 @@ cJSON *instance_create_options_convertToJSON(instance_create_options_t *instance
     if(item->child == NULL) {
     goto fail;
     }
-     } 
+    }
 
     return item;
 fail:
@@ -305,6 +302,9 @@ instance_create_options_t *instance_create_options_parseFromJSON(cJSON *instance
 
     instance_create_options_t *instance_create_options_local_var = NULL;
 
+    // define the local list for instance_create_options->patches
+    list_t *patchesList = NULL;
+
     // define the local variable for instance_create_options->volume
     volume_options_t *volume_local_nonprim = NULL;
 
@@ -316,6 +316,9 @@ instance_create_options_t *instance_create_options_parseFromJSON(cJSON *instance
 
     // instance_create_options->name
     cJSON *name = cJSON_GetObjectItemCaseSensitive(instance_create_optionsJSON, "name");
+    if (cJSON_IsNull(name)) {
+        name = NULL;
+    }
     if (name) { 
     if(!cJSON_IsString(name))
     {
@@ -325,6 +328,9 @@ instance_create_options_t *instance_create_options_parseFromJSON(cJSON *instance
 
     // instance_create_options->key
     cJSON *key = cJSON_GetObjectItemCaseSensitive(instance_create_optionsJSON, "key");
+    if (cJSON_IsNull(key)) {
+        key = NULL;
+    }
     if (key) { 
     if(!cJSON_IsString(key))
     {
@@ -334,6 +340,9 @@ instance_create_options_t *instance_create_options_parseFromJSON(cJSON *instance
 
     // instance_create_options->flavor
     cJSON *flavor = cJSON_GetObjectItemCaseSensitive(instance_create_optionsJSON, "flavor");
+    if (cJSON_IsNull(flavor)) {
+        flavor = NULL;
+    }
     if (!flavor) {
         goto end;
     }
@@ -346,6 +355,9 @@ instance_create_options_t *instance_create_options_parseFromJSON(cJSON *instance
 
     // instance_create_options->project
     cJSON *project = cJSON_GetObjectItemCaseSensitive(instance_create_optionsJSON, "project");
+    if (cJSON_IsNull(project)) {
+        project = NULL;
+    }
     if (!project) {
         goto end;
     }
@@ -358,6 +370,9 @@ instance_create_options_t *instance_create_options_parseFromJSON(cJSON *instance
 
     // instance_create_options->os
     cJSON *os = cJSON_GetObjectItemCaseSensitive(instance_create_optionsJSON, "os");
+    if (cJSON_IsNull(os)) {
+        os = NULL;
+    }
     if (!os) {
         goto end;
     }
@@ -370,6 +385,9 @@ instance_create_options_t *instance_create_options_parseFromJSON(cJSON *instance
 
     // instance_create_options->osbuild
     cJSON *osbuild = cJSON_GetObjectItemCaseSensitive(instance_create_optionsJSON, "osbuild");
+    if (cJSON_IsNull(osbuild)) {
+        osbuild = NULL;
+    }
     if (osbuild) { 
     if(!cJSON_IsString(osbuild))
     {
@@ -379,9 +397,11 @@ instance_create_options_t *instance_create_options_parseFromJSON(cJSON *instance
 
     // instance_create_options->patches
     cJSON *patches = cJSON_GetObjectItemCaseSensitive(instance_create_optionsJSON, "patches");
-    list_t *patchesList;
+    if (cJSON_IsNull(patches)) {
+        patches = NULL;
+    }
     if (patches) { 
-    cJSON *patches_local;
+    cJSON *patches_local = NULL;
     if(!cJSON_IsArray(patches)) {
         goto end;//primitive container
     }
@@ -399,6 +419,9 @@ instance_create_options_t *instance_create_options_parseFromJSON(cJSON *instance
 
     // instance_create_options->ipsw
     cJSON *ipsw = cJSON_GetObjectItemCaseSensitive(instance_create_optionsJSON, "ipsw");
+    if (cJSON_IsNull(ipsw)) {
+        ipsw = NULL;
+    }
     if (ipsw) { 
     if(!cJSON_IsString(ipsw))
     {
@@ -408,6 +431,9 @@ instance_create_options_t *instance_create_options_parseFromJSON(cJSON *instance
 
     // instance_create_options->ipsw_sha1
     cJSON *ipsw_sha1 = cJSON_GetObjectItemCaseSensitive(instance_create_optionsJSON, "ipswSHA1");
+    if (cJSON_IsNull(ipsw_sha1)) {
+        ipsw_sha1 = NULL;
+    }
     if (ipsw_sha1) { 
     if(!cJSON_IsString(ipsw_sha1))
     {
@@ -417,6 +443,9 @@ instance_create_options_t *instance_create_options_parseFromJSON(cJSON *instance
 
     // instance_create_options->ipsw_md5
     cJSON *ipsw_md5 = cJSON_GetObjectItemCaseSensitive(instance_create_optionsJSON, "ipswMD5");
+    if (cJSON_IsNull(ipsw_md5)) {
+        ipsw_md5 = NULL;
+    }
     if (ipsw_md5) { 
     if(!cJSON_IsString(ipsw_md5))
     {
@@ -426,6 +455,9 @@ instance_create_options_t *instance_create_options_parseFromJSON(cJSON *instance
 
     // instance_create_options->orig_ipsw_url
     cJSON *orig_ipsw_url = cJSON_GetObjectItemCaseSensitive(instance_create_optionsJSON, "origIpswUrl");
+    if (cJSON_IsNull(orig_ipsw_url)) {
+        orig_ipsw_url = NULL;
+    }
     if (orig_ipsw_url) { 
     if(!cJSON_IsString(orig_ipsw_url))
     {
@@ -435,6 +467,9 @@ instance_create_options_t *instance_create_options_parseFromJSON(cJSON *instance
 
     // instance_create_options->encrypt
     cJSON *encrypt = cJSON_GetObjectItemCaseSensitive(instance_create_optionsJSON, "encrypt");
+    if (cJSON_IsNull(encrypt)) {
+        encrypt = NULL;
+    }
     if (encrypt) { 
     if(!cJSON_IsBool(encrypt))
     {
@@ -444,6 +479,9 @@ instance_create_options_t *instance_create_options_parseFromJSON(cJSON *instance
 
     // instance_create_options->override_wifi_mac
     cJSON *override_wifi_mac = cJSON_GetObjectItemCaseSensitive(instance_create_optionsJSON, "overrideWifiMAC");
+    if (cJSON_IsNull(override_wifi_mac)) {
+        override_wifi_mac = NULL;
+    }
     if (override_wifi_mac) { 
     if(!cJSON_IsString(override_wifi_mac))
     {
@@ -453,12 +491,18 @@ instance_create_options_t *instance_create_options_parseFromJSON(cJSON *instance
 
     // instance_create_options->volume
     cJSON *volume = cJSON_GetObjectItemCaseSensitive(instance_create_optionsJSON, "volume");
+    if (cJSON_IsNull(volume)) {
+        volume = NULL;
+    }
     if (volume) { 
     volume_local_nonprim = volume_options_parseFromJSON(volume); //nonprimitive
     }
 
     // instance_create_options->snapshot
     cJSON *snapshot = cJSON_GetObjectItemCaseSensitive(instance_create_optionsJSON, "snapshot");
+    if (cJSON_IsNull(snapshot)) {
+        snapshot = NULL;
+    }
     if (snapshot) { 
     if(!cJSON_IsString(snapshot))
     {
@@ -468,12 +512,18 @@ instance_create_options_t *instance_create_options_parseFromJSON(cJSON *instance
 
     // instance_create_options->boot_options
     cJSON *boot_options = cJSON_GetObjectItemCaseSensitive(instance_create_optionsJSON, "bootOptions");
+    if (cJSON_IsNull(boot_options)) {
+        boot_options = NULL;
+    }
     if (boot_options) { 
     boot_options_local_nonprim = instance_boot_options_parseFromJSON(boot_options); //nonprimitive
     }
 
     // instance_create_options->device
     cJSON *device = cJSON_GetObjectItemCaseSensitive(instance_create_optionsJSON, "device");
+    if (cJSON_IsNull(device)) {
+        device = NULL;
+    }
     if (device) { 
     device_local_nonprim = model_parseFromJSON(device); //nonprimitive
     }
@@ -501,6 +551,15 @@ instance_create_options_t *instance_create_options_parseFromJSON(cJSON *instance
 
     return instance_create_options_local_var;
 end:
+    if (patchesList) {
+        listEntry_t *listEntry = NULL;
+        list_ForEach(listEntry, patchesList) {
+            free(listEntry->data);
+            listEntry->data = NULL;
+        }
+        list_freeList(patchesList);
+        patchesList = NULL;
+    }
     if (volume_local_nonprim) {
         volume_options_free(volume_local_nonprim);
         volume_local_nonprim = NULL;

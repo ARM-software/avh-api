@@ -62,14 +62,15 @@ cJSON *api_conflict_error_convertToJSON(api_conflict_error_t *api_conflict_error
     if (!api_conflict_error->error) {
         goto fail;
     }
-    
     if(cJSON_AddStringToObject(item, "error", api_conflict_error->error) == NULL) {
     goto fail; //String
     }
 
 
     // api_conflict_error->error_id
-    
+    if (arm_api_api_conflict_error_ERRORID_NULL == api_conflict_error->error_id) {
+        goto fail;
+    }
     if(cJSON_AddStringToObject(item, "errorID", error_idapi_conflict_error_ToString(api_conflict_error->error_id)) == NULL)
     {
     goto fail; //Enum
@@ -77,7 +78,7 @@ cJSON *api_conflict_error_convertToJSON(api_conflict_error_t *api_conflict_error
 
 
     // api_conflict_error->object
-    if(api_conflict_error->object) { 
+    if(api_conflict_error->object) {
     cJSON *object_object = object_convertToJSON(api_conflict_error->object);
     if(object_object == NULL) {
     goto fail; //model
@@ -86,7 +87,7 @@ cJSON *api_conflict_error_convertToJSON(api_conflict_error_t *api_conflict_error
     if(item->child == NULL) {
     goto fail;
     }
-     } 
+    }
 
     return item;
 fail:
@@ -102,6 +103,9 @@ api_conflict_error_t *api_conflict_error_parseFromJSON(cJSON *api_conflict_error
 
     // api_conflict_error->error
     cJSON *error = cJSON_GetObjectItemCaseSensitive(api_conflict_errorJSON, "error");
+    if (cJSON_IsNull(error)) {
+        error = NULL;
+    }
     if (!error) {
         goto end;
     }
@@ -114,6 +118,9 @@ api_conflict_error_t *api_conflict_error_parseFromJSON(cJSON *api_conflict_error
 
     // api_conflict_error->error_id
     cJSON *error_id = cJSON_GetObjectItemCaseSensitive(api_conflict_errorJSON, "errorID");
+    if (cJSON_IsNull(error_id)) {
+        error_id = NULL;
+    }
     if (!error_id) {
         goto end;
     }
@@ -128,6 +135,9 @@ api_conflict_error_t *api_conflict_error_parseFromJSON(cJSON *api_conflict_error
 
     // api_conflict_error->object
     cJSON *object = cJSON_GetObjectItemCaseSensitive(api_conflict_errorJSON, "object");
+    if (cJSON_IsNull(object)) {
+        object = NULL;
+    }
     object_t *object_local_object = NULL;
     if (object) { 
     object_local_object = object_parseFromJSON(object); //object

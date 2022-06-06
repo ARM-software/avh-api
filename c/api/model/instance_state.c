@@ -22,7 +22,7 @@ arm_api_instance_state__e instance_state_instance_state_FromString(char* instanc
     return 0;
 }
 
-cJSON *instance_state_instance_state_convertToJSON(arm_api_instance_state__e instance_state) {
+cJSON *instance_state_convertToJSON(arm_api_instance_state__e instance_state) {
     cJSON *item = cJSON_CreateObject();
     if(cJSON_AddStringToObject(item, "instance_state", instance_state_instance_state_ToString(instance_state)) == NULL) {
         goto fail;
@@ -33,15 +33,9 @@ fail:
     return NULL;
 }
 
-arm_api_instance_state__e instance_state_instance_state_parseFromJSON(cJSON *instance_stateJSON) {
-    arm_api_instance_state__e *instance_state = NULL;
-    arm_api_instance_state__e instance_stateVariable;
-    cJSON *instance_stateVar = cJSON_GetObjectItemCaseSensitive(instance_stateJSON, "instance_state");
-    if(!cJSON_IsString(instance_stateVar) || (instance_stateVar->valuestring == NULL)){
-        goto end;
+arm_api_instance_state__e instance_state_parseFromJSON(cJSON *instance_stateJSON) {
+    if(!cJSON_IsString(instance_stateJSON) || (instance_stateJSON->valuestring == NULL)) {
+        return 0;
     }
-    instance_stateVariable = instance_state_instance_state_FromString(instance_stateVar->valuestring);
-    return instance_stateVariable;
-end:
-    return 0;
+    return instance_state_instance_state_FromString(instance_stateJSON->valuestring);
 }

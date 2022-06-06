@@ -49,7 +49,6 @@ cJSON *api_error_convertToJSON(api_error_t *api_error) {
     if (!api_error->error) {
         goto fail;
     }
-    
     if(cJSON_AddStringToObject(item, "error", api_error->error) == NULL) {
     goto fail; //String
     }
@@ -59,18 +58,17 @@ cJSON *api_error_convertToJSON(api_error_t *api_error) {
     if (!api_error->error_id) {
         goto fail;
     }
-    
     if(cJSON_AddStringToObject(item, "errorID", api_error->error_id) == NULL) {
     goto fail; //String
     }
 
 
     // api_error->original_error
-    if(api_error->original_error) { 
+    if(api_error->original_error) {
     if(cJSON_AddStringToObject(item, "originalError", api_error->original_error) == NULL) {
     goto fail; //String
     }
-     } 
+    }
 
     return item;
 fail:
@@ -86,6 +84,9 @@ api_error_t *api_error_parseFromJSON(cJSON *api_errorJSON){
 
     // api_error->error
     cJSON *error = cJSON_GetObjectItemCaseSensitive(api_errorJSON, "error");
+    if (cJSON_IsNull(error)) {
+        error = NULL;
+    }
     if (!error) {
         goto end;
     }
@@ -98,6 +99,9 @@ api_error_t *api_error_parseFromJSON(cJSON *api_errorJSON){
 
     // api_error->error_id
     cJSON *error_id = cJSON_GetObjectItemCaseSensitive(api_errorJSON, "errorID");
+    if (cJSON_IsNull(error_id)) {
+        error_id = NULL;
+    }
     if (!error_id) {
         goto end;
     }
@@ -110,6 +114,9 @@ api_error_t *api_error_parseFromJSON(cJSON *api_errorJSON){
 
     // api_error->original_error
     cJSON *original_error = cJSON_GetObjectItemCaseSensitive(api_errorJSON, "originalError");
+    if (cJSON_IsNull(original_error)) {
+        original_error = NULL;
+    }
     if (original_error) { 
     if(!cJSON_IsString(original_error))
     {

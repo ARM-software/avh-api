@@ -16,8 +16,7 @@ apiClient_t *apiClient_create() {
     apiClient->progress_func = NULL;
     apiClient->progress_data = NULL;
     apiClient->response_code = 0;
-    apiClient->username = NULL;
-    apiClient->password = NULL;
+    apiClient->accessToken = NULL;
 
     return apiClient;
 }
@@ -44,8 +43,7 @@ apiClient_t *apiClient_create_with_base_path(const char *basePath
     apiClient->progress_func = NULL;
     apiClient->progress_data = NULL;
     apiClient->response_code = 0;
-    apiClient->username = NULL;
-    apiClient->password = NULL;
+    apiClient->accessToken = NULL;
 
     return apiClient;
 }
@@ -57,11 +55,8 @@ void apiClient_free(apiClient_t *apiClient) {
     apiClient->data_callback_func = NULL;
     apiClient->progress_func = NULL;
     apiClient->progress_data = NULL;
-    if(apiClient->username) {
-        free(apiClient->username);
-    }
-    if(apiClient->password) {
-        free(apiClient->password);
+    if(apiClient->accessToken) {
+        free(apiClient->accessToken);
     }
     free(apiClient);
 }
@@ -380,6 +375,18 @@ void apiClient_invoke(apiClient_t    *apiClient,
             curl_easy_setopt(handle, CURLOPT_NOPROGRESS, 0L);
         }
 
+        // this would only be generated for bearer token authentication
+        if(apiClient->accessToken != NULL)
+        {
+            int authHeaderSize;
+            char *authHeader = NULL;
+
+            authHeaderSize = snprintf(NULL, 0, "Authorization: Bearer %s", apiClient->accessToken) + 1;
+            authHeader = malloc(authHeaderSize);
+            snprintf(authHeader, authHeaderSize, "Authorization: Bearer %s", apiClient->accessToken);
+            headers = curl_slist_append(headers, authHeader);
+            free(authHeader);
+        }
 
         char *targetUrl =
             assembleTargetUrl(apiClient->basePath,
@@ -396,29 +403,6 @@ void apiClient_invoke(apiClient_t    *apiClient,
         curl_easy_setopt(handle, CURLOPT_HTTPHEADER, headers);
         curl_easy_setopt(handle, CURLOPT_VERBOSE, 0); // to get curl debug msg 0: to disable, 1L:to enable
 
-        // this would only be generated for basic authentication:
-        char *authenticationToken;
-
-        if((apiClient->username != NULL) &&
-           (apiClient->password != NULL) )
-        {
-            authenticationToken = malloc(strlen(
-                                 apiClient->username) +
-                                         strlen(
-                                 apiClient->password) +
-                                         2);
-            sprintf(authenticationToken,
-                    "%s:%s",
-                    apiClient->username,
-                    apiClient->password);
-
-            curl_easy_setopt(handle,
-                             CURLOPT_HTTPAUTH,
-                             CURLAUTH_BASIC);
-            curl_easy_setopt(handle,
-                             CURLOPT_USERPWD,
-                             authenticationToken);
-        }
 
         if(bodyParameters != NULL) {
             postData(handle, bodyParameters);
@@ -426,7 +410,7 @@ void apiClient_invoke(apiClient_t    *apiClient,
 
         res = curl_easy_perform(handle);
 
-        curl_slist_freeList_all(headers);
+        curl_slist_free_all(headers);
 
         free(targetUrl);
 
@@ -441,11 +425,6 @@ void apiClient_invoke(apiClient_t    *apiClient,
             curl_easy_getinfo(handle, CURLINFO_SCHEME, &scheme);
             fprintf(stderr, "curl_easy_perform() failed\n\nURL: %s\nIP: %s\nPORT: %li\nSCHEME: %s\nStrERROR: %s\n",url,ip,port,scheme,
             curl_easy_strerror(res));
-        }
-        if((apiClient->username != NULL) &&
-        (apiClient->password != NULL) )
-        {
-        free(authenticationToken);
         }
 
         curl_easy_cleanup(handle);

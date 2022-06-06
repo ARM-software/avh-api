@@ -30,11 +30,11 @@ cJSON *instance_netmon_state_convertToJSON(instance_netmon_state_t *instance_net
     cJSON *item = cJSON_CreateObject();
 
     // instance_netmon_state->enabled
-    if(instance_netmon_state->enabled) { 
+    if(instance_netmon_state->enabled) {
     if(cJSON_AddBoolToObject(item, "enabled", instance_netmon_state->enabled) == NULL) {
     goto fail; //Bool
     }
-     } 
+    }
 
     return item;
 fail:
@@ -50,6 +50,9 @@ instance_netmon_state_t *instance_netmon_state_parseFromJSON(cJSON *instance_net
 
     // instance_netmon_state->enabled
     cJSON *enabled = cJSON_GetObjectItemCaseSensitive(instance_netmon_stateJSON, "enabled");
+    if (cJSON_IsNull(enabled)) {
+        enabled = NULL;
+    }
     if (enabled) { 
     if(!cJSON_IsBool(enabled))
     {

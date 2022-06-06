@@ -36,35 +36,35 @@ cJSON *project_usage_convertToJSON(project_usage_t *project_usage) {
     cJSON *item = cJSON_CreateObject();
 
     // project_usage->cores
-    if(project_usage->cores) { 
+    if(project_usage->cores) {
     if(cJSON_AddNumberToObject(item, "cores", project_usage->cores) == NULL) {
     goto fail; //Numeric
     }
-     } 
+    }
 
 
     // project_usage->instances
-    if(project_usage->instances) { 
+    if(project_usage->instances) {
     if(cJSON_AddNumberToObject(item, "instances", project_usage->instances) == NULL) {
     goto fail; //Numeric
     }
-     } 
+    }
 
 
     // project_usage->ram
-    if(project_usage->ram) { 
+    if(project_usage->ram) {
     if(cJSON_AddNumberToObject(item, "ram", project_usage->ram) == NULL) {
     goto fail; //Numeric
     }
-     } 
+    }
 
 
     // project_usage->gpu
-    if(project_usage->gpu) { 
+    if(project_usage->gpu) {
     if(cJSON_AddNumberToObject(item, "gpu", project_usage->gpu) == NULL) {
     goto fail; //Numeric
     }
-     } 
+    }
 
     return item;
 fail:
@@ -80,6 +80,9 @@ project_usage_t *project_usage_parseFromJSON(cJSON *project_usageJSON){
 
     // project_usage->cores
     cJSON *cores = cJSON_GetObjectItemCaseSensitive(project_usageJSON, "cores");
+    if (cJSON_IsNull(cores)) {
+        cores = NULL;
+    }
     if (cores) { 
     if(!cJSON_IsNumber(cores))
     {
@@ -89,6 +92,9 @@ project_usage_t *project_usage_parseFromJSON(cJSON *project_usageJSON){
 
     // project_usage->instances
     cJSON *instances = cJSON_GetObjectItemCaseSensitive(project_usageJSON, "instances");
+    if (cJSON_IsNull(instances)) {
+        instances = NULL;
+    }
     if (instances) { 
     if(!cJSON_IsNumber(instances))
     {
@@ -98,6 +104,9 @@ project_usage_t *project_usage_parseFromJSON(cJSON *project_usageJSON){
 
     // project_usage->ram
     cJSON *ram = cJSON_GetObjectItemCaseSensitive(project_usageJSON, "ram");
+    if (cJSON_IsNull(ram)) {
+        ram = NULL;
+    }
     if (ram) { 
     if(!cJSON_IsNumber(ram))
     {
@@ -107,6 +116,9 @@ project_usage_t *project_usage_parseFromJSON(cJSON *project_usageJSON){
 
     // project_usage->gpu
     cJSON *gpu = cJSON_GetObjectItemCaseSensitive(project_usageJSON, "gpu");
+    if (cJSON_IsNull(gpu)) {
+        gpu = NULL;
+    }
     if (gpu) { 
     if(!cJSON_IsNumber(gpu))
     {

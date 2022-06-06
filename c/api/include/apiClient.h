@@ -28,8 +28,7 @@ typedef struct apiClient_t {
     int (*progress_func)(void *, curl_off_t, curl_off_t, curl_off_t, curl_off_t);
     void *progress_data;
     long response_code;
-    char *username;
-    char *password;
+    char *accessToken;
 } apiClient_t;
 
 apiClient_t* apiClient_create();

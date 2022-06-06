@@ -45,15 +45,15 @@ cJSON *volume_options_convertToJSON(volume_options_t *volume_options) {
     cJSON *item = cJSON_CreateObject();
 
     // volume_options->allocate
-    if(volume_options->allocate) { 
+    if(volume_options->allocate) {
     if(cJSON_AddNumberToObject(item, "allocate", volume_options->allocate) == NULL) {
     goto fail; //Numeric
     }
-     } 
+    }
 
 
     // volume_options->partitions
-    if(volume_options->partitions) { 
+    if(volume_options->partitions) {
     cJSON *partitions = cJSON_AddArrayToObject(item, "partitions");
     if(partitions == NULL) {
     goto fail; //nonprimitive container
@@ -69,15 +69,15 @@ cJSON *volume_options_convertToJSON(volume_options_t *volume_options) {
     cJSON_AddItemToArray(partitions, itemLocal);
     }
     }
-     } 
+    }
 
 
     // volume_options->compute_node
-    if(volume_options->compute_node) { 
+    if(volume_options->compute_node) {
     if(cJSON_AddStringToObject(item, "computeNode", volume_options->compute_node) == NULL) {
     goto fail; //String
     }
-     } 
+    }
 
     return item;
 fail:
@@ -91,8 +91,14 @@ volume_options_t *volume_options_parseFromJSON(cJSON *volume_optionsJSON){
 
     volume_options_t *volume_options_local_var = NULL;
 
+    // define the local list for volume_options->partitions
+    list_t *partitionsList = NULL;
+
     // volume_options->allocate
     cJSON *allocate = cJSON_GetObjectItemCaseSensitive(volume_optionsJSON, "allocate");
+    if (cJSON_IsNull(allocate)) {
+        allocate = NULL;
+    }
     if (allocate) { 
     if(!cJSON_IsNumber(allocate))
     {
@@ -102,9 +108,11 @@ volume_options_t *volume_options_parseFromJSON(cJSON *volume_optionsJSON){
 
     // volume_options->partitions
     cJSON *partitions = cJSON_GetObjectItemCaseSensitive(volume_optionsJSON, "partitions");
-    list_t *partitionsList;
+    if (cJSON_IsNull(partitions)) {
+        partitions = NULL;
+    }
     if (partitions) { 
-    cJSON *partitions_local_nonprimitive;
+    cJSON *partitions_local_nonprimitive = NULL;
     if(!cJSON_IsArray(partitions)){
         goto end; //nonprimitive container
     }
@@ -124,6 +132,9 @@ volume_options_t *volume_options_parseFromJSON(cJSON *volume_optionsJSON){
 
     // volume_options->compute_node
     cJSON *compute_node = cJSON_GetObjectItemCaseSensitive(volume_optionsJSON, "computeNode");
+    if (cJSON_IsNull(compute_node)) {
+        compute_node = NULL;
+    }
     if (compute_node) { 
     if(!cJSON_IsString(compute_node))
     {
@@ -140,6 +151,15 @@ volume_options_t *volume_options_parseFromJSON(cJSON *volume_optionsJSON){
 
     return volume_options_local_var;
 end:
+    if (partitionsList) {
+        listEntry_t *listEntry = NULL;
+        list_ForEach(listEntry, partitionsList) {
+            object_free(listEntry->data);
+            listEntry->data = NULL;
+        }
+        list_freeList(partitionsList);
+        partitionsList = NULL;
+    }
     return NULL;
 
 }

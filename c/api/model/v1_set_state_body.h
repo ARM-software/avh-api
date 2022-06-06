@@ -17,23 +17,15 @@ typedef struct v1_set_state_body_t v1_set_state_body_t;
 
 #include "instance_state.h"
 
-// Enum  for v1_set_state_body
-
-typedef enum  { arm_api_v1_set_state_body__NULL = 0, arm_api_v1_set_state_body__on, arm_api_v1_set_state_body__off, arm_api_v1_set_state_body__deleting, arm_api_v1_set_state_body__creating, arm_api_v1_set_state_body__restoring, arm_api_v1_set_state_body__paused, arm_api_v1_set_state_body__rebooting, arm_api_v1_set_state_body__error } arm_api_v1_set_state_body__e;
-
-char* v1_set_state_body_state_ToString(arm_api_v1_set_state_body__e state);
-
-arm_api_v1_set_state_body__e v1_set_state_body_state_FromString(char* state);
-
 
 
 typedef struct v1_set_state_body_t {
-    instance_state_t *state; // custom
+    arm_api_instance_state__e state; //referenced enum
 
 } v1_set_state_body_t;
 
 v1_set_state_body_t *v1_set_state_body_create(
-    instance_state_t *state
+    arm_api_instance_state__e state
 );
 
 void v1_set_state_body_free(v1_set_state_body_t *v1_set_state_body);

@@ -34,27 +34,27 @@ cJSON *project_settings_convertToJSON(project_settings_t *project_settings) {
     cJSON *item = cJSON_CreateObject();
 
     // project_settings->version
-    if(project_settings->version) { 
+    if(project_settings->version) {
     if(cJSON_AddNumberToObject(item, "version", project_settings->version) == NULL) {
     goto fail; //Numeric
     }
-     } 
+    }
 
 
     // project_settings->internet_access
-    if(project_settings->internet_access) { 
+    if(project_settings->internet_access) {
     if(cJSON_AddBoolToObject(item, "internet-access", project_settings->internet_access) == NULL) {
     goto fail; //Bool
     }
-     } 
+    }
 
 
     // project_settings->dhcp
-    if(project_settings->dhcp) { 
+    if(project_settings->dhcp) {
     if(cJSON_AddBoolToObject(item, "dhcp", project_settings->dhcp) == NULL) {
     goto fail; //Bool
     }
-     } 
+    }
 
     return item;
 fail:
@@ -70,6 +70,9 @@ project_settings_t *project_settings_parseFromJSON(cJSON *project_settingsJSON){
 
     // project_settings->version
     cJSON *version = cJSON_GetObjectItemCaseSensitive(project_settingsJSON, "version");
+    if (cJSON_IsNull(version)) {
+        version = NULL;
+    }
     if (version) { 
     if(!cJSON_IsNumber(version))
     {
@@ -79,6 +82,9 @@ project_settings_t *project_settings_parseFromJSON(cJSON *project_settingsJSON){
 
     // project_settings->internet_access
     cJSON *internet_access = cJSON_GetObjectItemCaseSensitive(project_settingsJSON, "internet-access");
+    if (cJSON_IsNull(internet_access)) {
+        internet_access = NULL;
+    }
     if (internet_access) { 
     if(!cJSON_IsBool(internet_access))
     {
@@ -88,6 +94,9 @@ project_settings_t *project_settings_parseFromJSON(cJSON *project_settingsJSON){
 
     // project_settings->dhcp
     cJSON *dhcp = cJSON_GetObjectItemCaseSensitive(project_settingsJSON, "dhcp");
+    if (cJSON_IsNull(dhcp)) {
+        dhcp = NULL;
+    }
     if (dhcp) { 
     if(!cJSON_IsBool(dhcp))
     {

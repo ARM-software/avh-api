@@ -4,26 +4,9 @@
 #include "v1_set_state_body.h"
 
 
-char* statev1_set_state_body_ToString(arm_api_v1_set_state_body__e state) {
-    char* stateArray[] =  { "NULL", "on", "off", "deleting", "creating", "restoring", "paused", "rebooting", "error" };
-	return stateArray[state];
-}
-
-arm_api_v1_set_state_body__e statev1_set_state_body_FromString(char* state){
-    int stringToReturn = 0;
-    char *stateArray[] =  { "NULL", "on", "off", "deleting", "creating", "restoring", "paused", "rebooting", "error" };
-    size_t sizeofArray = sizeof(stateArray) / sizeof(stateArray[0]);
-    while(stringToReturn < sizeofArray) {
-        if(strcmp(state, stateArray[stringToReturn]) == 0) {
-            return stringToReturn;
-        }
-        stringToReturn++;
-    }
-    return 0;
-}
 
 v1_set_state_body_t *v1_set_state_body_create(
-    instance_state_t *state
+    arm_api_instance_state__e state
     ) {
     v1_set_state_body_t *v1_set_state_body_local_var = malloc(sizeof(v1_set_state_body_t));
     if (!v1_set_state_body_local_var) {
@@ -40,10 +23,6 @@ void v1_set_state_body_free(v1_set_state_body_t *v1_set_state_body) {
         return ;
     }
     listEntry_t *listEntry;
-    if (v1_set_state_body->state) {
-        instance_state_free(v1_set_state_body->state);
-        v1_set_state_body->state = NULL;
-    }
     free(v1_set_state_body);
 }
 
@@ -51,7 +30,9 @@ cJSON *v1_set_state_body_convertToJSON(v1_set_state_body_t *v1_set_state_body) {
     cJSON *item = cJSON_CreateObject();
 
     // v1_set_state_body->state
-    
+    if (arm_api_instance_state__NULL == v1_set_state_body->state) {
+        goto fail;
+    }
     cJSON *state_local_JSON = instance_state_convertToJSON(v1_set_state_body->state);
     if(state_local_JSON == NULL) {
         goto fail; // custom
@@ -74,10 +55,13 @@ v1_set_state_body_t *v1_set_state_body_parseFromJSON(cJSON *v1_set_state_bodyJSO
     v1_set_state_body_t *v1_set_state_body_local_var = NULL;
 
     // define the local variable for v1_set_state_body->state
-    instance_state_t *state_local_nonprim = NULL;
+    arm_api_instance_state__e state_local_nonprim = 0;
 
     // v1_set_state_body->state
     cJSON *state = cJSON_GetObjectItemCaseSensitive(v1_set_state_bodyJSON, "state");
+    if (cJSON_IsNull(state)) {
+        state = NULL;
+    }
     if (!state) {
         goto end;
     }
@@ -93,8 +77,7 @@ v1_set_state_body_t *v1_set_state_body_parseFromJSON(cJSON *v1_set_state_bodyJSO
     return v1_set_state_body_local_var;
 end:
     if (state_local_nonprim) {
-        instance_state_free(state_local_nonprim);
-        state_local_nonprim = NULL;
+        state_local_nonprim = 0;
     }
     return NULL;
 

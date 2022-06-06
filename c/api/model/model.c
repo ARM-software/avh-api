@@ -79,7 +79,6 @@ cJSON *model_convertToJSON(model_t *model) {
     if (!model->type) {
         goto fail;
     }
-    
     if(cJSON_AddStringToObject(item, "type", model->type) == NULL) {
     goto fail; //String
     }
@@ -89,7 +88,6 @@ cJSON *model_convertToJSON(model_t *model) {
     if (!model->name) {
         goto fail;
     }
-    
     if(cJSON_AddStringToObject(item, "name", model->name) == NULL) {
     goto fail; //String
     }
@@ -99,68 +97,66 @@ cJSON *model_convertToJSON(model_t *model) {
     if (!model->flavor) {
         goto fail;
     }
-    
     if(cJSON_AddStringToObject(item, "flavor", model->flavor) == NULL) {
     goto fail; //String
     }
 
 
     // model->description
-    if(model->description) { 
+    if(model->description) {
     if(cJSON_AddStringToObject(item, "description", model->description) == NULL) {
     goto fail; //String
     }
-     } 
+    }
 
 
     // model->model
     if (!model->model) {
         goto fail;
     }
-    
     if(cJSON_AddStringToObject(item, "model", model->model) == NULL) {
     goto fail; //String
     }
 
 
     // model->board_config
-    if(model->board_config) { 
+    if(model->board_config) {
     if(cJSON_AddStringToObject(item, "boardConfig", model->board_config) == NULL) {
     goto fail; //String
     }
-     } 
+    }
 
 
     // model->platform
-    if(model->platform) { 
+    if(model->platform) {
     if(cJSON_AddStringToObject(item, "platform", model->platform) == NULL) {
     goto fail; //String
     }
-     } 
+    }
 
 
     // model->cpid
-    if(model->cpid) { 
+    if(model->cpid) {
     if(cJSON_AddNumberToObject(item, "cpid", model->cpid) == NULL) {
     goto fail; //Numeric
     }
-     } 
+    }
 
 
     // model->bdid
-    if(model->bdid) { 
+    if(model->bdid) {
     if(cJSON_AddNumberToObject(item, "bdid", model->bdid) == NULL) {
     goto fail; //Numeric
     }
-     } 
+    }
 
 
     // model->peripherals
-    if(model->peripherals) { 
+    if(model->peripherals) {
     if(cJSON_AddBoolToObject(item, "peripherals", model->peripherals) == NULL) {
     goto fail; //Bool
     }
-     } 
+    }
 
     return item;
 fail:
@@ -176,6 +172,9 @@ model_t *model_parseFromJSON(cJSON *modelJSON){
 
     // model->type
     cJSON *type = cJSON_GetObjectItemCaseSensitive(modelJSON, "type");
+    if (cJSON_IsNull(type)) {
+        type = NULL;
+    }
     if (!type) {
         goto end;
     }
@@ -188,6 +187,9 @@ model_t *model_parseFromJSON(cJSON *modelJSON){
 
     // model->name
     cJSON *name = cJSON_GetObjectItemCaseSensitive(modelJSON, "name");
+    if (cJSON_IsNull(name)) {
+        name = NULL;
+    }
     if (!name) {
         goto end;
     }
@@ -200,6 +202,9 @@ model_t *model_parseFromJSON(cJSON *modelJSON){
 
     // model->flavor
     cJSON *flavor = cJSON_GetObjectItemCaseSensitive(modelJSON, "flavor");
+    if (cJSON_IsNull(flavor)) {
+        flavor = NULL;
+    }
     if (!flavor) {
         goto end;
     }
@@ -212,6 +217,9 @@ model_t *model_parseFromJSON(cJSON *modelJSON){
 
     // model->description
     cJSON *description = cJSON_GetObjectItemCaseSensitive(modelJSON, "description");
+    if (cJSON_IsNull(description)) {
+        description = NULL;
+    }
     if (description) { 
     if(!cJSON_IsString(description))
     {
@@ -221,6 +229,9 @@ model_t *model_parseFromJSON(cJSON *modelJSON){
 
     // model->model
     cJSON *model = cJSON_GetObjectItemCaseSensitive(modelJSON, "model");
+    if (cJSON_IsNull(model)) {
+        model = NULL;
+    }
     if (!model) {
         goto end;
     }
@@ -233,6 +244,9 @@ model_t *model_parseFromJSON(cJSON *modelJSON){
 
     // model->board_config
     cJSON *board_config = cJSON_GetObjectItemCaseSensitive(modelJSON, "boardConfig");
+    if (cJSON_IsNull(board_config)) {
+        board_config = NULL;
+    }
     if (board_config) { 
     if(!cJSON_IsString(board_config))
     {
@@ -242,6 +256,9 @@ model_t *model_parseFromJSON(cJSON *modelJSON){
 
     // model->platform
     cJSON *platform = cJSON_GetObjectItemCaseSensitive(modelJSON, "platform");
+    if (cJSON_IsNull(platform)) {
+        platform = NULL;
+    }
     if (platform) { 
     if(!cJSON_IsString(platform))
     {
@@ -251,6 +268,9 @@ model_t *model_parseFromJSON(cJSON *modelJSON){
 
     // model->cpid
     cJSON *cpid = cJSON_GetObjectItemCaseSensitive(modelJSON, "cpid");
+    if (cJSON_IsNull(cpid)) {
+        cpid = NULL;
+    }
     if (cpid) { 
     if(!cJSON_IsNumber(cpid))
     {
@@ -260,6 +280,9 @@ model_t *model_parseFromJSON(cJSON *modelJSON){
 
     // model->bdid
     cJSON *bdid = cJSON_GetObjectItemCaseSensitive(modelJSON, "bdid");
+    if (cJSON_IsNull(bdid)) {
+        bdid = NULL;
+    }
     if (bdid) { 
     if(!cJSON_IsNumber(bdid))
     {
@@ -269,6 +292,9 @@ model_t *model_parseFromJSON(cJSON *modelJSON){
 
     // model->peripherals
     cJSON *peripherals = cJSON_GetObjectItemCaseSensitive(modelJSON, "peripherals");
+    if (cJSON_IsNull(peripherals)) {
+        peripherals = NULL;
+    }
     if (peripherals) { 
     if(!cJSON_IsBool(peripherals))
     {

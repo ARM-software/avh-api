@@ -34,27 +34,27 @@ cJSON *project_quota_convertToJSON(project_quota_t *project_quota) {
     cJSON *item = cJSON_CreateObject();
 
     // project_quota->cores
-    if(project_quota->cores) { 
+    if(project_quota->cores) {
     if(cJSON_AddNumberToObject(item, "cores", project_quota->cores) == NULL) {
     goto fail; //Numeric
     }
-     } 
+    }
 
 
     // project_quota->instances
-    if(project_quota->instances) { 
+    if(project_quota->instances) {
     if(cJSON_AddNumberToObject(item, "instances", project_quota->instances) == NULL) {
     goto fail; //Numeric
     }
-     } 
+    }
 
 
     // project_quota->ram
-    if(project_quota->ram) { 
+    if(project_quota->ram) {
     if(cJSON_AddNumberToObject(item, "ram", project_quota->ram) == NULL) {
     goto fail; //Numeric
     }
-     } 
+    }
 
     return item;
 fail:
@@ -70,6 +70,9 @@ project_quota_t *project_quota_parseFromJSON(cJSON *project_quotaJSON){
 
     // project_quota->cores
     cJSON *cores = cJSON_GetObjectItemCaseSensitive(project_quotaJSON, "cores");
+    if (cJSON_IsNull(cores)) {
+        cores = NULL;
+    }
     if (cores) { 
     if(!cJSON_IsNumber(cores))
     {
@@ -79,6 +82,9 @@ project_quota_t *project_quota_parseFromJSON(cJSON *project_quotaJSON){
 
     // project_quota->instances
     cJSON *instances = cJSON_GetObjectItemCaseSensitive(project_quotaJSON, "instances");
+    if (cJSON_IsNull(instances)) {
+        instances = NULL;
+    }
     if (instances) { 
     if(!cJSON_IsNumber(instances))
     {
@@ -88,6 +94,9 @@ project_quota_t *project_quota_parseFromJSON(cJSON *project_quotaJSON){
 
     // project_quota->ram
     cJSON *ram = cJSON_GetObjectItemCaseSensitive(project_quotaJSON, "ram");
+    if (cJSON_IsNull(ram)) {
+        ram = NULL;
+    }
     if (ram) { 
     if(!cJSON_IsNumber(ram))
     {

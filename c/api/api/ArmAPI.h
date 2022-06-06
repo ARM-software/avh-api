@@ -100,7 +100,7 @@ ArmAPI_v1GetInstancePeripherals(apiClient_t *apiClient, char * instanceId );
 
 // Get state of Instance
 //
-instance_state_t*
+arm_api_instance_state__e
 ArmAPI_v1GetInstanceState(apiClient_t *apiClient, char * instanceId );
 
 

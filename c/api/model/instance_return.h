@@ -17,25 +17,17 @@ typedef struct instance_return_t instance_return_t;
 
 #include "instance_state.h"
 
-// Enum  for instance_return
-
-typedef enum  { arm_api_instance_return__NULL = 0, arm_api_instance_return__on, arm_api_instance_return__off, arm_api_instance_return__deleting, arm_api_instance_return__creating, arm_api_instance_return__restoring, arm_api_instance_return__paused, arm_api_instance_return__rebooting, arm_api_instance_return__error } arm_api_instance_return__e;
-
-char* instance_return_state_ToString(arm_api_instance_return__e state);
-
-arm_api_instance_return__e instance_return_state_FromString(char* state);
-
 
 
 typedef struct instance_return_t {
     char *id; // string
-    instance_state_t *state; // custom
+    arm_api_instance_state__e state; //referenced enum
 
 } instance_return_t;
 
 instance_return_t *instance_return_create(
     char *id,
-    instance_state_t *state
+    arm_api_instance_state__e state
 );
 
 void instance_return_free(instance_return_t *instance_return);

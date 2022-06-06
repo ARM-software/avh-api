@@ -46,7 +46,7 @@ cJSON *vpn_definition_convertToJSON(vpn_definition_t *vpn_definition) {
     cJSON *item = cJSON_CreateObject();
 
     // vpn_definition->proxy
-    if(vpn_definition->proxy) { 
+    if(vpn_definition->proxy) {
     cJSON *proxy = cJSON_AddArrayToObject(item, "proxy");
     if(proxy == NULL) {
         goto fail; //primitive container
@@ -59,11 +59,11 @@ cJSON *vpn_definition_convertToJSON(vpn_definition_t *vpn_definition) {
         goto fail;
     }
     }
-     } 
+    }
 
 
     // vpn_definition->listeners
-    if(vpn_definition->listeners) { 
+    if(vpn_definition->listeners) {
     cJSON *listeners = cJSON_AddArrayToObject(item, "listeners");
     if(listeners == NULL) {
         goto fail; //primitive container
@@ -76,7 +76,7 @@ cJSON *vpn_definition_convertToJSON(vpn_definition_t *vpn_definition) {
         goto fail;
     }
     }
-     } 
+    }
 
     return item;
 fail:
@@ -90,11 +90,19 @@ vpn_definition_t *vpn_definition_parseFromJSON(cJSON *vpn_definitionJSON){
 
     vpn_definition_t *vpn_definition_local_var = NULL;
 
+    // define the local list for vpn_definition->proxy
+    list_t *proxyList = NULL;
+
+    // define the local list for vpn_definition->listeners
+    list_t *listenersList = NULL;
+
     // vpn_definition->proxy
     cJSON *proxy = cJSON_GetObjectItemCaseSensitive(vpn_definitionJSON, "proxy");
-    list_t *proxyList;
+    if (cJSON_IsNull(proxy)) {
+        proxy = NULL;
+    }
     if (proxy) { 
-    cJSON *proxy_local;
+    cJSON *proxy_local = NULL;
     if(!cJSON_IsArray(proxy)) {
         goto end;//primitive container
     }
@@ -112,9 +120,11 @@ vpn_definition_t *vpn_definition_parseFromJSON(cJSON *vpn_definitionJSON){
 
     // vpn_definition->listeners
     cJSON *listeners = cJSON_GetObjectItemCaseSensitive(vpn_definitionJSON, "listeners");
-    list_t *listenersList;
+    if (cJSON_IsNull(listeners)) {
+        listeners = NULL;
+    }
     if (listeners) { 
-    cJSON *listeners_local;
+    cJSON *listeners_local = NULL;
     if(!cJSON_IsArray(listeners)) {
         goto end;//primitive container
     }
@@ -138,6 +148,24 @@ vpn_definition_t *vpn_definition_parseFromJSON(cJSON *vpn_definitionJSON){
 
     return vpn_definition_local_var;
 end:
+    if (proxyList) {
+        listEntry_t *listEntry = NULL;
+        list_ForEach(listEntry, proxyList) {
+            free(listEntry->data);
+            listEntry->data = NULL;
+        }
+        list_freeList(proxyList);
+        proxyList = NULL;
+    }
+    if (listenersList) {
+        listEntry_t *listEntry = NULL;
+        list_ForEach(listEntry, listenersList) {
+            free(listEntry->data);
+            listEntry->data = NULL;
+        }
+        list_freeList(listenersList);
+        listenersList = NULL;
+    }
     return NULL;
 
 }

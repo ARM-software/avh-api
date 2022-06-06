@@ -36,19 +36,19 @@ cJSON *snapshot_status_convertToJSON(snapshot_status_t *snapshot_status) {
     cJSON *item = cJSON_CreateObject();
 
     // snapshot_status->task
-    if(snapshot_status->task) { 
+    if(snapshot_status->task) {
     if(cJSON_AddStringToObject(item, "task", snapshot_status->task) == NULL) {
     goto fail; //String
     }
-     } 
+    }
 
 
     // snapshot_status->created
-    if(snapshot_status->created) { 
+    if(snapshot_status->created) {
     if(cJSON_AddBoolToObject(item, "created", snapshot_status->created) == NULL) {
     goto fail; //Bool
     }
-     } 
+    }
 
     return item;
 fail:
@@ -64,6 +64,9 @@ snapshot_status_t *snapshot_status_parseFromJSON(cJSON *snapshot_statusJSON){
 
     // snapshot_status->task
     cJSON *task = cJSON_GetObjectItemCaseSensitive(snapshot_statusJSON, "task");
+    if (cJSON_IsNull(task)) {
+        task = NULL;
+    }
     if (task) { 
     if(!cJSON_IsString(task))
     {
@@ -73,6 +76,9 @@ snapshot_status_t *snapshot_status_parseFromJSON(cJSON *snapshot_statusJSON){
 
     // snapshot_status->created
     cJSON *created = cJSON_GetObjectItemCaseSensitive(snapshot_statusJSON, "created");
+    if (cJSON_IsNull(created)) {
+        created = NULL;
+    }
     if (created) { 
     if(!cJSON_IsBool(created))
     {

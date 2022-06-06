@@ -108,99 +108,98 @@ cJSON *image_convertToJSON(image_t *image) {
     if (!image->status) {
         goto fail;
     }
-    
     if(cJSON_AddStringToObject(item, "status", image->status) == NULL) {
     goto fail; //String
     }
 
 
     // image->id
-    if(image->id) { 
+    if(image->id) {
     if(cJSON_AddStringToObject(item, "id", image->id) == NULL) {
     goto fail; //String
     }
-     } 
+    }
 
 
     // image->name
-    if(image->name) { 
+    if(image->name) {
     if(cJSON_AddStringToObject(item, "name", image->name) == NULL) {
     goto fail; //String
     }
-     } 
+    }
 
 
     // image->type
-    
+    if(image->type != arm_api_image_TYPE_NULL) {
     if(cJSON_AddStringToObject(item, "type", typeimage_ToString(image->type)) == NULL)
     {
     goto fail; //Enum
     }
-    
+    }
 
 
     // image->self
-    if(image->self) { 
+    if(image->self) {
     if(cJSON_AddStringToObject(item, "self", image->self) == NULL) {
     goto fail; //String
     }
-     } 
+    }
 
 
     // image->file
-    if(image->file) { 
+    if(image->file) {
     if(cJSON_AddStringToObject(item, "file", image->file) == NULL) {
     goto fail; //String
     }
-     } 
+    }
 
 
     // image->size
-    if(image->size) { 
+    if(image->size) {
     if(cJSON_AddNumberToObject(item, "size", image->size) == NULL) {
     goto fail; //Numeric
     }
-     } 
+    }
 
 
     // image->checksum
-    if(image->checksum) { 
+    if(image->checksum) {
     if(cJSON_AddNumberToObject(item, "checksum", image->checksum) == NULL) {
     goto fail; //Numeric
     }
-     } 
+    }
 
 
     // image->encoding
-    if(image->encoding) { 
+    if(image->encoding) {
     if(cJSON_AddStringToObject(item, "encoding", image->encoding) == NULL) {
     goto fail; //String
     }
-     } 
+    }
 
 
     // image->project
-    if(image->project) { 
+    if(image->project) {
     if(cJSON_AddStringToObject(item, "project", image->project) == NULL) {
     goto fail; //String
     }
-     } 
+    }
 
 
     // image->created_at
-    if(image->created_at) { 
+    if(image->created_at) {
     if(cJSON_AddStringToObject(item, "created_at", image->created_at) == NULL) {
     goto fail; //Date-Time
     }
-     } 
+    }
 
 
     // image->updated_at
-    if(image->updated_at) { 
+    if(image->updated_at) {
     if(cJSON_AddStringToObject(item, "updated_at", image->updated_at) == NULL) {
     goto fail; //Date-Time
     }
-     } 
+    }
 
     return item;
 fail:
@@ -216,6 +215,9 @@ image_t *image_parseFromJSON(cJSON *imageJSON){
 
     // image->status
     cJSON *status = cJSON_GetObjectItemCaseSensitive(imageJSON, "status");
+    if (cJSON_IsNull(status)) {
+        status = NULL;
+    }
     if (!status) {
         goto end;
     }
@@ -228,6 +230,9 @@ image_t *image_parseFromJSON(cJSON *imageJSON){
 
     // image->id
     cJSON *id = cJSON_GetObjectItemCaseSensitive(imageJSON, "id");
+    if (cJSON_IsNull(id)) {
+        id = NULL;
+    }
     if (id) { 
     if(!cJSON_IsString(id))
     {
@@ -237,6 +242,9 @@ image_t *image_parseFromJSON(cJSON *imageJSON){
 
     // image->name
     cJSON *name = cJSON_GetObjectItemCaseSensitive(imageJSON, "name");
+    if (cJSON_IsNull(name)) {
+        name = NULL;
+    }
     if (name) { 
     if(!cJSON_IsString(name))
     {
@@ -246,6 +254,9 @@ image_t *image_parseFromJSON(cJSON *imageJSON){
 
     // image->type
     cJSON *type = cJSON_GetObjectItemCaseSensitive(imageJSON, "type");
+    if (cJSON_IsNull(type)) {
+        type = NULL;
+    }
     arm_api_image_TYPE_e typeVariable;
     if (type) { 
     if(!cJSON_IsString(type))
@@ -257,6 +268,9 @@ image_t *image_parseFromJSON(cJSON *imageJSON){
 
     // image->self
     cJSON *self = cJSON_GetObjectItemCaseSensitive(imageJSON, "self");
+    if (cJSON_IsNull(self)) {
+        self = NULL;
+    }
     if (self) { 
     if(!cJSON_IsString(self))
     {
@@ -266,6 +280,9 @@ image_t *image_parseFromJSON(cJSON *imageJSON){
 
     // image->file
     cJSON *file = cJSON_GetObjectItemCaseSensitive(imageJSON, "file");
+    if (cJSON_IsNull(file)) {
+        file = NULL;
+    }
     if (file) { 
     if(!cJSON_IsString(file))
     {
@@ -275,6 +292,9 @@ image_t *image_parseFromJSON(cJSON *imageJSON){
 
     // image->size
     cJSON *size = cJSON_GetObjectItemCaseSensitive(imageJSON, "size");
+    if (cJSON_IsNull(size)) {
+        size = NULL;
+    }
     if (size) { 
     if(!cJSON_IsNumber(size))
     {
@@ -284,6 +304,9 @@ image_t *image_parseFromJSON(cJSON *imageJSON){
 
     // image->checksum
     cJSON *checksum = cJSON_GetObjectItemCaseSensitive(imageJSON, "checksum");
+    if (cJSON_IsNull(checksum)) {
+        checksum = NULL;
+    }
     if (checksum) { 
     if(!cJSON_IsNumber(checksum))
     {
@@ -293,6 +316,9 @@ image_t *image_parseFromJSON(cJSON *imageJSON){
 
     // image->encoding
     cJSON *encoding = cJSON_GetObjectItemCaseSensitive(imageJSON, "encoding");
+    if (cJSON_IsNull(encoding)) {
+        encoding = NULL;
+    }
     if (encoding) { 
     if(!cJSON_IsString(encoding))
     {
@@ -302,6 +328,9 @@ image_t *image_parseFromJSON(cJSON *imageJSON){
 
     // image->project
     cJSON *project = cJSON_GetObjectItemCaseSensitive(imageJSON, "project");
+    if (cJSON_IsNull(project)) {
+        project = NULL;
+    }
     if (project) { 
     if(!cJSON_IsString(project))
     {
@@ -311,6 +340,9 @@ image_t *image_parseFromJSON(cJSON *imageJSON){
 
     // image->created_at
     cJSON *created_at = cJSON_GetObjectItemCaseSensitive(imageJSON, "created_at");
+    if (cJSON_IsNull(created_at)) {
+        created_at = NULL;
+    }
     if (created_at) { 
     if(!cJSON_IsString(created_at))
     {
@@ -320,6 +352,9 @@ image_t *image_parseFromJSON(cJSON *imageJSON){
 
     // image->updated_at
     cJSON *updated_at = cJSON_GetObjectItemCaseSensitive(imageJSON, "updated_at");
+    if (cJSON_IsNull(updated_at)) {
+        updated_at = NULL;
+    }
     if (updated_at) { 
     if(!cJSON_IsString(updated_at))
     {

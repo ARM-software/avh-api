@@ -30,11 +30,11 @@ cJSON *instance_start_options_convertToJSON(instance_start_options_t *instance_s
     cJSON *item = cJSON_CreateObject();
 
     // instance_start_options->paused
-    if(instance_start_options->paused) { 
+    if(instance_start_options->paused) {
     if(cJSON_AddBoolToObject(item, "paused", instance_start_options->paused) == NULL) {
     goto fail; //Bool
     }
-     } 
+    }
 
     return item;
 fail:
@@ -50,6 +50,9 @@ instance_start_options_t *instance_start_options_parseFromJSON(cJSON *instance_s
 
     // instance_start_options->paused
     cJSON *paused = cJSON_GetObjectItemCaseSensitive(instance_start_optionsJSON, "paused");
+    if (cJSON_IsNull(paused)) {
+        paused = NULL;
+    }
     if (paused) { 
     if(!cJSON_IsBool(paused))
     {

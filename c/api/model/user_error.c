@@ -62,14 +62,15 @@ cJSON *user_error_convertToJSON(user_error_t *user_error) {
     if (!user_error->error) {
         goto fail;
     }
-    
     if(cJSON_AddStringToObject(item, "error", user_error->error) == NULL) {
     goto fail; //String
     }
 
 
     // user_error->error_id
-    
+    if (arm_api_user_error_ERRORID_NULL == user_error->error_id) {
+        goto fail;
+    }
     if(cJSON_AddStringToObject(item, "errorID", error_iduser_error_ToString(user_error->error_id)) == NULL)
     {
     goto fail; //Enum
@@ -77,11 +78,11 @@ cJSON *user_error_convertToJSON(user_error_t *user_error) {
 
 
     // user_error->field
-    if(user_error->field) { 
+    if(user_error->field) {
     if(cJSON_AddStringToObject(item, "field", user_error->field) == NULL) {
     goto fail; //String
     }
-     } 
+    }
 
     return item;
 fail:
@@ -97,6 +98,9 @@ user_error_t *user_error_parseFromJSON(cJSON *user_errorJSON){
 
     // user_error->error
     cJSON *error = cJSON_GetObjectItemCaseSensitive(user_errorJSON, "error");
+    if (cJSON_IsNull(error)) {
+        error = NULL;
+    }
     if (!error) {
         goto end;
     }
@@ -109,6 +113,9 @@ user_error_t *user_error_parseFromJSON(cJSON *user_errorJSON){
 
     // user_error->error_id
     cJSON *error_id = cJSON_GetObjectItemCaseSensitive(user_errorJSON, "errorID");
+    if (cJSON_IsNull(error_id)) {
+        error_id = NULL;
+    }
     if (!error_id) {
         goto end;
     }
@@ -123,6 +130,9 @@ user_error_t *user_error_parseFromJSON(cJSON *user_errorJSON){
 
     // user_error->field
     cJSON *field = cJSON_GetObjectItemCaseSensitive(user_errorJSON, "field");
+    if (cJSON_IsNull(field)) {
+        field = NULL;
+    }
     if (field) { 
     if(!cJSON_IsString(field))
     {

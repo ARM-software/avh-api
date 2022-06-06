@@ -60,31 +60,31 @@ cJSON *snapshot_convertToJSON(snapshot_t *snapshot) {
     cJSON *item = cJSON_CreateObject();
 
     // snapshot->id
-    if(snapshot->id) { 
+    if(snapshot->id) {
     if(cJSON_AddStringToObject(item, "id", snapshot->id) == NULL) {
     goto fail; //String
     }
-     } 
+    }
 
 
     // snapshot->name
-    if(snapshot->name) { 
+    if(snapshot->name) {
     if(cJSON_AddStringToObject(item, "name", snapshot->name) == NULL) {
     goto fail; //String
     }
-     } 
+    }
 
 
     // snapshot->instance
-    if(snapshot->instance) { 
+    if(snapshot->instance) {
     if(cJSON_AddStringToObject(item, "instance", snapshot->instance) == NULL) {
     goto fail; //String
     }
-     } 
+    }
 
 
     // snapshot->status
-    if(snapshot->status) { 
+    if(snapshot->status) {
     cJSON *status_local_JSON = snapshot_status_convertToJSON(snapshot->status);
     if(status_local_JSON == NULL) {
     goto fail; //model
@@ -93,39 +93,39 @@ cJSON *snapshot_convertToJSON(snapshot_t *snapshot) {
     if(item->child == NULL) {
     goto fail;
     }
-     } 
+    }
 
 
     // snapshot->date
-    if(snapshot->date) { 
+    if(snapshot->date) {
     if(cJSON_AddNumberToObject(item, "date", snapshot->date) == NULL) {
     goto fail; //Numeric
     }
-     } 
+    }
 
 
     // snapshot->fresh
-    if(snapshot->fresh) { 
+    if(snapshot->fresh) {
     if(cJSON_AddBoolToObject(item, "fresh", snapshot->fresh) == NULL) {
     goto fail; //Bool
     }
-     } 
+    }
 
 
     // snapshot->live
-    if(snapshot->live) { 
+    if(snapshot->live) {
     if(cJSON_AddBoolToObject(item, "live", snapshot->live) == NULL) {
     goto fail; //Bool
     }
-     } 
+    }
 
 
     // snapshot->local
-    if(snapshot->local) { 
+    if(snapshot->local) {
     if(cJSON_AddBoolToObject(item, "local", snapshot->local) == NULL) {
     goto fail; //Bool
     }
-     } 
+    }
 
     return item;
 fail:
@@ -144,6 +144,9 @@ snapshot_t *snapshot_parseFromJSON(cJSON *snapshotJSON){
 
     // snapshot->id
     cJSON *id = cJSON_GetObjectItemCaseSensitive(snapshotJSON, "id");
+    if (cJSON_IsNull(id)) {
+        id = NULL;
+    }
     if (id) { 
     if(!cJSON_IsString(id))
     {
@@ -153,6 +156,9 @@ snapshot_t *snapshot_parseFromJSON(cJSON *snapshotJSON){
 
     // snapshot->name
     cJSON *name = cJSON_GetObjectItemCaseSensitive(snapshotJSON, "name");
+    if (cJSON_IsNull(name)) {
+        name = NULL;
+    }
     if (name) { 
     if(!cJSON_IsString(name))
     {
@@ -162,6 +168,9 @@ snapshot_t *snapshot_parseFromJSON(cJSON *snapshotJSON){
 
     // snapshot->instance
     cJSON *instance = cJSON_GetObjectItemCaseSensitive(snapshotJSON, "instance");
+    if (cJSON_IsNull(instance)) {
+        instance = NULL;
+    }
     if (instance) { 
     if(!cJSON_IsString(instance))
     {
@@ -171,12 +180,18 @@ snapshot_t *snapshot_parseFromJSON(cJSON *snapshotJSON){
 
     // snapshot->status
     cJSON *status = cJSON_GetObjectItemCaseSensitive(snapshotJSON, "status");
+    if (cJSON_IsNull(status)) {
+        status = NULL;
+    }
     if (status) { 
     status_local_nonprim = snapshot_status_parseFromJSON(status); //nonprimitive
     }
 
     // snapshot->date
     cJSON *date = cJSON_GetObjectItemCaseSensitive(snapshotJSON, "date");
+    if (cJSON_IsNull(date)) {
+        date = NULL;
+    }
     if (date) { 
     if(!cJSON_IsNumber(date))
     {
@@ -186,6 +201,9 @@ snapshot_t *snapshot_parseFromJSON(cJSON *snapshotJSON){
 
     // snapshot->fresh
     cJSON *fresh = cJSON_GetObjectItemCaseSensitive(snapshotJSON, "fresh");
+    if (cJSON_IsNull(fresh)) {
+        fresh = NULL;
+    }
     if (fresh) { 
     if(!cJSON_IsBool(fresh))
     {
@@ -195,6 +213,9 @@ snapshot_t *snapshot_parseFromJSON(cJSON *snapshotJSON){
 
     // snapshot->live
     cJSON *live = cJSON_GetObjectItemCaseSensitive(snapshotJSON, "live");
+    if (cJSON_IsNull(live)) {
+        live = NULL;
+    }
     if (live) { 
     if(!cJSON_IsBool(live))
     {
@@ -204,6 +225,9 @@ snapshot_t *snapshot_parseFromJSON(cJSON *snapshotJSON){
 
     // snapshot->local
     cJSON *local = cJSON_GetObjectItemCaseSensitive(snapshotJSON, "local");
+    if (cJSON_IsNull(local)) {
+        local = NULL;
+    }
     if (local) { 
     if(!cJSON_IsBool(local))
     {

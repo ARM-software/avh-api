@@ -20,14 +20,6 @@ typedef struct instance_t instance_t;
 #include "instance_services.h"
 #include "instance_state.h"
 
-// Enum  for instance
-
-typedef enum  { arm_api_instance__NULL = 0, arm_api_instance__on, arm_api_instance__off, arm_api_instance__deleting, arm_api_instance__creating, arm_api_instance__restoring, arm_api_instance__paused, arm_api_instance__rebooting, arm_api_instance__error } arm_api_instance__e;
-
-char* instance_state_ToString(arm_api_instance__e state);
-
-arm_api_instance__e instance_state_FromString(char* state);
-
 
 
 typedef struct instance_t {
@@ -37,7 +29,7 @@ typedef struct instance_t {
     char *flavor; // string
     char *type; // string
     char *project; // string
-    instance_state_t *state; // custom
+    arm_api_instance_state__e state; //referenced enum
     char *state_changed; //date time
     char *user_task; // string
     char *task_state; // string
@@ -66,7 +58,7 @@ instance_t *instance_create(
     char *flavor,
     char *type,
     char *project,
-    instance_state_t *state,
+    arm_api_instance_state__e state,
     char *state_changed,
     char *user_task,
     char *task_state,

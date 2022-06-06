@@ -24,9 +24,9 @@ char* instance_state_instance_state_ToString(arm_api_instance_state__e instance_
 
 arm_api_instance_state__e instance_state_instance_state_FromString(char* instance_state);
 
-//cJSON *instance_state_instance_state_convertToJSON(arm_api_instance_state__e instance_state);
+cJSON *instance_state_convertToJSON(arm_api_instance_state__e instance_state);
 
-//arm_api_instance_state__e instance_state_instance_state_parseFromJSON(cJSON *instance_stateJSON);
+arm_api_instance_state__e instance_state_parseFromJSON(cJSON *instance_stateJSON);
 
 #endif /* _instance_state_H_ */
 

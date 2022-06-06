@@ -4,27 +4,10 @@
 #include "instance_return.h"
 
 
-char* stateinstance_return_ToString(arm_api_instance_return__e state) {
-    char* stateArray[] =  { "NULL", "on", "off", "deleting", "creating", "restoring", "paused", "rebooting", "error" };
-	return stateArray[state];
-}
-
-arm_api_instance_return__e stateinstance_return_FromString(char* state){
-    int stringToReturn = 0;
-    char *stateArray[] =  { "NULL", "on", "off", "deleting", "creating", "restoring", "paused", "rebooting", "error" };
-    size_t sizeofArray = sizeof(stateArray) / sizeof(stateArray[0]);
-    while(stringToReturn < sizeofArray) {
-        if(strcmp(state, stateArray[stringToReturn]) == 0) {
-            return stringToReturn;
-        }
-        stringToReturn++;
-    }
-    return 0;
-}
 
 instance_return_t *instance_return_create(
     char *id,
-    instance_state_t *state
+    arm_api_instance_state__e state
     ) {
     instance_return_t *instance_return_local_var = malloc(sizeof(instance_return_t));
     if (!instance_return_local_var) {
@@ -46,10 +29,6 @@ void instance_return_free(instance_return_t *instance_return) {
         free(instance_return->id);
         instance_return->id = NULL;
     }
-    if (instance_return->state) {
-        instance_state_free(instance_return->state);
-        instance_return->state = NULL;
-    }
     free(instance_return);
 }
 
@@ -60,14 +39,15 @@ cJSON *instance_return_convertToJSON(instance_return_t *instance_return) {
     if (!instance_return->id) {
         goto fail;
     }
-    
     if(cJSON_AddStringToObject(item, "id", instance_return->id) == NULL) {
     goto fail; //String
     }
 
 
     // instance_return->state
-    
+    if (arm_api_instance_state__NULL == instance_return->state) {
+        goto fail;
+    }
     cJSON *state_local_JSON = instance_state_convertToJSON(instance_return->state);
     if(state_local_JSON == NULL) {
         goto fail; // custom
@@ -90,10 +70,13 @@ instance_return_t *instance_return_parseFromJSON(cJSON *instance_returnJSON){
     instance_return_t *instance_return_local_var = NULL;
 
     // define the local variable for instance_return->state
-    instance_state_t *state_local_nonprim = NULL;
+    arm_api_instance_state__e state_local_nonprim = 0;
 
     // instance_return->id
     cJSON *id = cJSON_GetObjectItemCaseSensitive(instance_returnJSON, "id");
+    if (cJSON_IsNull(id)) {
+        id = NULL;
+    }
     if (!id) {
         goto end;
     }
@@ -106,6 +89,9 @@ instance_return_t *instance_return_parseFromJSON(cJSON *instance_returnJSON){
 
     // instance_return->state
     cJSON *state = cJSON_GetObjectItemCaseSensitive(instance_returnJSON, "state");
+    if (cJSON_IsNull(state)) {
+        state = NULL;
+    }
     if (!state) {
         goto end;
     }
@@ -122,8 +108,7 @@ instance_return_t *instance_return_parseFromJSON(cJSON *instance_returnJSON){
     return instance_return_local_var;
 end:
     if (state_local_nonprim) {
-        instance_state_free(state_local_nonprim);
-        state_local_nonprim = NULL;
+        state_local_nonprim = 0;
     }
     return NULL;
 

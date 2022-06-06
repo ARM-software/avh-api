@@ -37,7 +37,6 @@ cJSON *api_token_convertToJSON(api_token_t *api_token) {
     if (!api_token->api_token) {
         goto fail;
     }
-    
     if(cJSON_AddStringToObject(item, "apiToken", api_token->api_token) == NULL) {
     goto fail; //String
     }
@@ -56,6 +55,9 @@ api_token_t *api_token_parseFromJSON(cJSON *api_tokenJSON){
 
     // api_token->api_token
     cJSON *api_token = cJSON_GetObjectItemCaseSensitive(api_tokenJSON, "apiToken");
+    if (cJSON_IsNull(api_token)) {
+        api_token = NULL;
+    }
     if (!api_token) {
         goto end;
     }

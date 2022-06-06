@@ -55,7 +55,6 @@ cJSON *api_not_found_error_convertToJSON(api_not_found_error_t *api_not_found_er
     if (!api_not_found_error->error) {
         goto fail;
     }
-    
     if(cJSON_AddStringToObject(item, "error", api_not_found_error->error) == NULL) {
     goto fail; //String
     }
@@ -65,22 +64,21 @@ cJSON *api_not_found_error_convertToJSON(api_not_found_error_t *api_not_found_er
     if (!api_not_found_error->error_id) {
         goto fail;
     }
-    
     if(cJSON_AddStringToObject(item, "errorID", api_not_found_error->error_id) == NULL) {
     goto fail; //String
     }
 
 
     // api_not_found_error->name
-    if(api_not_found_error->name) { 
+    if(api_not_found_error->name) {
     if(cJSON_AddStringToObject(item, "name", api_not_found_error->name) == NULL) {
     goto fail; //String
     }
-     } 
+    }
 
 
     // api_not_found_error->params
-    if(api_not_found_error->params) { 
+    if(api_not_found_error->params) {
     cJSON *params_object = object_convertToJSON(api_not_found_error->params);
     if(params_object == NULL) {
     goto fail; //model
@@ -89,7 +87,7 @@ cJSON *api_not_found_error_convertToJSON(api_not_found_error_t *api_not_found_er
     if(item->child == NULL) {
     goto fail;
     }
-     } 
+    }
 
     return item;
 fail:
@@ -105,6 +103,9 @@ api_not_found_error_t *api_not_found_error_parseFromJSON(cJSON *api_not_found_er
 
     // api_not_found_error->error
     cJSON *error = cJSON_GetObjectItemCaseSensitive(api_not_found_errorJSON, "error");
+    if (cJSON_IsNull(error)) {
+        error = NULL;
+    }
     if (!error) {
         goto end;
     }
@@ -117,6 +118,9 @@ api_not_found_error_t *api_not_found_error_parseFromJSON(cJSON *api_not_found_er
 
     // api_not_found_error->error_id
     cJSON *error_id = cJSON_GetObjectItemCaseSensitive(api_not_found_errorJSON, "errorID");
+    if (cJSON_IsNull(error_id)) {
+        error_id = NULL;
+    }
     if (!error_id) {
         goto end;
     }
@@ -129,6 +133,9 @@ api_not_found_error_t *api_not_found_error_parseFromJSON(cJSON *api_not_found_er
 
     // api_not_found_error->name
     cJSON *name = cJSON_GetObjectItemCaseSensitive(api_not_found_errorJSON, "name");
+    if (cJSON_IsNull(name)) {
+        name = NULL;
+    }
     if (name) { 
     if(!cJSON_IsString(name))
     {
@@ -138,6 +145,9 @@ api_not_found_error_t *api_not_found_error_parseFromJSON(cJSON *api_not_found_er
 
     // api_not_found_error->params
     cJSON *params = cJSON_GetObjectItemCaseSensitive(api_not_found_errorJSON, "params");
+    if (cJSON_IsNull(params)) {
+        params = NULL;
+    }
     object_t *params_local_object = NULL;
     if (params) { 
     params_local_object = object_parseFromJSON(params); //object

@@ -4,23 +4,6 @@
 #include "instance.h"
 
 
-char* stateinstance_ToString(arm_api_instance__e state) {
-    char* stateArray[] =  { "NULL", "on", "off", "deleting", "creating", "restoring", "paused", "rebooting", "error" };
-	return stateArray[state];
-}
-
-arm_api_instance__e stateinstance_FromString(char* state){
-    int stringToReturn = 0;
-    char *stateArray[] =  { "NULL", "on", "off", "deleting", "creating", "restoring", "paused", "rebooting", "error" };
-    size_t sizeofArray = sizeof(stateArray) / sizeof(stateArray[0]);
-    while(stringToReturn < sizeofArray) {
-        if(strcmp(state, stateArray[stringToReturn]) == 0) {
-            return stringToReturn;
-        }
-        stringToReturn++;
-    }
-    return 0;
-}
 
 instance_t *instance_create(
     char *id,
@@ -29,7 +12,7 @@ instance_t *instance_create(
     char *flavor,
     char *type,
     char *project,
-    instance_state_t *state,
+    arm_api_instance_state__e state,
     char *state_changed,
     char *user_task,
     char *task_state,
@@ -112,10 +95,6 @@ void instance_free(instance_t *instance) {
         free(instance->project);
         instance->project = NULL;
     }
-    if (instance->state) {
-        instance_state_free(instance->state);
-        instance->state = NULL;
-    }
     if (instance->state_changed) {
         free(instance->state_changed);
         instance->state_changed = NULL;
@@ -190,55 +169,55 @@ cJSON *instance_convertToJSON(instance_t *instance) {
     cJSON *item = cJSON_CreateObject();
 
     // instance->id
-    if(instance->id) { 
+    if(instance->id) {
     if(cJSON_AddStringToObject(item, "id", instance->id) == NULL) {
     goto fail; //String
     }
-     } 
+    }
 
 
     // instance->name
-    if(instance->name) { 
+    if(instance->name) {
     if(cJSON_AddStringToObject(item, "name", instance->name) == NULL) {
     goto fail; //String
     }
-     } 
+    }
 
 
     // instance->key
-    if(instance->key) { 
+    if(instance->key) {
     if(cJSON_AddStringToObject(item, "key", instance->key) == NULL) {
     goto fail; //String
     }
-     } 
+    }
 
 
     // instance->flavor
-    if(instance->flavor) { 
+    if(instance->flavor) {
     if(cJSON_AddStringToObject(item, "flavor", instance->flavor) == NULL) {
     goto fail; //String
     }
-     } 
+    }
 
 
     // instance->type
-    if(instance->type) { 
+    if(instance->type) {
     if(cJSON_AddStringToObject(item, "type", instance->type) == NULL) {
     goto fail; //String
     }
-     } 
+    }
 
 
     // instance->project
-    if(instance->project) { 
+    if(instance->project) {
     if(cJSON_AddStringToObject(item, "project", instance->project) == NULL) {
     goto fail; //String
     }
-     } 
+    }
 
 
     // instance->state
-    
+    if(instance->state != arm_api_instance_state__NULL) {
     cJSON *state_local_JSON = instance_state_convertToJSON(instance->state);
     if(state_local_JSON == NULL) {
         goto fail; // custom
@@ -247,43 +226,43 @@ cJSON *instance_convertToJSON(instance_t *instance) {
     if(item->child == NULL) {
         goto fail;
     }
-    
+    }
 
 
     // instance->state_changed
-    if(instance->state_changed) { 
+    if(instance->state_changed) {
     if(cJSON_AddStringToObject(item, "stateChanged", instance->state_changed) == NULL) {
     goto fail; //Date-Time
     }
-     } 
+    }
 
 
     // instance->user_task
-    if(instance->user_task) { 
+    if(instance->user_task) {
     if(cJSON_AddStringToObject(item, "userTask", instance->user_task) == NULL) {
     goto fail; //String
     }
-     } 
+    }
 
 
     // instance->task_state
-    if(instance->task_state) { 
+    if(instance->task_state) {
     if(cJSON_AddStringToObject(item, "taskState", instance->task_state) == NULL) {
     goto fail; //String
     }
-     } 
+    }
 
 
     // instance->error
-    if(instance->error) { 
+    if(instance->error) {
     if(cJSON_AddStringToObject(item, "error", instance->error) == NULL) {
     goto fail; //String
     }
-     } 
+    }
 
 
     // instance->boot_options
-    if(instance->boot_options) { 
+    if(instance->boot_options) {
     cJSON *boot_options_local_JSON = instance_boot_options_convertToJSON(instance->boot_options);
     if(boot_options_local_JSON == NULL) {
     goto fail; //model
@@ -292,27 +271,27 @@ cJSON *instance_convertToJSON(instance_t *instance) {
     if(item->child == NULL) {
     goto fail;
     }
-     } 
+    }
 
 
     // instance->service_ip
-    if(instance->service_ip) { 
+    if(instance->service_ip) {
     if(cJSON_AddStringToObject(item, "serviceIp", instance->service_ip) == NULL) {
     goto fail; //String
     }
-     } 
+    }
 
 
     // instance->wifi_ip
-    if(instance->wifi_ip) { 
+    if(instance->wifi_ip) {
     if(cJSON_AddStringToObject(item, "wifiIp", instance->wifi_ip) == NULL) {
     goto fail; //String
     }
-     } 
+    }
 
 
     // instance->services
-    if(instance->services) { 
+    if(instance->services) {
     cJSON *services_local_JSON = instance_services_convertToJSON(instance->services);
     if(services_local_JSON == NULL) {
     goto fail; //model
@@ -321,59 +300,59 @@ cJSON *instance_convertToJSON(instance_t *instance) {
     if(item->child == NULL) {
     goto fail;
     }
-     } 
+    }
 
 
     // instance->panicked
-    if(instance->panicked) { 
+    if(instance->panicked) {
     if(cJSON_AddBoolToObject(item, "panicked", instance->panicked) == NULL) {
     goto fail; //Bool
     }
-     } 
+    }
 
 
     // instance->created
-    if(instance->created) { 
+    if(instance->created) {
     if(cJSON_AddStringToObject(item, "created", instance->created) == NULL) {
     goto fail; //Date-Time
     }
-     } 
+    }
 
 
     // instance->model
-    if(instance->model) { 
+    if(instance->model) {
     if(cJSON_AddStringToObject(item, "model", instance->model) == NULL) {
     goto fail; //String
     }
-     } 
+    }
 
 
     // instance->ipsw
-    if(instance->ipsw) { 
+    if(instance->ipsw) {
     if(cJSON_AddStringToObject(item, "ipsw", instance->ipsw) == NULL) {
     goto fail; //String
     }
-     } 
+    }
 
 
     // instance->os
-    if(instance->os) { 
+    if(instance->os) {
     if(cJSON_AddStringToObject(item, "os", instance->os) == NULL) {
     goto fail; //String
     }
-     } 
+    }
 
 
     // instance->agent
-    if(instance->agent) { 
+    if(instance->agent) {
     if(cJSON_AddStringToObject(item, "agent", instance->agent) == NULL) {
     goto fail; //String
     }
-     } 
+    }
 
 
     // instance->netmon
-    if(instance->netmon) { 
+    if(instance->netmon) {
     cJSON *netmon_local_JSON = instance_netmon_state_convertToJSON(instance->netmon);
     if(netmon_local_JSON == NULL) {
     goto fail; //model
@@ -382,27 +361,27 @@ cJSON *instance_convertToJSON(instance_t *instance) {
     if(item->child == NULL) {
     goto fail;
     }
-     } 
+    }
 
 
     // instance->expose_port
-    if(instance->expose_port) { 
+    if(instance->expose_port) {
     if(cJSON_AddStringToObject(item, "exposePort", instance->expose_port) == NULL) {
     goto fail; //String
     }
-     } 
+    }
 
 
     // instance->fault
-    if(instance->fault) { 
+    if(instance->fault) {
     if(cJSON_AddBoolToObject(item, "fault", instance->fault) == NULL) {
     goto fail; //Bool
     }
-     } 
+    }
 
 
     // instance->patches
-    if(instance->patches) { 
+    if(instance->patches) {
     cJSON *patches = cJSON_AddArrayToObject(item, "patches");
     if(patches == NULL) {
         goto fail; //primitive container
@@ -415,7 +394,7 @@ cJSON *instance_convertToJSON(instance_t *instance) {
         goto fail;
     }
     }
-     } 
+    }
 
     return item;
 fail:
@@ -430,7 +409,7 @@ instance_t *instance_parseFromJSON(cJSON *instanceJSON){
     instance_t *instance_local_var = NULL;
 
     // define the local variable for instance->state
-    instance_state_t *state_local_nonprim = NULL;
+    arm_api_instance_state__e state_local_nonprim = 0;
 
     // define the local variable for instance->boot_options
     instance_boot_options_t *boot_options_local_nonprim = NULL;
@@ -441,8 +420,14 @@ instance_t *instance_parseFromJSON(cJSON *instanceJSON){
     // define the local variable for instance->netmon
     instance_netmon_state_t *netmon_local_nonprim = NULL;
 
+    // define the local list for instance->patches
+    list_t *patchesList = NULL;
+
     // instance->id
     cJSON *id = cJSON_GetObjectItemCaseSensitive(instanceJSON, "id");
+    if (cJSON_IsNull(id)) {
+        id = NULL;
+    }
     if (id) { 
     if(!cJSON_IsString(id))
     {
@@ -452,6 +437,9 @@ instance_t *instance_parseFromJSON(cJSON *instanceJSON){
 
     // instance->name
     cJSON *name = cJSON_GetObjectItemCaseSensitive(instanceJSON, "name");
+    if (cJSON_IsNull(name)) {
+        name = NULL;
+    }
     if (name) { 
     if(!cJSON_IsString(name))
     {
@@ -461,6 +449,9 @@ instance_t *instance_parseFromJSON(cJSON *instanceJSON){
 
     // instance->key
     cJSON *key = cJSON_GetObjectItemCaseSensitive(instanceJSON, "key");
+    if (cJSON_IsNull(key)) {
+        key = NULL;
+    }
     if (key) { 
     if(!cJSON_IsString(key))
     {
@@ -470,6 +461,9 @@ instance_t *instance_parseFromJSON(cJSON *instanceJSON){
 
     // instance->flavor
     cJSON *flavor = cJSON_GetObjectItemCaseSensitive(instanceJSON, "flavor");
+    if (cJSON_IsNull(flavor)) {
+        flavor = NULL;
+    }
     if (flavor) { 
     if(!cJSON_IsString(flavor))
     {
@@ -479,6 +473,9 @@ instance_t *instance_parseFromJSON(cJSON *instanceJSON){
 
     // instance->type
     cJSON *type = cJSON_GetObjectItemCaseSensitive(instanceJSON, "type");
+    if (cJSON_IsNull(type)) {
+        type = NULL;
+    }
     if (type) { 
     if(!cJSON_IsString(type))
     {
@@ -488,6 +485,9 @@ instance_t *instance_parseFromJSON(cJSON *instanceJSON){
 
     // instance->project
     cJSON *project = cJSON_GetObjectItemCaseSensitive(instanceJSON, "project");
+    if (cJSON_IsNull(project)) {
+        project = NULL;
+    }
     if (project) { 
     if(!cJSON_IsString(project))
     {
@@ -497,12 +497,18 @@ instance_t *instance_parseFromJSON(cJSON *instanceJSON){
 
     // instance->state
     cJSON *state = cJSON_GetObjectItemCaseSensitive(instanceJSON, "state");
+    if (cJSON_IsNull(state)) {
+        state = NULL;
+    }
     if (state) { 
     state_local_nonprim = instance_state_parseFromJSON(state); //custom
     }
 
     // instance->state_changed
     cJSON *state_changed = cJSON_GetObjectItemCaseSensitive(instanceJSON, "stateChanged");
+    if (cJSON_IsNull(state_changed)) {
+        state_changed = NULL;
+    }
     if (state_changed) { 
     if(!cJSON_IsString(state_changed))
     {
@@ -512,6 +518,9 @@ instance_t *instance_parseFromJSON(cJSON *instanceJSON){
 
     // instance->user_task
     cJSON *user_task = cJSON_GetObjectItemCaseSensitive(instanceJSON, "userTask");
+    if (cJSON_IsNull(user_task)) {
+        user_task = NULL;
+    }
     if (user_task) { 
     if(!cJSON_IsString(user_task))
     {
@@ -521,6 +530,9 @@ instance_t *instance_parseFromJSON(cJSON *instanceJSON){
 
     // instance->task_state
     cJSON *task_state = cJSON_GetObjectItemCaseSensitive(instanceJSON, "taskState");
+    if (cJSON_IsNull(task_state)) {
+        task_state = NULL;
+    }
     if (task_state) { 
     if(!cJSON_IsString(task_state))
     {
@@ -530,6 +542,9 @@ instance_t *instance_parseFromJSON(cJSON *instanceJSON){
 
     // instance->error
     cJSON *error = cJSON_GetObjectItemCaseSensitive(instanceJSON, "error");
+    if (cJSON_IsNull(error)) {
+        error = NULL;
+    }
     if (error) { 
     if(!cJSON_IsString(error))
     {
@@ -539,12 +554,18 @@ instance_t *instance_parseFromJSON(cJSON *instanceJSON){
 
     // instance->boot_options
     cJSON *boot_options = cJSON_GetObjectItemCaseSensitive(instanceJSON, "bootOptions");
+    if (cJSON_IsNull(boot_options)) {
+        boot_options = NULL;
+    }
     if (boot_options) { 
     boot_options_local_nonprim = instance_boot_options_parseFromJSON(boot_options); //nonprimitive
     }
 
     // instance->service_ip
     cJSON *service_ip = cJSON_GetObjectItemCaseSensitive(instanceJSON, "serviceIp");
+    if (cJSON_IsNull(service_ip)) {
+        service_ip = NULL;
+    }
     if (service_ip) { 
     if(!cJSON_IsString(service_ip))
     {
@@ -554,6 +575,9 @@ instance_t *instance_parseFromJSON(cJSON *instanceJSON){
 
     // instance->wifi_ip
     cJSON *wifi_ip = cJSON_GetObjectItemCaseSensitive(instanceJSON, "wifiIp");
+    if (cJSON_IsNull(wifi_ip)) {
+        wifi_ip = NULL;
+    }
     if (wifi_ip) { 
     if(!cJSON_IsString(wifi_ip))
     {
@@ -563,12 +587,18 @@ instance_t *instance_parseFromJSON(cJSON *instanceJSON){
 
     // instance->services
     cJSON *services = cJSON_GetObjectItemCaseSensitive(instanceJSON, "services");
+    if (cJSON_IsNull(services)) {
+        services = NULL;
+    }
     if (services) { 
     services_local_nonprim = instance_services_parseFromJSON(services); //nonprimitive
     }
 
     // instance->panicked
     cJSON *panicked = cJSON_GetObjectItemCaseSensitive(instanceJSON, "panicked");
+    if (cJSON_IsNull(panicked)) {
+        panicked = NULL;
+    }
     if (panicked) { 
     if(!cJSON_IsBool(panicked))
     {
@@ -578,6 +608,9 @@ instance_t *instance_parseFromJSON(cJSON *instanceJSON){
 
     // instance->created
     cJSON *created = cJSON_GetObjectItemCaseSensitive(instanceJSON, "created");
+    if (cJSON_IsNull(created)) {
+        created = NULL;
+    }
     if (created) { 
     if(!cJSON_IsString(created))
     {
@@ -587,6 +620,9 @@ instance_t *instance_parseFromJSON(cJSON *instanceJSON){
 
     // instance->model
     cJSON *model = cJSON_GetObjectItemCaseSensitive(instanceJSON, "model");
+    if (cJSON_IsNull(model)) {
+        model = NULL;
+    }
     if (model) { 
     if(!cJSON_IsString(model))
     {
@@ -596,6 +632,9 @@ instance_t *instance_parseFromJSON(cJSON *instanceJSON){
 
     // instance->ipsw
     cJSON *ipsw = cJSON_GetObjectItemCaseSensitive(instanceJSON, "ipsw");
+    if (cJSON_IsNull(ipsw)) {
+        ipsw = NULL;
+    }
     if (ipsw) { 
     if(!cJSON_IsString(ipsw))
     {
@@ -605,6 +644,9 @@ instance_t *instance_parseFromJSON(cJSON *instanceJSON){
 
     // instance->os
     cJSON *os = cJSON_GetObjectItemCaseSensitive(instanceJSON, "os");
+    if (cJSON_IsNull(os)) {
+        os = NULL;
+    }
     if (os) { 
     if(!cJSON_IsString(os))
     {
@@ -614,6 +656,9 @@ instance_t *instance_parseFromJSON(cJSON *instanceJSON){
 
     // instance->agent
     cJSON *agent = cJSON_GetObjectItemCaseSensitive(instanceJSON, "agent");
+    if (cJSON_IsNull(agent)) {
+        agent = NULL;
+    }
     if (agent) { 
     if(!cJSON_IsString(agent))
     {
@@ -623,12 +668,18 @@ instance_t *instance_parseFromJSON(cJSON *instanceJSON){
 
     // instance->netmon
     cJSON *netmon = cJSON_GetObjectItemCaseSensitive(instanceJSON, "netmon");
+    if (cJSON_IsNull(netmon)) {
+        netmon = NULL;
+    }
     if (netmon) { 
     netmon_local_nonprim = instance_netmon_state_parseFromJSON(netmon); //nonprimitive
     }
 
     // instance->expose_port
     cJSON *expose_port = cJSON_GetObjectItemCaseSensitive(instanceJSON, "exposePort");
+    if (cJSON_IsNull(expose_port)) {
+        expose_port = NULL;
+    }
     if (expose_port) { 
     if(!cJSON_IsString(expose_port))
     {
@@ -638,6 +689,9 @@ instance_t *instance_parseFromJSON(cJSON *instanceJSON){
 
     // instance->fault
     cJSON *fault = cJSON_GetObjectItemCaseSensitive(instanceJSON, "fault");
+    if (cJSON_IsNull(fault)) {
+        fault = NULL;
+    }
     if (fault) { 
     if(!cJSON_IsBool(fault))
     {
@@ -647,9 +701,11 @@ instance_t *instance_parseFromJSON(cJSON *instanceJSON){
 
     // instance->patches
     cJSON *patches = cJSON_GetObjectItemCaseSensitive(instanceJSON, "patches");
-    list_t *patchesList;
+    if (cJSON_IsNull(patches)) {
+        patches = NULL;
+    }
     if (patches) { 
-    cJSON *patches_local;
+    cJSON *patches_local = NULL;
     if(!cJSON_IsArray(patches)) {
         goto end;//primitive container
     }
@@ -673,7 +729,7 @@ instance_t *instance_parseFromJSON(cJSON *instanceJSON){
         flavor ? strdup(flavor->valuestring) : NULL,
         type ? strdup(type->valuestring) : NULL,
         project ? strdup(project->valuestring) : NULL,
-        state ? state_local_nonprim : NULL,
+        state ? state_local_nonprim : 0,
         state_changed ? strdup(state_changed->valuestring) : NULL,
         user_task ? strdup(user_task->valuestring) : NULL,
         task_state ? strdup(task_state->valuestring) : NULL,
@@ -697,8 +753,7 @@ instance_t *instance_parseFromJSON(cJSON *instanceJSON){
     return instance_local_var;
 end:
     if (state_local_nonprim) {
-        instance_state_free(state_local_nonprim);
-        state_local_nonprim = NULL;
+        state_local_nonprim = 0;
     }
     if (boot_options_local_nonprim) {
         instance_boot_options_free(boot_options_local_nonprim);
@@ -711,6 +766,15 @@ end:
     if (netmon_local_nonprim) {
         instance_netmon_state_free(netmon_local_nonprim);
         netmon_local_nonprim = NULL;
+    }
+    if (patchesList) {
+        listEntry_t *listEntry = NULL;
+        list_ForEach(listEntry, patchesList) {
+            free(listEntry->data);
+            listEntry->data = NULL;
+        }
+        list_freeList(patchesList);
+        patchesList = NULL;
     }
     return NULL;
 

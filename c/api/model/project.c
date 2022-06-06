@@ -61,22 +61,21 @@ cJSON *project_convertToJSON(project_t *project) {
     if (!project->id) {
         goto fail;
     }
-    
     if(cJSON_AddStringToObject(item, "id", project->id) == NULL) {
     goto fail; //String
     }
 
 
     // project->name
-    if(project->name) { 
+    if(project->name) {
     if(cJSON_AddStringToObject(item, "name", project->name) == NULL) {
     goto fail; //String
     }
-     } 
+    }
 
 
     // project->settings
-    if(project->settings) { 
+    if(project->settings) {
     cJSON *settings_local_JSON = project_settings_convertToJSON(project->settings);
     if(settings_local_JSON == NULL) {
     goto fail; //model
@@ -85,11 +84,11 @@ cJSON *project_convertToJSON(project_t *project) {
     if(item->child == NULL) {
     goto fail;
     }
-     } 
+    }
 
 
     // project->quotas
-    if(project->quotas) { 
+    if(project->quotas) {
     cJSON *quotas_local_JSON = project_quota_convertToJSON(project->quotas);
     if(quotas_local_JSON == NULL) {
     goto fail; //model
@@ -98,11 +97,11 @@ cJSON *project_convertToJSON(project_t *project) {
     if(item->child == NULL) {
     goto fail;
     }
-     } 
+    }
 
 
     // project->quotas_used
-    if(project->quotas_used) { 
+    if(project->quotas_used) {
     cJSON *quotas_used_local_JSON = project_usage_convertToJSON(project->quotas_used);
     if(quotas_used_local_JSON == NULL) {
     goto fail; //model
@@ -111,7 +110,7 @@ cJSON *project_convertToJSON(project_t *project) {
     if(item->child == NULL) {
     goto fail;
     }
-     } 
+    }
 
     return item;
 fail:
@@ -136,6 +135,9 @@ project_t *project_parseFromJSON(cJSON *projectJSON){
 
     // project->id
     cJSON *id = cJSON_GetObjectItemCaseSensitive(projectJSON, "id");
+    if (cJSON_IsNull(id)) {
+        id = NULL;
+    }
     if (!id) {
         goto end;
     }
@@ -148,6 +150,9 @@ project_t *project_parseFromJSON(cJSON *projectJSON){
 
     // project->name
     cJSON *name = cJSON_GetObjectItemCaseSensitive(projectJSON, "name");
+    if (cJSON_IsNull(name)) {
+        name = NULL;
+    }
     if (name) { 
     if(!cJSON_IsString(name))
     {
@@ -157,18 +162,27 @@ project_t *project_parseFromJSON(cJSON *projectJSON){
 
     // project->settings
     cJSON *settings = cJSON_GetObjectItemCaseSensitive(projectJSON, "settings");
+    if (cJSON_IsNull(settings)) {
+        settings = NULL;
+    }
     if (settings) { 
     settings_local_nonprim = project_settings_parseFromJSON(settings); //nonprimitive
     }
 
     // project->quotas
     cJSON *quotas = cJSON_GetObjectItemCaseSensitive(projectJSON, "quotas");
+    if (cJSON_IsNull(quotas)) {
+        quotas = NULL;
+    }
     if (quotas) { 
     quotas_local_nonprim = project_quota_parseFromJSON(quotas); //nonprimitive
     }
 
     // project->quotas_used
     cJSON *quotas_used = cJSON_GetObjectItemCaseSensitive(projectJSON, "quotasUsed");
+    if (cJSON_IsNull(quotas_used)) {
+        quotas_used = NULL;
+    }
     if (quotas_used) { 
     quotas_used_local_nonprim = project_usage_parseFromJSON(quotas_used); //nonprimitive
     }

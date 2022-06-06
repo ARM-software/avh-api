@@ -34,11 +34,11 @@ cJSON *instance_console_endpoint_convertToJSON(instance_console_endpoint_t *inst
     cJSON *item = cJSON_CreateObject();
 
     // instance_console_endpoint->url
-    if(instance_console_endpoint->url) { 
+    if(instance_console_endpoint->url) {
     if(cJSON_AddStringToObject(item, "url", instance_console_endpoint->url) == NULL) {
     goto fail; //String
     }
-     } 
+    }
 
     return item;
 fail:
@@ -54,6 +54,9 @@ instance_console_endpoint_t *instance_console_endpoint_parseFromJSON(cJSON *inst
 
     // instance_console_endpoint->url
     cJSON *url = cJSON_GetObjectItemCaseSensitive(instance_console_endpointJSON, "url");
+    if (cJSON_IsNull(url)) {
+        url = NULL;
+    }
     if (url) { 
     if(!cJSON_IsString(url))
     {

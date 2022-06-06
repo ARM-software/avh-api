@@ -43,7 +43,6 @@ cJSON *credentials_convertToJSON(credentials_t *credentials) {
     if (!credentials->username) {
         goto fail;
     }
-    
     if(cJSON_AddStringToObject(item, "username", credentials->username) == NULL) {
     goto fail; //String
     }
@@ -53,7 +52,6 @@ cJSON *credentials_convertToJSON(credentials_t *credentials) {
     if (!credentials->password) {
         goto fail;
     }
-    
     if(cJSON_AddStringToObject(item, "password", credentials->password) == NULL) {
     goto fail; //String
     }
@@ -72,6 +70,9 @@ credentials_t *credentials_parseFromJSON(cJSON *credentialsJSON){
 
     // credentials->username
     cJSON *username = cJSON_GetObjectItemCaseSensitive(credentialsJSON, "username");
+    if (cJSON_IsNull(username)) {
+        username = NULL;
+    }
     if (!username) {
         goto end;
     }
@@ -84,6 +85,9 @@ credentials_t *credentials_parseFromJSON(cJSON *credentialsJSON){
 
     // credentials->password
     cJSON *password = cJSON_GetObjectItemCaseSensitive(credentialsJSON, "password");
+    if (cJSON_IsNull(password)) {
+        password = NULL;
+    }
     if (!password) {
         goto end;
     }
