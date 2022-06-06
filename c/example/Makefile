@@ -1,6 +1,6 @@
 CFLAGS = -O2 -Wall -g
 LDFLAGS = -L../api/build/
-LIBRARIES = -l:libarm_api.so
+LIBRARIES = -lwebsockets -l:libarm_api.so
 
 all: test
 

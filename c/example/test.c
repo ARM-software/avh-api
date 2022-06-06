@@ -2,8 +2,17 @@
 #include <string.h>
 #include <unistd.h>
 
+#include <libwebsockets.h>
+
 #include "apiClient.h"
 #include "ArmAPI.h"
+
+static int interrupted = 0;
+
+static void sigint_handler(int sig)
+{
+    interrupted = 1;
+}
 
 static char *get_a_project_id(apiClient_t *api_client)
 {
@@ -149,6 +158,12 @@ static int instance_wait_until_ready(apiClient_t *api_client, instance_t **insta
         fflush(stdout);
         sleep(1);
 
+        if(interrupted) {
+            printf(" interrupted!\n");
+            interrupted = 0;
+            return 1;
+        }
+
         temp = ArmAPI_v1GetInstance(api_client, instance->id, NULL);
         if(!temp) {
             printf(" device seems to be gone\n");
@@ -164,14 +179,153 @@ static int instance_wait_until_ready(apiClient_t *api_client, instance_t **insta
     return 0;
 }
 
-static void get_console_socket(apiClient_t *api_client, instance_t *instance)
+#define WIFI_SSID_REQUESTED 1
+#define WIFI_PASS_REQUESTED 2
+static int console_request = 0;
+
+/* Must be enough for "Arm" or "password", plus the newline */
+#define LWS_MAX_OUTLEN   16
+
+static int wifi_callback(struct lws *socket, enum lws_callback_reasons reason, void *user, void *in, size_t len)
 {
+    const char *outstr = NULL;
+    unsigned char outbuf[LWS_PRE + LWS_MAX_OUTLEN];
+    size_t outlen;
+
+    switch(reason) {
+    case LWS_CALLBACK_CLIENT_CONNECTION_ERROR:
+        interrupted = 1;
+        printf("ERROR: %.*s\n", (int)len, (char *)in);
+        break;
+    case LWS_CALLBACK_CLIENT_RECEIVE:
+        if(len < 1)
+            break;
+        *(char *)(in + len - 1) = '\0';
+        if(strstr(in, "Please enter your wifi ssid")) {
+            console_request = WIFI_SSID_REQUESTED;
+            lws_callback_on_writable(socket);
+        } else if(strstr(in, "Please enter your wifi password")) {
+            console_request = WIFI_PASS_REQUESTED;
+            lws_callback_on_writable(socket);
+        }
+        break;
+    case LWS_CALLBACK_CLIENT_WRITEABLE:
+        memset(outbuf, 0, LWS_PRE + LWS_MAX_OUTLEN);
+        if(console_request == WIFI_SSID_REQUESTED) {
+            outstr = "Arm";
+        } else if(console_request == WIFI_PASS_REQUESTED) {
+            outstr = "password";
+            interrupted = 1; /* We are done with the console */
+        } else {
+            interrupted = 1; /* This should never happen */
+            break;
+        }
+        console_request = 0;
+        outlen = snprintf((char *)outbuf + LWS_PRE, LWS_MAX_OUTLEN, "%s\n", outstr);
+        if(lws_write(socket, outbuf, outlen, LWS_WRITE_TEXT) < 0) {
+            printf("Websockets write failed\n");
+            interrupted = 1;
+        }
+        break;
+    default:
+        break;
+    }
+    return 0;
+}
+
+static struct lws_protocols protocols[] = {
+    {
+        .name = "wifi-protocol",
+        .callback = wifi_callback,
+        .per_session_data_size = 0,
+        .rx_buffer_size = 1024,
+    },
+    {0}
+};
+
+static struct lws *get_console_socket(apiClient_t *api_client, instance_t *instance, struct lws_context *context)
+{
+    struct lws_client_connect_info info = {0};
     instance_console_endpoint_t *endpoint = NULL;
+    struct lws *console = NULL;
+    const char scheme[] = "wss://";
+    char *host = NULL, *path = NULL, *slash = NULL;
 
     endpoint = ArmAPI_v1GetInstanceConsole(api_client, instance->id);
     if(!endpoint)
-        return;
-    printf("%s\n", endpoint->url);
+        return NULL;
+
+    if(strlen(endpoint->url) < sizeof(scheme) - 1) {
+        printf("Websockets url is missing scheme\n");
+        goto fail;
+    }
+    host = endpoint->url + sizeof(scheme) - 1;
+    host = strdup(host);
+    if(!host)
+        goto fail;
+    slash = strchr(host, '/');
+    if(!slash) {
+        printf("Websockets url is missing a path\n");
+        goto fail;
+    }
+    path = strdup(slash);
+    *slash = '\0';
+    if(!path)
+        goto fail;
+
+    info.context = context;
+    info.address = host;
+    info.port = 443;
+    info.host = host;
+    info.origin = host;
+    info.path = path;
+    info.protocol = protocols[0].name;
+    info.ssl_connection = LCCSCF_USE_SSL | LCCSCF_ALLOW_SELFSIGNED;
+
+    console = lws_client_connect_via_info(&info);
+fail:
+    free(path);
+    free(host);
+    instance_console_endpoint_free(endpoint);
+    return console;
+}
+
+static int connect_wifi(apiClient_t *api_client, instance_t *instance)
+{
+    struct lws_context_creation_info info = {0};
+    struct lws_context *context = NULL;
+    struct lws *console = NULL;
+    int ret = 1;
+
+    printf("Connecting to wifi...\n");
+
+    info.options = LWS_SERVER_OPTION_H2_JUST_FIX_WINDOW_UPDATE_OVERFLOW | LWS_SERVER_OPTION_DO_SSL_GLOBAL_INIT;
+    info.port = CONTEXT_PORT_NO_LISTEN;
+    info.protocols = protocols;
+    info.gid = -1;
+    info.uid = -1;
+
+    context = lws_create_context(&info);
+    if(!context) {
+        printf("libwebsockets init failed\n");
+        return ret;
+    }
+
+    console = get_console_socket(api_client, instance, context);
+    if(!console) {
+        printf("Failed to connect to the console\n");
+        goto fail;
+    }
+
+    printf("Handling the console websocket...\n");
+    while(lws_service(context, 0) >= 0 && !interrupted)
+        ;
+
+    ret = 0;
+fail:
+    lws_context_destroy(context);
+    interrupted = 0;
+    return ret;
 }
 
 static int stop_instance(apiClient_t *api_client, instance_t **instance_p)
@@ -189,6 +343,12 @@ static int stop_instance(apiClient_t *api_client, instance_t **instance_p)
         printf(".");
         fflush(stdout);
         sleep(1);
+
+        if(interrupted) {
+            printf(" interrupted!\n");
+            interrupted = 0;
+            return 1;
+        }
 
         temp = ArmAPI_v1GetInstance(api_client, instance->id, NULL);
         if(!temp) {
@@ -226,6 +386,12 @@ static int take_snapshot(apiClient_t *api_client, instance_t *instance)
         printf(".");
         fflush(stdout);
         sleep(1);
+
+        if(interrupted) {
+            printf(" interrupted!\n");
+            interrupted = 0;
+            return 1;
+        }
 
         temp = ArmAPI_v1GetSnapshot(api_client, instance->id, snapshot->id);
         snapshot_free(snapshot);
@@ -294,6 +460,7 @@ static int list_snapshots(apiClient_t *api_client, instance_t *instance)
 
 int main(int argc, char *argv[])
 {
+    struct sigaction int_action = { .sa_handler = sigint_handler };
     const char *endpoint = NULL, *username = NULL, *password = NULL;
     apiClient_t *api_client = NULL;
     cJSON *auth_body_json = NULL;
@@ -356,10 +523,13 @@ int main(int argc, char *argv[])
         printf("Failed to create an instance\n");
         exit(1);
     }
+
+    sigaction(SIGINT, &int_action, NULL);
     if(instance_wait_until_ready(api_client, &instance))
         goto delete;
 
-    get_console_socket(api_client, instance);
+    if(connect_wifi(api_client, instance))
+        printf("Failed to connect to wifi\n");
 
     if(stop_instance(api_client, &instance))
         goto delete;
