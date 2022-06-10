@@ -25,30 +25,29 @@ static char *get_a_project_id(apiClient_t *api_client)
     list = ArmAPI_v1GetProjects(api_client, NULL, 1);
     if(!list) {
         printf("Failed to retrieve project list\n");
-        exit(1);
+        return NULL;
     }
 
     first_entry = list_getElementAt(list, 0);
     if(!first_entry) {
         printf("No projects available\n");
-        exit(1);
+        goto fail;
     }
     project = cJSON_Parse(first_entry->data);
     if(!cJSON_IsObject(project)) {
         printf("Project list seems malformed\n");
-        exit(1);
+        goto fail;
     }
     project_id = cJSON_GetStringValue(cJSON_GetObjectItem(project, "id"));
     if(!project_id) {
         printf("First project has no id\n");
-        exit(1);
+        goto fail;
     }
     project_id = strdup(project_id);
-    if(!project_id)
-        exit(1);
 
+fail:
     cJSON_Delete(project);
-    list_freeList(list); /* Leaks... */
+    clear_and_free_string_list(list);
     return project_id;
 }
 
@@ -63,7 +62,7 @@ static model_t *get_stm32u5_model(apiClient_t *api_client)
     list = ArmAPI_v1GetModels(api_client);
     if(!list) {
         printf("Failed to retrieve model list\n");
-        exit(1);
+        return NULL;
     }
 
     for(current = list->firstEntry; current; current = current->nextListEntry) {
@@ -76,7 +75,7 @@ static model_t *get_stm32u5_model(apiClient_t *api_client)
         cJSON_Delete(data);
         if(!curr_model) {
             printf("Model data seems malformed\n");
-            exit(1);
+            goto fail;
         }
         if(strncmp(curr_model->flavor, flavor_prefix, sizeof(flavor_prefix) - 1) == 0) {
             model = curr_model;
@@ -85,7 +84,8 @@ static model_t *get_stm32u5_model(apiClient_t *api_client)
         model_free(curr_model);
     }
 
-    list_freeList(list);
+fail:
+    clear_and_free_string_list(list);
     return model;
 }
 
@@ -100,19 +100,20 @@ static firmware_t *get_a_model_firmware(apiClient_t *api_client, model_t *model)
     list = ArmAPI_v1GetModelSoftware(api_client, model->model);
     if(!list) {
         printf("Failed to retrieve software list for model\n");
-        exit(1);
+        return NULL;
     }
 
     first_entry = list_getElementAt(list, 0);
     if(!first_entry) {
         printf("No software available\n");
-        exit(1);
+        goto fail;
     }
 
     firmware_json = cJSON_Parse(first_entry->data);
     firmware = firmware_parseFromJSON(firmware_json);
     cJSON_Delete(firmware_json);
-    list_freeList(list); /* Leaks... */
+fail:
+    clear_and_free_string_list(list);
     return firmware;
 }
 
@@ -124,7 +125,7 @@ static instance_t *create_instance(apiClient_t *api_client, char *name, char *pr
 
     options = calloc(1, sizeof(*options));
     if(!options)
-        exit(1);
+        return NULL;
     options->name = name;
     options->project = project_id;
     options->flavor = flavor;
@@ -170,12 +171,11 @@ static int instance_wait_until_ready(apiClient_t *api_client, instance_t **insta
             return 1;
         }
         instance_free(instance);
-        instance = temp;
+        *instance_p = instance = temp;
         temp = NULL;
     }
 
     printf(" done\n");
-    *instance_p = instance;
     return 0;
 }
 
@@ -356,12 +356,11 @@ static int stop_instance(apiClient_t *api_client, instance_t **instance_p)
             return 1;
         }
         instance_free(instance);
-        instance = temp;
+        *instance_p = instance = temp;
         temp = NULL;
     }
 
     printf(" done\n");
-    *instance_p = instance;
     return 0;
 }
 
@@ -369,6 +368,7 @@ static int take_snapshot(apiClient_t *api_client, instance_t *instance)
 {
     snapshot_creation_options_t options = { .name = "TestSnap" };
     snapshot_t *snapshot = NULL;
+    int ret = 1;
 
     printf("Taking a snapshot\n");
 
@@ -390,7 +390,7 @@ static int take_snapshot(apiClient_t *api_client, instance_t *instance)
         if(interrupted) {
             printf(" interrupted!\n");
             interrupted = 0;
-            return 1;
+            goto fail;
         }
 
         temp = ArmAPI_v1GetSnapshot(api_client, instance->id, snapshot->id);
@@ -403,13 +403,18 @@ static int take_snapshot(apiClient_t *api_client, instance_t *instance)
             return 1;
         }
     }
+
     if(!snapshot->status || !snapshot->status->task) {
         printf(" failed to retrieve snapshot status\n");
-        return 1;
+        ret = 1;
+    } else {
+        printf(" done\n");
+        ret = 0;
     }
-
-    printf(" done\n");
-    return 0;
+fail:
+    snapshot_free(snapshot);
+    snapshot = NULL;
+    return ret;
 }
 
 static int list_snapshots(apiClient_t *api_client, instance_t *instance)
@@ -454,7 +459,7 @@ static int list_snapshots(apiClient_t *api_client, instance_t *instance)
         snapshot_free(curr_snap);
     }
     printf("\n");
-    list_freeList(list);
+    clear_and_free_string_list(list);
     return 0;
 }
 
@@ -472,6 +477,8 @@ int main(int argc, char *argv[])
     instance_t *instance = NULL;
     int status = 1;
 
+    apiClient_setupGlobalEnv();
+
     if(argc != 4) {
         printf("Usage: %s <ApiEndpoint> <username> <password>\n", argv[0]);
         return 1;
@@ -484,62 +491,87 @@ int main(int argc, char *argv[])
 
     auth_body_json = cJSON_CreateObject();
     if(!auth_body_json)
-        exit(1);
+        goto out;
     cJSON_AddStringToObject(auth_body_json, "username", username);
     cJSON_AddStringToObject(auth_body_json, "password", password);
     auth_body = object_parseFromJSON(auth_body_json);
+    cJSON_Delete(auth_body_json);
+    auth_body_json = NULL;
     if(!auth_body)
-        exit(1);
+        goto out;
 
     token = ArmAPI_v1AuthLogin(api_client, auth_body);
     if(!token) {
         printf("Failure on authentication\n");
-        return 1;
+        goto out;
     }
     api_client->accessToken = strdup(token->token);
     if(!api_client->accessToken)
-        exit(1);
+        goto out;
     printf("Logged in\n");
 
     project_id = get_a_project_id(api_client);
+    if(!project_id)
+        goto out;
     printf("Project id is %s\n", project_id);
 
     model = get_stm32u5_model(api_client);
     if(!model) {
         printf("No matching flavor was found.\n");
-        exit(1);
+        goto out;
     }
     printf("Model flavor is %s\n", model->flavor);
 
     firmware = get_a_model_firmware(api_client, model);
-    if(!firmware) {
+    if(!firmware || !firmware->version) {
         printf("No firmware found for model %s\n", model->model);
-        exit(1);
+        goto out;
     }
     printf("Software version is %s\n", firmware->version);
 
+    sigaction(SIGINT, &int_action, NULL);
     instance = create_instance(api_client, "STM32U5-C-API-Test", project_id, model->flavor, firmware->version);
     if(!instance) {
         printf("Failed to create an instance\n");
-        exit(1);
+        goto out;
     }
 
-    sigaction(SIGINT, &int_action, NULL);
     if(instance_wait_until_ready(api_client, &instance))
-        goto delete;
+        goto out;
 
     if(connect_wifi(api_client, instance))
         printf("Failed to connect to wifi\n");
 
     if(stop_instance(api_client, &instance))
-        goto delete;
+        goto out;
     if(take_snapshot(api_client, instance))
-        goto delete;
+        goto out;
     if(list_snapshots(api_client, instance))
-        goto delete;
+        goto out;
 
     status = 0;
-delete:
-    ArmAPI_v1DeleteInstance(api_client, instance->id);
+out:
+    if(instance) {
+        ArmAPI_v1DeleteInstance(api_client, instance->id);
+        instance_free(instance);
+        instance = NULL;
+    }
+    firmware_free(firmware);
+    firmware = NULL;
+    model_free(model);
+    model = NULL;
+    free(project_id);
+    project_id = NULL;
+    token_free(token);
+    token = NULL;
+    if(auth_body) {
+        object_free(auth_body);
+        auth_body = NULL;
+    }
+    if(api_client) {
+        apiClient_free(api_client);
+        api_client = NULL;
+    }
+    apiClient_unsetupGlobalEnv();
     return status;
 }
