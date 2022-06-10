@@ -36,6 +36,10 @@ object_t *object_parseFromJSON(cJSON *json) {
     object = malloc(sizeof(object_t));
     if (!object)
         return NULL;
-    object->json = json;
+    object->json = cJSON_Duplicate(json, 1);
+    if (!object->json) {
+        free(object);
+        return NULL;
+    }
     return object;
 }
