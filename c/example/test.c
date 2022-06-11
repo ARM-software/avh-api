@@ -149,7 +149,7 @@ static int instance_wait_until_ready(apiClient_t *api_client, instance_t **insta
 {
     instance_t *instance = *instance_p;
 
-    printf("Waiting for the device to get ready");
+    printf("Waiting for the device to get ready...");
     fflush(stdout);
 
     while(instance->state != arm_api_instance_state__on) {
@@ -332,7 +332,7 @@ static int stop_instance(apiClient_t *api_client, instance_t **instance_p)
 {
     instance_t *instance = *instance_p;
 
-    printf("Powering down the device");
+    printf("Powering down the device...");
     fflush(stdout);
 
     ArmAPI_v1StopInstance(api_client, instance->id, NULL);
@@ -378,7 +378,7 @@ static int take_snapshot(apiClient_t *api_client, instance_t *instance)
         return 1;
     }
 
-    printf("Waiting for snapshot to complete");
+    printf("Waiting for snapshot to complete...");
     fflush(stdout);
     while(snapshot->status && snapshot->status->task && strcmp(snapshot->status->task, "creating") == 0) {
         snapshot_t *temp = NULL;
