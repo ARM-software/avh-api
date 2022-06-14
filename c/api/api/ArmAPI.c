@@ -76,6 +76,9 @@ ArmAPI_v1AuthLogin(apiClient_t *apiClient, object_t * body )
     list_t *localVarContentType = list_createList();
     char      *localVarBodyParameters = NULL;
 
+    // clear the error code from the previous api call
+    apiClient->response_code = 0;
+
     // create the path
     long sizeOfPath = strlen("/v1/auth/login")+1;
     char *localVarPath = malloc(sizeOfPath);
@@ -155,6 +158,9 @@ ArmAPI_v1CreateImage(apiClient_t *apiClient, char * type , arm_api_v1CreateImage
     list_t *localVarHeaderType = list_createList();
     list_t *localVarContentType = list_createList();
     char      *localVarBodyParameters = NULL;
+
+    // clear the error code from the previous api call
+    apiClient->response_code = 0;
 
     // create the path
     long sizeOfPath = strlen("/v1/images")+1;
@@ -345,6 +351,9 @@ ArmAPI_v1CreateInstance(apiClient_t *apiClient, instance_create_options_t * inst
     list_t *localVarContentType = list_createList();
     char      *localVarBodyParameters = NULL;
 
+    // clear the error code from the previous api call
+    apiClient->response_code = 0;
+
     // create the path
     long sizeOfPath = strlen("/v1/instances")+1;
     char *localVarPath = malloc(sizeOfPath);
@@ -428,6 +437,9 @@ ArmAPI_v1CreateSnapshot(apiClient_t *apiClient, char * instanceId , snapshot_cre
     list_t *localVarHeaderType = list_createList();
     list_t *localVarContentType = list_createList();
     char      *localVarBodyParameters = NULL;
+
+    // clear the error code from the previous api call
+    apiClient->response_code = 0;
 
     // create the path
     long sizeOfPath = strlen("/v1/instances/{instanceId}/snapshots")+1;
@@ -524,6 +536,9 @@ ArmAPI_v1DeleteImage(apiClient_t *apiClient, char * imageId )
     list_t *localVarContentType = NULL;
     char      *localVarBodyParameters = NULL;
 
+    // clear the error code from the previous api call
+    apiClient->response_code = 0;
+
     // create the path
     long sizeOfPath = strlen("/v2/images/{imageId}")+1;
     char *localVarPath = malloc(sizeOfPath);
@@ -588,6 +603,9 @@ ArmAPI_v1DeleteInstance(apiClient_t *apiClient, char * instanceId )
     list_t *localVarHeaderType = list_createList();
     list_t *localVarContentType = NULL;
     char      *localVarBodyParameters = NULL;
+
+    // clear the error code from the previous api call
+    apiClient->response_code = 0;
 
     // create the path
     long sizeOfPath = strlen("/v1/instances/{instanceId}")+1;
@@ -657,6 +675,9 @@ ArmAPI_v1GetImage(apiClient_t *apiClient, char * imageId )
     list_t *localVarHeaderType = list_createList();
     list_t *localVarContentType = NULL;
     char      *localVarBodyParameters = NULL;
+
+    // clear the error code from the previous api call
+    apiClient->response_code = 0;
 
     // create the path
     long sizeOfPath = strlen("/v1/images/{imageId}")+1;
@@ -733,6 +754,9 @@ ArmAPI_v1GetImages(apiClient_t *apiClient, char * project )
     list_t *localVarHeaderType = list_createList();
     list_t *localVarContentType = NULL;
     char      *localVarBodyParameters = NULL;
+
+    // clear the error code from the previous api call
+    apiClient->response_code = 0;
 
     // create the path
     long sizeOfPath = strlen("/v1/images")+1;
@@ -818,6 +842,9 @@ ArmAPI_v1GetInstance(apiClient_t *apiClient, char * instanceId , list_t * return
     list_t *localVarHeaderType = list_createList();
     list_t *localVarContentType = NULL;
     char      *localVarBodyParameters = NULL;
+
+    // clear the error code from the previous api call
+    apiClient->response_code = 0;
 
     // create the path
     long sizeOfPath = strlen("/v1/instances/{instanceId}")+1;
@@ -905,6 +932,9 @@ ArmAPI_v1GetInstanceConsole(apiClient_t *apiClient, char * instanceId )
     list_t *localVarContentType = NULL;
     char      *localVarBodyParameters = NULL;
 
+    // clear the error code from the previous api call
+    apiClient->response_code = 0;
+
     // create the path
     long sizeOfPath = strlen("/v1/instances/{instanceId}/console")+1;
     char *localVarPath = malloc(sizeOfPath);
@@ -984,6 +1014,9 @@ ArmAPI_v1GetInstancePeripherals(apiClient_t *apiClient, char * instanceId )
     list_t *localVarHeaderType = list_createList();
     list_t *localVarContentType = NULL;
     char      *localVarBodyParameters = NULL;
+
+    // clear the error code from the previous api call
+    apiClient->response_code = 0;
 
     // create the path
     long sizeOfPath = strlen("/v1/instances/{instanceId}/peripherals")+1;
@@ -1065,6 +1098,9 @@ ArmAPI_v1GetInstanceState(apiClient_t *apiClient, char * instanceId )
     list_t *localVarContentType = NULL;
     char      *localVarBodyParameters = NULL;
 
+    // clear the error code from the previous api call
+    apiClient->response_code = 0;
+
     // create the path
     long sizeOfPath = strlen("/v1/instances/{instanceId}/state")+1;
     char *localVarPath = malloc(sizeOfPath);
@@ -1144,6 +1180,9 @@ ArmAPI_v1GetInstances(apiClient_t *apiClient, char * name , list_t * returnAttr 
     list_t *localVarHeaderType = list_createList();
     list_t *localVarContentType = NULL;
     char      *localVarBodyParameters = NULL;
+
+    // clear the error code from the previous api call
+    apiClient->response_code = 0;
 
     // create the path
     long sizeOfPath = strlen("/v1/instances")+1;
@@ -1250,6 +1289,9 @@ ArmAPI_v1GetModelSoftware(apiClient_t *apiClient, char * model )
     list_t *localVarContentType = NULL;
     char      *localVarBodyParameters = NULL;
 
+    // clear the error code from the previous api call
+    apiClient->response_code = 0;
+
     // create the path
     long sizeOfPath = strlen("/v1/models/{model}/software")+1;
     char *localVarPath = malloc(sizeOfPath);
@@ -1332,6 +1374,9 @@ ArmAPI_v1GetModels(apiClient_t *apiClient)
     list_t *localVarContentType = NULL;
     char      *localVarBodyParameters = NULL;
 
+    // clear the error code from the previous api call
+    apiClient->response_code = 0;
+
     // create the path
     long sizeOfPath = strlen("/v1/models")+1;
     char *localVarPath = malloc(sizeOfPath);
@@ -1402,6 +1447,9 @@ ArmAPI_v1GetProject(apiClient_t *apiClient, char * projectId )
     list_t *localVarHeaderType = list_createList();
     list_t *localVarContentType = NULL;
     char      *localVarBodyParameters = NULL;
+
+    // clear the error code from the previous api call
+    apiClient->response_code = 0;
 
     // create the path
     long sizeOfPath = strlen("/v1/projects/{projectId}")+1;
@@ -1474,6 +1522,9 @@ ArmAPI_v1GetProjectInstances(apiClient_t *apiClient, char * projectId , char * n
     list_t *localVarHeaderType = list_createList();
     list_t *localVarContentType = NULL;
     char      *localVarBodyParameters = NULL;
+
+    // clear the error code from the previous api call
+    apiClient->response_code = 0;
 
     // create the path
     long sizeOfPath = strlen("/v1/projects/{projectId}/instances")+1;
@@ -1590,6 +1641,9 @@ ArmAPI_v1GetProjects(apiClient_t *apiClient, char * name , int ids_only )
     list_t *localVarHeaderType = list_createList();
     list_t *localVarContentType = NULL;
     char      *localVarBodyParameters = NULL;
+
+    // clear the error code from the previous api call
+    apiClient->response_code = 0;
 
     // create the path
     long sizeOfPath = strlen("/v1/projects")+1;
@@ -1719,6 +1773,9 @@ ArmAPI_v1GetSnapshot(apiClient_t *apiClient, char * instanceId , char * snapshot
     list_t *localVarContentType = NULL;
     char      *localVarBodyParameters = NULL;
 
+    // clear the error code from the previous api call
+    apiClient->response_code = 0;
+
     // create the path
     long sizeOfPath = strlen("/v1/instances/{instanceId}/snapshots/{snapshotId}")+1;
     char *localVarPath = malloc(sizeOfPath);
@@ -1810,6 +1867,9 @@ ArmAPI_v1GetSnapshots(apiClient_t *apiClient, char * instanceId )
     list_t *localVarContentType = NULL;
     char      *localVarBodyParameters = NULL;
 
+    // clear the error code from the previous api call
+    apiClient->response_code = 0;
+
     // create the path
     long sizeOfPath = strlen("/v1/instances/{instanceId}/snapshots")+1;
     char *localVarPath = malloc(sizeOfPath);
@@ -1899,6 +1959,9 @@ ArmAPI_v1PatchInstance(apiClient_t *apiClient, char * instanceId , object_t * bo
     list_t *localVarHeaderType = list_createList();
     list_t *localVarContentType = list_createList();
     char      *localVarBodyParameters = NULL;
+
+    // clear the error code from the previous api call
+    apiClient->response_code = 0;
 
     // create the path
     long sizeOfPath = strlen("/v1/instances/{instanceId}")+1;
@@ -1995,6 +2058,9 @@ ArmAPI_v1PauseInstance(apiClient_t *apiClient, char * instanceId )
     list_t *localVarContentType = NULL;
     char      *localVarBodyParameters = NULL;
 
+    // clear the error code from the previous api call
+    apiClient->response_code = 0;
+
     // create the path
     long sizeOfPath = strlen("/v1/instances/{instanceId}/pause")+1;
     char *localVarPath = malloc(sizeOfPath);
@@ -2066,6 +2132,9 @@ ArmAPI_v1Ready(apiClient_t *apiClient)
     list_t *localVarContentType = NULL;
     char      *localVarBodyParameters = NULL;
 
+    // clear the error code from the previous api call
+    apiClient->response_code = 0;
+
     // create the path
     long sizeOfPath = strlen("/v1/ready")+1;
     char *localVarPath = malloc(sizeOfPath);
@@ -2119,6 +2188,9 @@ ArmAPI_v1RebootInstance(apiClient_t *apiClient, char * instanceId )
     list_t *localVarHeaderType = list_createList();
     list_t *localVarContentType = NULL;
     char      *localVarBodyParameters = NULL;
+
+    // clear the error code from the previous api call
+    apiClient->response_code = 0;
 
     // create the path
     long sizeOfPath = strlen("/v1/instances/{instanceId}/reboot")+1;
@@ -2188,6 +2260,9 @@ ArmAPI_v1RestoreSnapshot(apiClient_t *apiClient, char * instanceId , char * snap
     list_t *localVarHeaderType = list_createList();
     list_t *localVarContentType = NULL;
     char      *localVarBodyParameters = NULL;
+
+    // clear the error code from the previous api call
+    apiClient->response_code = 0;
 
     // create the path
     long sizeOfPath = strlen("/v1/instances/{instanceId}/snapshots/{snapshotId}/restore")+1;
@@ -2268,6 +2343,9 @@ ArmAPI_v1SetInstancePeripherals(apiClient_t *apiClient, char * instanceId , char
     list_t *localVarHeaderType = list_createList();
     list_t *localVarContentType = list_createList();
     char      *localVarBodyParameters = NULL;
+
+    // clear the error code from the previous api call
+    apiClient->response_code = 0;
 
     // create the path
     long sizeOfPath = strlen("/v1/instances/{instanceId}/peripherals")+1;
@@ -2353,6 +2431,9 @@ ArmAPI_v1SetInstanceState(apiClient_t *apiClient, char * instanceId , v1_set_sta
     list_t *localVarHeaderType = list_createList();
     list_t *localVarContentType = list_createList();
     char      *localVarBodyParameters = NULL;
+
+    // clear the error code from the previous api call
+    apiClient->response_code = 0;
 
     // create the path
     long sizeOfPath = strlen("/v1/instances/{instanceId}/state")+1;
@@ -2446,6 +2527,9 @@ ArmAPI_v1SnapshotDelete(apiClient_t *apiClient, char * instanceId , char * snaps
     list_t *localVarContentType = NULL;
     char      *localVarBodyParameters = NULL;
 
+    // clear the error code from the previous api call
+    apiClient->response_code = 0;
+
     // create the path
     long sizeOfPath = strlen("/v1/instances/{instanceId}/snapshots/{snapshotId}")+1;
     char *localVarPath = malloc(sizeOfPath);
@@ -2525,6 +2609,9 @@ ArmAPI_v1SnapshotRename(apiClient_t *apiClient, char * instanceId , char * snaps
     list_t *localVarHeaderType = list_createList();
     list_t *localVarContentType = list_createList();
     char      *localVarBodyParameters = NULL;
+
+    // clear the error code from the previous api call
+    apiClient->response_code = 0;
 
     // create the path
     long sizeOfPath = strlen("/v1/instances/{instanceId}/snapshots/{snapshotId}")+1;
@@ -2632,6 +2719,9 @@ ArmAPI_v1StartInstance(apiClient_t *apiClient, char * instanceId , instance_star
     list_t *localVarContentType = list_createList();
     char      *localVarBodyParameters = NULL;
 
+    // clear the error code from the previous api call
+    apiClient->response_code = 0;
+
     // create the path
     long sizeOfPath = strlen("/v1/instances/{instanceId}/start")+1;
     char *localVarPath = malloc(sizeOfPath);
@@ -2719,6 +2809,9 @@ ArmAPI_v1StopInstance(apiClient_t *apiClient, char * instanceId , instance_stop_
     list_t *localVarHeaderType = list_createList();
     list_t *localVarContentType = list_createList();
     char      *localVarBodyParameters = NULL;
+
+    // clear the error code from the previous api call
+    apiClient->response_code = 0;
 
     // create the path
     long sizeOfPath = strlen("/v1/instances/{instanceId}/stop")+1;
@@ -2808,6 +2901,9 @@ ArmAPI_v1UnpauseInstance(apiClient_t *apiClient, char * instanceId )
     list_t *localVarContentType = NULL;
     char      *localVarBodyParameters = NULL;
 
+    // clear the error code from the previous api call
+    apiClient->response_code = 0;
+
     // create the path
     long sizeOfPath = strlen("/v1/instances/{instanceId}/unpause")+1;
     char *localVarPath = malloc(sizeOfPath);
@@ -2878,6 +2974,9 @@ ArmAPI_v1UploadImageData(apiClient_t *apiClient, char * imageId , char * body )
     list_t *localVarHeaderType = list_createList();
     list_t *localVarContentType = list_createList();
     char      *localVarBodyParameters = NULL;
+
+    // clear the error code from the previous api call
+    apiClient->response_code = 0;
 
     // create the path
     long sizeOfPath = strlen("/v1/images/{imageId}")+1;
@@ -2963,6 +3062,9 @@ ArmAPI_v1UsersLogin(apiClient_t *apiClient, credentials_t * credentials )
     list_t *localVarHeaderType = list_createList();
     list_t *localVarContentType = list_createList();
     char      *localVarBodyParameters = NULL;
+
+    // clear the error code from the previous api call
+    apiClient->response_code = 0;
 
     // create the path
     long sizeOfPath = strlen("/v1/users/login")+1;
