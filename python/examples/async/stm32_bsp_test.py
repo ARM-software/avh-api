@@ -1,4 +1,5 @@
 import asyncio
+import logging
 import os
 import re
 from websockets import client as ws
@@ -180,6 +181,7 @@ async def main():
       pprint(gpios)
 
     except Exception as e:      
+      logging.exception("Error")
       print('Encountered error; cleaning up...')
       error = e
 
@@ -187,7 +189,7 @@ async def main():
     api_response = await api_instance.v1_delete_instance(instance.id)
 
     if error != None:
-      raise error
+      exit(1)
 
 asyncio.run(asyncio.wait_for(main(), 120))
 exit(0)
