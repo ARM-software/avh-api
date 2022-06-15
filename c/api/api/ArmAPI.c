@@ -87,6 +87,7 @@ ArmAPI_v1AuthLogin(apiClient_t *apiClient, object_t * body )
 
 
 
+
     // Body Param
     cJSON *localVarSingleItemJSON_body = NULL;
     if (body != NULL)
@@ -166,6 +167,7 @@ ArmAPI_v1CreateImage(apiClient_t *apiClient, char * type , arm_api_v1CreateImage
     long sizeOfPath = strlen("/v1/images")+1;
     char *localVarPath = malloc(sizeOfPath);
     snprintf(localVarPath, sizeOfPath, "/v1/images");
+
 
 
 
@@ -362,6 +364,7 @@ ArmAPI_v1CreateInstance(apiClient_t *apiClient, instance_create_options_t * inst
 
 
 
+
     // Body Param
     cJSON *localVarSingleItemJSON_instance_create_options = NULL;
     if (instance_create_options != NULL)
@@ -445,6 +448,9 @@ ArmAPI_v1CreateSnapshot(apiClient_t *apiClient, char * instanceId , snapshot_cre
     long sizeOfPath = strlen("/v1/instances/{instanceId}/snapshots")+1;
     char *localVarPath = malloc(sizeOfPath);
     snprintf(localVarPath, sizeOfPath, "/v1/instances/{instanceId}/snapshots");
+
+    if(!instanceId)
+        goto end;
 
 
     // Path Params
@@ -544,6 +550,9 @@ ArmAPI_v1DeleteImage(apiClient_t *apiClient, char * imageId )
     char *localVarPath = malloc(sizeOfPath);
     snprintf(localVarPath, sizeOfPath, "/v2/images/{imageId}");
 
+    if(!imageId)
+        goto end;
+
 
     // Path Params
     long sizeOfPathParams_imageId = strlen(imageId)+3 + strlen("{ imageId }");
@@ -611,6 +620,9 @@ ArmAPI_v1DeleteInstance(apiClient_t *apiClient, char * instanceId )
     long sizeOfPath = strlen("/v1/instances/{instanceId}")+1;
     char *localVarPath = malloc(sizeOfPath);
     snprintf(localVarPath, sizeOfPath, "/v1/instances/{instanceId}");
+
+    if(!instanceId)
+        goto end;
 
 
     // Path Params
@@ -683,6 +695,9 @@ ArmAPI_v1GetImage(apiClient_t *apiClient, char * imageId )
     long sizeOfPath = strlen("/v1/images/{imageId}")+1;
     char *localVarPath = malloc(sizeOfPath);
     snprintf(localVarPath, sizeOfPath, "/v1/images/{imageId}");
+
+    if(!imageId)
+        goto end;
 
 
     // Path Params
@@ -762,6 +777,7 @@ ArmAPI_v1GetImages(apiClient_t *apiClient, char * project )
     long sizeOfPath = strlen("/v1/images")+1;
     char *localVarPath = malloc(sizeOfPath);
     snprintf(localVarPath, sizeOfPath, "/v1/images");
+
 
 
 
@@ -850,6 +866,9 @@ ArmAPI_v1GetInstance(apiClient_t *apiClient, char * instanceId , list_t * return
     long sizeOfPath = strlen("/v1/instances/{instanceId}")+1;
     char *localVarPath = malloc(sizeOfPath);
     snprintf(localVarPath, sizeOfPath, "/v1/instances/{instanceId}");
+
+    if(!instanceId)
+        goto end;
 
 
     // Path Params
@@ -940,6 +959,9 @@ ArmAPI_v1GetInstanceConsole(apiClient_t *apiClient, char * instanceId )
     char *localVarPath = malloc(sizeOfPath);
     snprintf(localVarPath, sizeOfPath, "/v1/instances/{instanceId}/console");
 
+    if(!instanceId)
+        goto end;
+
 
     // Path Params
     long sizeOfPathParams_instanceId = strlen(instanceId)+3 + strlen("{ instanceId }");
@@ -1022,6 +1044,9 @@ ArmAPI_v1GetInstancePeripherals(apiClient_t *apiClient, char * instanceId )
     long sizeOfPath = strlen("/v1/instances/{instanceId}/peripherals")+1;
     char *localVarPath = malloc(sizeOfPath);
     snprintf(localVarPath, sizeOfPath, "/v1/instances/{instanceId}/peripherals");
+
+    if(!instanceId)
+        goto end;
 
 
     // Path Params
@@ -1106,6 +1131,9 @@ ArmAPI_v1GetInstanceState(apiClient_t *apiClient, char * instanceId )
     char *localVarPath = malloc(sizeOfPath);
     snprintf(localVarPath, sizeOfPath, "/v1/instances/{instanceId}/state");
 
+    if(!instanceId)
+        goto end;
+
 
     // Path Params
     long sizeOfPathParams_instanceId = strlen(instanceId)+3 + strlen("{ instanceId }");
@@ -1188,6 +1216,7 @@ ArmAPI_v1GetInstances(apiClient_t *apiClient, char * name , list_t * returnAttr 
     long sizeOfPath = strlen("/v1/instances")+1;
     char *localVarPath = malloc(sizeOfPath);
     snprintf(localVarPath, sizeOfPath, "/v1/instances");
+
 
 
 
@@ -1297,6 +1326,9 @@ ArmAPI_v1GetModelSoftware(apiClient_t *apiClient, char * model )
     char *localVarPath = malloc(sizeOfPath);
     snprintf(localVarPath, sizeOfPath, "/v1/models/{model}/software");
 
+    if(!model)
+        goto end;
+
 
     // Path Params
     long sizeOfPathParams_model = strlen(model)+3 + strlen("{ model }");
@@ -1384,6 +1416,7 @@ ArmAPI_v1GetModels(apiClient_t *apiClient)
 
 
 
+
     list_addElement(localVarHeaderType,"application/json"); //produces
     apiClient_invoke(apiClient,
                     localVarPath,
@@ -1455,6 +1488,9 @@ ArmAPI_v1GetProject(apiClient_t *apiClient, char * projectId )
     long sizeOfPath = strlen("/v1/projects/{projectId}")+1;
     char *localVarPath = malloc(sizeOfPath);
     snprintf(localVarPath, sizeOfPath, "/v1/projects/{projectId}");
+
+    if(!projectId)
+        goto end;
 
 
     // Path Params
@@ -1530,6 +1566,9 @@ ArmAPI_v1GetProjectInstances(apiClient_t *apiClient, char * projectId , char * n
     long sizeOfPath = strlen("/v1/projects/{projectId}/instances")+1;
     char *localVarPath = malloc(sizeOfPath);
     snprintf(localVarPath, sizeOfPath, "/v1/projects/{projectId}/instances");
+
+    if(!projectId)
+        goto end;
 
 
     // Path Params
@@ -1649,6 +1688,7 @@ ArmAPI_v1GetProjects(apiClient_t *apiClient, char * name , int ids_only )
     long sizeOfPath = strlen("/v1/projects")+1;
     char *localVarPath = malloc(sizeOfPath);
     snprintf(localVarPath, sizeOfPath, "/v1/projects");
+
 
 
 
@@ -1781,6 +1821,11 @@ ArmAPI_v1GetSnapshot(apiClient_t *apiClient, char * instanceId , char * snapshot
     char *localVarPath = malloc(sizeOfPath);
     snprintf(localVarPath, sizeOfPath, "/v1/instances/{instanceId}/snapshots/{snapshotId}");
 
+    if(!instanceId)
+        goto end;
+    if(!snapshotId)
+        goto end;
+
 
     // Path Params
     long sizeOfPathParams_instanceId = strlen(instanceId)+3 + strlen(snapshotId)+3 + strlen("{ instanceId }");
@@ -1875,6 +1920,9 @@ ArmAPI_v1GetSnapshots(apiClient_t *apiClient, char * instanceId )
     char *localVarPath = malloc(sizeOfPath);
     snprintf(localVarPath, sizeOfPath, "/v1/instances/{instanceId}/snapshots");
 
+    if(!instanceId)
+        goto end;
+
 
     // Path Params
     long sizeOfPathParams_instanceId = strlen(instanceId)+3 + strlen("{ instanceId }");
@@ -1967,6 +2015,9 @@ ArmAPI_v1PatchInstance(apiClient_t *apiClient, char * instanceId , object_t * bo
     long sizeOfPath = strlen("/v1/instances/{instanceId}")+1;
     char *localVarPath = malloc(sizeOfPath);
     snprintf(localVarPath, sizeOfPath, "/v1/instances/{instanceId}");
+
+    if(!instanceId)
+        goto end;
 
 
     // Path Params
@@ -2066,6 +2117,9 @@ ArmAPI_v1PauseInstance(apiClient_t *apiClient, char * instanceId )
     char *localVarPath = malloc(sizeOfPath);
     snprintf(localVarPath, sizeOfPath, "/v1/instances/{instanceId}/pause");
 
+    if(!instanceId)
+        goto end;
+
 
     // Path Params
     long sizeOfPathParams_instanceId = strlen(instanceId)+3 + strlen("{ instanceId }");
@@ -2142,6 +2196,7 @@ ArmAPI_v1Ready(apiClient_t *apiClient)
 
 
 
+
     list_addElement(localVarHeaderType,"application/json"); //produces
     apiClient_invoke(apiClient,
                     localVarPath,
@@ -2196,6 +2251,9 @@ ArmAPI_v1RebootInstance(apiClient_t *apiClient, char * instanceId )
     long sizeOfPath = strlen("/v1/instances/{instanceId}/reboot")+1;
     char *localVarPath = malloc(sizeOfPath);
     snprintf(localVarPath, sizeOfPath, "/v1/instances/{instanceId}/reboot");
+
+    if(!instanceId)
+        goto end;
 
 
     // Path Params
@@ -2268,6 +2326,11 @@ ArmAPI_v1RestoreSnapshot(apiClient_t *apiClient, char * instanceId , char * snap
     long sizeOfPath = strlen("/v1/instances/{instanceId}/snapshots/{snapshotId}/restore")+1;
     char *localVarPath = malloc(sizeOfPath);
     snprintf(localVarPath, sizeOfPath, "/v1/instances/{instanceId}/snapshots/{snapshotId}/restore");
+
+    if(!instanceId)
+        goto end;
+    if(!snapshotId)
+        goto end;
 
 
     // Path Params
@@ -2351,6 +2414,9 @@ ArmAPI_v1SetInstancePeripherals(apiClient_t *apiClient, char * instanceId , char
     long sizeOfPath = strlen("/v1/instances/{instanceId}/peripherals")+1;
     char *localVarPath = malloc(sizeOfPath);
     snprintf(localVarPath, sizeOfPath, "/v1/instances/{instanceId}/peripherals");
+
+    if(!instanceId)
+        goto end;
 
 
     // Path Params
@@ -2439,6 +2505,9 @@ ArmAPI_v1SetInstanceState(apiClient_t *apiClient, char * instanceId , v1_set_sta
     long sizeOfPath = strlen("/v1/instances/{instanceId}/state")+1;
     char *localVarPath = malloc(sizeOfPath);
     snprintf(localVarPath, sizeOfPath, "/v1/instances/{instanceId}/state");
+
+    if(!instanceId)
+        goto end;
 
 
     // Path Params
@@ -2535,6 +2604,11 @@ ArmAPI_v1SnapshotDelete(apiClient_t *apiClient, char * instanceId , char * snaps
     char *localVarPath = malloc(sizeOfPath);
     snprintf(localVarPath, sizeOfPath, "/v1/instances/{instanceId}/snapshots/{snapshotId}");
 
+    if(!instanceId)
+        goto end;
+    if(!snapshotId)
+        goto end;
+
 
     // Path Params
     long sizeOfPathParams_instanceId = strlen(instanceId)+3 + strlen(snapshotId)+3 + strlen("{ instanceId }");
@@ -2617,6 +2691,11 @@ ArmAPI_v1SnapshotRename(apiClient_t *apiClient, char * instanceId , char * snaps
     long sizeOfPath = strlen("/v1/instances/{instanceId}/snapshots/{snapshotId}")+1;
     char *localVarPath = malloc(sizeOfPath);
     snprintf(localVarPath, sizeOfPath, "/v1/instances/{instanceId}/snapshots/{snapshotId}");
+
+    if(!instanceId)
+        goto end;
+    if(!snapshotId)
+        goto end;
 
 
     // Path Params
@@ -2727,6 +2806,9 @@ ArmAPI_v1StartInstance(apiClient_t *apiClient, char * instanceId , instance_star
     char *localVarPath = malloc(sizeOfPath);
     snprintf(localVarPath, sizeOfPath, "/v1/instances/{instanceId}/start");
 
+    if(!instanceId)
+        goto end;
+
 
     // Path Params
     long sizeOfPathParams_instanceId = strlen(instanceId)+3 + strlen("{ instanceId }");
@@ -2817,6 +2899,9 @@ ArmAPI_v1StopInstance(apiClient_t *apiClient, char * instanceId , instance_stop_
     long sizeOfPath = strlen("/v1/instances/{instanceId}/stop")+1;
     char *localVarPath = malloc(sizeOfPath);
     snprintf(localVarPath, sizeOfPath, "/v1/instances/{instanceId}/stop");
+
+    if(!instanceId)
+        goto end;
 
 
     // Path Params
@@ -2909,6 +2994,9 @@ ArmAPI_v1UnpauseInstance(apiClient_t *apiClient, char * instanceId )
     char *localVarPath = malloc(sizeOfPath);
     snprintf(localVarPath, sizeOfPath, "/v1/instances/{instanceId}/unpause");
 
+    if(!instanceId)
+        goto end;
+
 
     // Path Params
     long sizeOfPathParams_instanceId = strlen(instanceId)+3 + strlen("{ instanceId }");
@@ -2982,6 +3070,9 @@ ArmAPI_v1UploadImageData(apiClient_t *apiClient, char * imageId , char * body )
     long sizeOfPath = strlen("/v1/images/{imageId}")+1;
     char *localVarPath = malloc(sizeOfPath);
     snprintf(localVarPath, sizeOfPath, "/v1/images/{imageId}");
+
+    if(!imageId)
+        goto end;
 
 
     // Path Params
@@ -3070,6 +3161,7 @@ ArmAPI_v1UsersLogin(apiClient_t *apiClient, credentials_t * credentials )
     long sizeOfPath = strlen("/v1/users/login")+1;
     char *localVarPath = malloc(sizeOfPath);
     snprintf(localVarPath, sizeOfPath, "/v1/users/login");
+
 
 
 
