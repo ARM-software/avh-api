@@ -117,11 +117,14 @@ ArmAPI_v1AuthLogin(apiClient_t *apiClient, object_t * body )
     //    printf("%s\n","Forbidden");
     //}
     //nonprimitive not container
-    cJSON *ArmAPIlocalVarJSON = cJSON_Parse(apiClient->dataReceived);
-    token_t *elementToReturn = token_parseFromJSON(ArmAPIlocalVarJSON);
-    cJSON_Delete(ArmAPIlocalVarJSON);
-    if(elementToReturn == NULL) {
-        // return 0;
+    token_t *elementToReturn = NULL;
+    if(apiClient->response_code >= 200 && apiClient->response_code < 300) {
+        cJSON *ArmAPIlocalVarJSON = cJSON_Parse(apiClient->dataReceived);
+        elementToReturn = token_parseFromJSON(ArmAPIlocalVarJSON);
+        cJSON_Delete(ArmAPIlocalVarJSON);
+        if(elementToReturn == NULL) {
+            // return 0;
+        }
     }
 
     //return type
@@ -264,11 +267,14 @@ ArmAPI_v1CreateImage(apiClient_t *apiClient, char * type , arm_api_v1CreateImage
     //    printf("%s\n","application/json");
     //}
     //nonprimitive not container
-    cJSON *ArmAPIlocalVarJSON = cJSON_Parse(apiClient->dataReceived);
-    image_t *elementToReturn = image_parseFromJSON(ArmAPIlocalVarJSON);
-    cJSON_Delete(ArmAPIlocalVarJSON);
-    if(elementToReturn == NULL) {
-        // return 0;
+    image_t *elementToReturn = NULL;
+    if(apiClient->response_code >= 200 && apiClient->response_code < 300) {
+        cJSON *ArmAPIlocalVarJSON = cJSON_Parse(apiClient->dataReceived);
+        elementToReturn = image_parseFromJSON(ArmAPIlocalVarJSON);
+        cJSON_Delete(ArmAPIlocalVarJSON);
+        if(elementToReturn == NULL) {
+            // return 0;
+        }
     }
 
     //return type
@@ -398,11 +404,14 @@ ArmAPI_v1CreateInstance(apiClient_t *apiClient, instance_create_options_t * inst
     //    printf("%s\n","Forbidden");
     //}
     //nonprimitive not container
-    cJSON *ArmAPIlocalVarJSON = cJSON_Parse(apiClient->dataReceived);
-    instance_return_t *elementToReturn = instance_return_parseFromJSON(ArmAPIlocalVarJSON);
-    cJSON_Delete(ArmAPIlocalVarJSON);
-    if(elementToReturn == NULL) {
-        // return 0;
+    instance_return_t *elementToReturn = NULL;
+    if(apiClient->response_code >= 200 && apiClient->response_code < 300) {
+        cJSON *ArmAPIlocalVarJSON = cJSON_Parse(apiClient->dataReceived);
+        elementToReturn = instance_return_parseFromJSON(ArmAPIlocalVarJSON);
+        cJSON_Delete(ArmAPIlocalVarJSON);
+        if(elementToReturn == NULL) {
+            // return 0;
+        }
     }
 
     //return type
@@ -498,11 +507,14 @@ ArmAPI_v1CreateSnapshot(apiClient_t *apiClient, char * instanceId , snapshot_cre
     //    printf("%s\n","Not Found");
     //}
     //nonprimitive not container
-    cJSON *ArmAPIlocalVarJSON = cJSON_Parse(apiClient->dataReceived);
-    snapshot_t *elementToReturn = snapshot_parseFromJSON(ArmAPIlocalVarJSON);
-    cJSON_Delete(ArmAPIlocalVarJSON);
-    if(elementToReturn == NULL) {
-        // return 0;
+    snapshot_t *elementToReturn = NULL;
+    if(apiClient->response_code >= 200 && apiClient->response_code < 300) {
+        cJSON *ArmAPIlocalVarJSON = cJSON_Parse(apiClient->dataReceived);
+        elementToReturn = snapshot_parseFromJSON(ArmAPIlocalVarJSON);
+        cJSON_Delete(ArmAPIlocalVarJSON);
+        if(elementToReturn == NULL) {
+            // return 0;
+        }
     }
 
     //return type
@@ -731,11 +743,14 @@ ArmAPI_v1GetImage(apiClient_t *apiClient, char * imageId )
     //    printf("%s\n","application/json");
     //}
     //nonprimitive not container
-    cJSON *ArmAPIlocalVarJSON = cJSON_Parse(apiClient->dataReceived);
-    image_t *elementToReturn = image_parseFromJSON(ArmAPIlocalVarJSON);
-    cJSON_Delete(ArmAPIlocalVarJSON);
-    if(elementToReturn == NULL) {
-        // return 0;
+    image_t *elementToReturn = NULL;
+    if(apiClient->response_code >= 200 && apiClient->response_code < 300) {
+        cJSON *ArmAPIlocalVarJSON = cJSON_Parse(apiClient->dataReceived);
+        elementToReturn = image_parseFromJSON(ArmAPIlocalVarJSON);
+        cJSON_Delete(ArmAPIlocalVarJSON);
+        if(elementToReturn == NULL) {
+            // return 0;
+        }
     }
 
     //return type
@@ -809,11 +824,14 @@ ArmAPI_v1GetImages(apiClient_t *apiClient, char * project )
     //    printf("%s\n","application/json");
     //}
     //nonprimitive not container
-    cJSON *ArmAPIlocalVarJSON = cJSON_Parse(apiClient->dataReceived);
-    image_t *elementToReturn = image_parseFromJSON(ArmAPIlocalVarJSON);
-    cJSON_Delete(ArmAPIlocalVarJSON);
-    if(elementToReturn == NULL) {
-        // return 0;
+    image_t *elementToReturn = NULL;
+    if(apiClient->response_code >= 200 && apiClient->response_code < 300) {
+        cJSON *ArmAPIlocalVarJSON = cJSON_Parse(apiClient->dataReceived);
+        elementToReturn = image_parseFromJSON(ArmAPIlocalVarJSON);
+        cJSON_Delete(ArmAPIlocalVarJSON);
+        if(elementToReturn == NULL) {
+            // return 0;
+        }
     }
 
     //return type
@@ -912,11 +930,14 @@ ArmAPI_v1GetInstance(apiClient_t *apiClient, char * instanceId , list_t * return
     //    printf("%s\n","Not Found");
     //}
     //nonprimitive not container
-    cJSON *ArmAPIlocalVarJSON = cJSON_Parse(apiClient->dataReceived);
-    instance_t *elementToReturn = instance_parseFromJSON(ArmAPIlocalVarJSON);
-    cJSON_Delete(ArmAPIlocalVarJSON);
-    if(elementToReturn == NULL) {
-        // return 0;
+    instance_t *elementToReturn = NULL;
+    if(apiClient->response_code >= 200 && apiClient->response_code < 300) {
+        cJSON *ArmAPIlocalVarJSON = cJSON_Parse(apiClient->dataReceived);
+        elementToReturn = instance_parseFromJSON(ArmAPIlocalVarJSON);
+        cJSON_Delete(ArmAPIlocalVarJSON);
+        if(elementToReturn == NULL) {
+            // return 0;
+        }
     }
 
     //return type
@@ -998,11 +1019,14 @@ ArmAPI_v1GetInstanceConsole(apiClient_t *apiClient, char * instanceId )
     //    printf("%s\n","Not Found");
     //}
     //nonprimitive not container
-    cJSON *ArmAPIlocalVarJSON = cJSON_Parse(apiClient->dataReceived);
-    instance_console_endpoint_t *elementToReturn = instance_console_endpoint_parseFromJSON(ArmAPIlocalVarJSON);
-    cJSON_Delete(ArmAPIlocalVarJSON);
-    if(elementToReturn == NULL) {
-        // return 0;
+    instance_console_endpoint_t *elementToReturn = NULL;
+    if(apiClient->response_code >= 200 && apiClient->response_code < 300) {
+        cJSON *ArmAPIlocalVarJSON = cJSON_Parse(apiClient->dataReceived);
+        elementToReturn = instance_console_endpoint_parseFromJSON(ArmAPIlocalVarJSON);
+        cJSON_Delete(ArmAPIlocalVarJSON);
+        if(elementToReturn == NULL) {
+            // return 0;
+        }
     }
 
     //return type
@@ -1084,11 +1108,14 @@ ArmAPI_v1GetInstancePeripherals(apiClient_t *apiClient, char * instanceId )
     //    printf("%s\n","Not Found");
     //}
     //nonprimitive not container
-    cJSON *ArmAPIlocalVarJSON = cJSON_Parse(apiClient->dataReceived);
-    object_t *elementToReturn = object_parseFromJSON(ArmAPIlocalVarJSON);
-    cJSON_Delete(ArmAPIlocalVarJSON);
-    if(elementToReturn == NULL) {
-        // return 0;
+    object_t *elementToReturn = NULL;
+    if(apiClient->response_code >= 200 && apiClient->response_code < 300) {
+        cJSON *ArmAPIlocalVarJSON = cJSON_Parse(apiClient->dataReceived);
+        elementToReturn = object_parseFromJSON(ArmAPIlocalVarJSON);
+        cJSON_Delete(ArmAPIlocalVarJSON);
+        if(elementToReturn == NULL) {
+            // return 0;
+        }
     }
 
     //return type
@@ -1170,11 +1197,14 @@ ArmAPI_v1GetInstanceState(apiClient_t *apiClient, char * instanceId )
     //    printf("%s\n","Not Found");
     //}
     //nonprimitive not container
-    cJSON *ArmAPIlocalVarJSON = cJSON_Parse(apiClient->dataReceived);
-    arm_api_instance_state__e elementToReturn = instance_state_parseFromJSON(ArmAPIlocalVarJSON);
-    cJSON_Delete(ArmAPIlocalVarJSON);
-    if(elementToReturn == 0) {
-        // return 0;
+    arm_api_instance_state__e elementToReturn = 0;
+    if(apiClient->response_code >= 200 && apiClient->response_code < 300) {
+        cJSON *ArmAPIlocalVarJSON = cJSON_Parse(apiClient->dataReceived);
+        elementToReturn = instance_state_parseFromJSON(ArmAPIlocalVarJSON);
+        cJSON_Delete(ArmAPIlocalVarJSON);
+        if(elementToReturn == 0) {
+            // return 0;
+        }
     }
 
     //return type
@@ -1257,24 +1287,27 @@ ArmAPI_v1GetInstances(apiClient_t *apiClient, char * name , list_t * returnAttr 
     //if (apiClient->response_code == 403) {
     //    printf("%s\n","Forbidden");
     //}
-    cJSON *ArmAPIlocalVarJSON = cJSON_Parse(apiClient->dataReceived);
-    if(!cJSON_IsArray(ArmAPIlocalVarJSON)) {
-        return 0;//nonprimitive container
-    }
-    list_t *elementToReturn = list_createList();
-    cJSON *VarJSON;
-    cJSON_ArrayForEach(VarJSON, ArmAPIlocalVarJSON)
-    {
-        if(!cJSON_IsObject(VarJSON))
-        {
-           // return 0;
+    list_t *elementToReturn = NULL;
+    if(apiClient->response_code >= 200 && apiClient->response_code < 300) {
+        cJSON *ArmAPIlocalVarJSON = cJSON_Parse(apiClient->dataReceived);
+        if(!cJSON_IsArray(ArmAPIlocalVarJSON)) {
+            return 0;//nonprimitive container
         }
-        char *localVarJSONToChar = cJSON_Print(VarJSON);
-        list_addElement(elementToReturn , localVarJSONToChar);
-    }
+        elementToReturn = list_createList();
+        cJSON *VarJSON;
+        cJSON_ArrayForEach(VarJSON, ArmAPIlocalVarJSON)
+        {
+            if(!cJSON_IsObject(VarJSON))
+            {
+               // return 0;
+            }
+            char *localVarJSONToChar = cJSON_Print(VarJSON);
+            list_addElement(elementToReturn , localVarJSONToChar);
+        }
 
-    cJSON_Delete( ArmAPIlocalVarJSON);
-    cJSON_Delete( VarJSON);
+        cJSON_Delete( ArmAPIlocalVarJSON);
+        cJSON_Delete( VarJSON);
+    }
     //return type
     if (apiClient->dataReceived) {
         free(apiClient->dataReceived);
@@ -1356,24 +1389,27 @@ ArmAPI_v1GetModelSoftware(apiClient_t *apiClient, char * model )
     //if (apiClient->response_code == 200) {
     //    printf("%s\n","Supported software loads for this model");
     //}
-    cJSON *ArmAPIlocalVarJSON = cJSON_Parse(apiClient->dataReceived);
-    if(!cJSON_IsArray(ArmAPIlocalVarJSON)) {
-        return 0;//nonprimitive container
-    }
-    list_t *elementToReturn = list_createList();
-    cJSON *VarJSON;
-    cJSON_ArrayForEach(VarJSON, ArmAPIlocalVarJSON)
-    {
-        if(!cJSON_IsObject(VarJSON))
-        {
-           // return 0;
+    list_t *elementToReturn = NULL;
+    if(apiClient->response_code >= 200 && apiClient->response_code < 300) {
+        cJSON *ArmAPIlocalVarJSON = cJSON_Parse(apiClient->dataReceived);
+        if(!cJSON_IsArray(ArmAPIlocalVarJSON)) {
+            return 0;//nonprimitive container
         }
-        char *localVarJSONToChar = cJSON_Print(VarJSON);
-        list_addElement(elementToReturn , localVarJSONToChar);
-    }
+        elementToReturn = list_createList();
+        cJSON *VarJSON;
+        cJSON_ArrayForEach(VarJSON, ArmAPIlocalVarJSON)
+        {
+            if(!cJSON_IsObject(VarJSON))
+            {
+               // return 0;
+            }
+            char *localVarJSONToChar = cJSON_Print(VarJSON);
+            list_addElement(elementToReturn , localVarJSONToChar);
+        }
 
-    cJSON_Delete( ArmAPIlocalVarJSON);
-    cJSON_Delete( VarJSON);
+        cJSON_Delete( ArmAPIlocalVarJSON);
+        cJSON_Delete( VarJSON);
+    }
     //return type
     if (apiClient->dataReceived) {
         free(apiClient->dataReceived);
@@ -1432,24 +1468,27 @@ ArmAPI_v1GetModels(apiClient_t *apiClient)
     //if (apiClient->response_code == 200) {
     //    printf("%s\n","Supported device configurations");
     //}
-    cJSON *ArmAPIlocalVarJSON = cJSON_Parse(apiClient->dataReceived);
-    if(!cJSON_IsArray(ArmAPIlocalVarJSON)) {
-        return 0;//nonprimitive container
-    }
-    list_t *elementToReturn = list_createList();
-    cJSON *VarJSON;
-    cJSON_ArrayForEach(VarJSON, ArmAPIlocalVarJSON)
-    {
-        if(!cJSON_IsObject(VarJSON))
-        {
-           // return 0;
+    list_t *elementToReturn = NULL;
+    if(apiClient->response_code >= 200 && apiClient->response_code < 300) {
+        cJSON *ArmAPIlocalVarJSON = cJSON_Parse(apiClient->dataReceived);
+        if(!cJSON_IsArray(ArmAPIlocalVarJSON)) {
+            return 0;//nonprimitive container
         }
-        char *localVarJSONToChar = cJSON_Print(VarJSON);
-        list_addElement(elementToReturn , localVarJSONToChar);
-    }
+        elementToReturn = list_createList();
+        cJSON *VarJSON;
+        cJSON_ArrayForEach(VarJSON, ArmAPIlocalVarJSON)
+        {
+            if(!cJSON_IsObject(VarJSON))
+            {
+               // return 0;
+            }
+            char *localVarJSONToChar = cJSON_Print(VarJSON);
+            list_addElement(elementToReturn , localVarJSONToChar);
+        }
 
-    cJSON_Delete( ArmAPIlocalVarJSON);
-    cJSON_Delete( VarJSON);
+        cJSON_Delete( ArmAPIlocalVarJSON);
+        cJSON_Delete( VarJSON);
+    }
     //return type
     if (apiClient->dataReceived) {
         free(apiClient->dataReceived);
@@ -1520,11 +1559,14 @@ ArmAPI_v1GetProject(apiClient_t *apiClient, char * projectId )
     //    printf("%s\n","OK");
     //}
     //nonprimitive not container
-    cJSON *ArmAPIlocalVarJSON = cJSON_Parse(apiClient->dataReceived);
-    project_t *elementToReturn = project_parseFromJSON(ArmAPIlocalVarJSON);
-    cJSON_Delete(ArmAPIlocalVarJSON);
-    if(elementToReturn == NULL) {
-        // return 0;
+    project_t *elementToReturn = NULL;
+    if(apiClient->response_code >= 200 && apiClient->response_code < 300) {
+        cJSON *ArmAPIlocalVarJSON = cJSON_Parse(apiClient->dataReceived);
+        elementToReturn = project_parseFromJSON(ArmAPIlocalVarJSON);
+        cJSON_Delete(ArmAPIlocalVarJSON);
+        if(elementToReturn == NULL) {
+            // return 0;
+        }
     }
 
     //return type
@@ -1619,24 +1661,27 @@ ArmAPI_v1GetProjectInstances(apiClient_t *apiClient, char * projectId , char * n
     //if (apiClient->response_code == 403) {
     //    printf("%s\n","Forbidden");
     //}
-    cJSON *ArmAPIlocalVarJSON = cJSON_Parse(apiClient->dataReceived);
-    if(!cJSON_IsArray(ArmAPIlocalVarJSON)) {
-        return 0;//nonprimitive container
-    }
-    list_t *elementToReturn = list_createList();
-    cJSON *VarJSON;
-    cJSON_ArrayForEach(VarJSON, ArmAPIlocalVarJSON)
-    {
-        if(!cJSON_IsObject(VarJSON))
-        {
-           // return 0;
+    list_t *elementToReturn = NULL;
+    if(apiClient->response_code >= 200 && apiClient->response_code < 300) {
+        cJSON *ArmAPIlocalVarJSON = cJSON_Parse(apiClient->dataReceived);
+        if(!cJSON_IsArray(ArmAPIlocalVarJSON)) {
+            return 0;//nonprimitive container
         }
-        char *localVarJSONToChar = cJSON_Print(VarJSON);
-        list_addElement(elementToReturn , localVarJSONToChar);
-    }
+        elementToReturn = list_createList();
+        cJSON *VarJSON;
+        cJSON_ArrayForEach(VarJSON, ArmAPIlocalVarJSON)
+        {
+            if(!cJSON_IsObject(VarJSON))
+            {
+               // return 0;
+            }
+            char *localVarJSONToChar = cJSON_Print(VarJSON);
+            list_addElement(elementToReturn , localVarJSONToChar);
+        }
 
-    cJSON_Delete( ArmAPIlocalVarJSON);
-    cJSON_Delete( VarJSON);
+        cJSON_Delete( ArmAPIlocalVarJSON);
+        cJSON_Delete( VarJSON);
+    }
     //return type
     if (apiClient->dataReceived) {
         free(apiClient->dataReceived);
@@ -1740,24 +1785,27 @@ ArmAPI_v1GetProjects(apiClient_t *apiClient, char * name , int ids_only )
     //if (apiClient->response_code == 404) {
     //    printf("%s\n","No Projects Found");
     //}
-    cJSON *ArmAPIlocalVarJSON = cJSON_Parse(apiClient->dataReceived);
-    if(!cJSON_IsArray(ArmAPIlocalVarJSON)) {
-        return 0;//nonprimitive container
-    }
-    list_t *elementToReturn = list_createList();
-    cJSON *VarJSON;
-    cJSON_ArrayForEach(VarJSON, ArmAPIlocalVarJSON)
-    {
-        if(!cJSON_IsObject(VarJSON))
-        {
-           // return 0;
+    list_t *elementToReturn = NULL;
+    if(apiClient->response_code >= 200 && apiClient->response_code < 300) {
+        cJSON *ArmAPIlocalVarJSON = cJSON_Parse(apiClient->dataReceived);
+        if(!cJSON_IsArray(ArmAPIlocalVarJSON)) {
+            return 0;//nonprimitive container
         }
-        char *localVarJSONToChar = cJSON_Print(VarJSON);
-        list_addElement(elementToReturn , localVarJSONToChar);
-    }
+        elementToReturn = list_createList();
+        cJSON *VarJSON;
+        cJSON_ArrayForEach(VarJSON, ArmAPIlocalVarJSON)
+        {
+            if(!cJSON_IsObject(VarJSON))
+            {
+               // return 0;
+            }
+            char *localVarJSONToChar = cJSON_Print(VarJSON);
+            list_addElement(elementToReturn , localVarJSONToChar);
+        }
 
-    cJSON_Delete( ArmAPIlocalVarJSON);
-    cJSON_Delete( VarJSON);
+        cJSON_Delete( ArmAPIlocalVarJSON);
+        cJSON_Delete( VarJSON);
+    }
     //return type
     if (apiClient->dataReceived) {
         free(apiClient->dataReceived);
@@ -1872,11 +1920,14 @@ ArmAPI_v1GetSnapshot(apiClient_t *apiClient, char * instanceId , char * snapshot
     //    printf("%s\n","Not Found");
     //}
     //nonprimitive not container
-    cJSON *ArmAPIlocalVarJSON = cJSON_Parse(apiClient->dataReceived);
-    snapshot_t *elementToReturn = snapshot_parseFromJSON(ArmAPIlocalVarJSON);
-    cJSON_Delete(ArmAPIlocalVarJSON);
-    if(elementToReturn == NULL) {
-        // return 0;
+    snapshot_t *elementToReturn = NULL;
+    if(apiClient->response_code >= 200 && apiClient->response_code < 300) {
+        cJSON *ArmAPIlocalVarJSON = cJSON_Parse(apiClient->dataReceived);
+        elementToReturn = snapshot_parseFromJSON(ArmAPIlocalVarJSON);
+        cJSON_Delete(ArmAPIlocalVarJSON);
+        if(elementToReturn == NULL) {
+            // return 0;
+        }
     }
 
     //return type
@@ -1958,24 +2009,27 @@ ArmAPI_v1GetSnapshots(apiClient_t *apiClient, char * instanceId )
     //if (apiClient->response_code == 404) {
     //    printf("%s\n","Not Found");
     //}
-    cJSON *ArmAPIlocalVarJSON = cJSON_Parse(apiClient->dataReceived);
-    if(!cJSON_IsArray(ArmAPIlocalVarJSON)) {
-        return 0;//nonprimitive container
-    }
-    list_t *elementToReturn = list_createList();
-    cJSON *VarJSON;
-    cJSON_ArrayForEach(VarJSON, ArmAPIlocalVarJSON)
-    {
-        if(!cJSON_IsObject(VarJSON))
-        {
-           // return 0;
+    list_t *elementToReturn = NULL;
+    if(apiClient->response_code >= 200 && apiClient->response_code < 300) {
+        cJSON *ArmAPIlocalVarJSON = cJSON_Parse(apiClient->dataReceived);
+        if(!cJSON_IsArray(ArmAPIlocalVarJSON)) {
+            return 0;//nonprimitive container
         }
-        char *localVarJSONToChar = cJSON_Print(VarJSON);
-        list_addElement(elementToReturn , localVarJSONToChar);
-    }
+        elementToReturn = list_createList();
+        cJSON *VarJSON;
+        cJSON_ArrayForEach(VarJSON, ArmAPIlocalVarJSON)
+        {
+            if(!cJSON_IsObject(VarJSON))
+            {
+               // return 0;
+            }
+            char *localVarJSONToChar = cJSON_Print(VarJSON);
+            list_addElement(elementToReturn , localVarJSONToChar);
+        }
 
-    cJSON_Delete( ArmAPIlocalVarJSON);
-    cJSON_Delete( VarJSON);
+        cJSON_Delete( ArmAPIlocalVarJSON);
+        cJSON_Delete( VarJSON);
+    }
     //return type
     if (apiClient->dataReceived) {
         free(apiClient->dataReceived);
@@ -2065,11 +2119,14 @@ ArmAPI_v1PatchInstance(apiClient_t *apiClient, char * instanceId , object_t * bo
     //    printf("%s\n","Not Found");
     //}
     //nonprimitive not container
-    cJSON *ArmAPIlocalVarJSON = cJSON_Parse(apiClient->dataReceived);
-    object_t *elementToReturn = object_parseFromJSON(ArmAPIlocalVarJSON);
-    cJSON_Delete(ArmAPIlocalVarJSON);
-    if(elementToReturn == NULL) {
-        // return 0;
+    object_t *elementToReturn = NULL;
+    if(apiClient->response_code >= 200 && apiClient->response_code < 300) {
+        cJSON *ArmAPIlocalVarJSON = cJSON_Parse(apiClient->dataReceived);
+        elementToReturn = object_parseFromJSON(ArmAPIlocalVarJSON);
+        cJSON_Delete(ArmAPIlocalVarJSON);
+        if(elementToReturn == NULL) {
+            // return 0;
+        }
     }
 
     //return type
@@ -2458,11 +2515,14 @@ ArmAPI_v1SetInstancePeripherals(apiClient_t *apiClient, char * instanceId , char
     //    printf("%s\n","Not Found");
     //}
     //nonprimitive not container
-    cJSON *ArmAPIlocalVarJSON = cJSON_Parse(apiClient->dataReceived);
-    object_t *elementToReturn = object_parseFromJSON(ArmAPIlocalVarJSON);
-    cJSON_Delete(ArmAPIlocalVarJSON);
-    if(elementToReturn == NULL) {
-        // return 0;
+    object_t *elementToReturn = NULL;
+    if(apiClient->response_code >= 200 && apiClient->response_code < 300) {
+        cJSON *ArmAPIlocalVarJSON = cJSON_Parse(apiClient->dataReceived);
+        elementToReturn = object_parseFromJSON(ArmAPIlocalVarJSON);
+        cJSON_Delete(ArmAPIlocalVarJSON);
+        if(elementToReturn == NULL) {
+            // return 0;
+        }
     }
 
     //return type
@@ -2753,11 +2813,14 @@ ArmAPI_v1SnapshotRename(apiClient_t *apiClient, char * instanceId , char * snaps
     //    printf("%s\n","Not Found");
     //}
     //nonprimitive not container
-    cJSON *ArmAPIlocalVarJSON = cJSON_Parse(apiClient->dataReceived);
-    snapshot_t *elementToReturn = snapshot_parseFromJSON(ArmAPIlocalVarJSON);
-    cJSON_Delete(ArmAPIlocalVarJSON);
-    if(elementToReturn == NULL) {
-        // return 0;
+    snapshot_t *elementToReturn = NULL;
+    if(apiClient->response_code >= 200 && apiClient->response_code < 300) {
+        cJSON *ArmAPIlocalVarJSON = cJSON_Parse(apiClient->dataReceived);
+        elementToReturn = snapshot_parseFromJSON(ArmAPIlocalVarJSON);
+        cJSON_Delete(ArmAPIlocalVarJSON);
+        if(elementToReturn == NULL) {
+            // return 0;
+        }
     }
 
     //return type
@@ -3114,11 +3177,14 @@ ArmAPI_v1UploadImageData(apiClient_t *apiClient, char * imageId , char * body )
     //    printf("%s\n","Conflict");
     //}
     //nonprimitive not container
-    cJSON *ArmAPIlocalVarJSON = cJSON_Parse(apiClient->dataReceived);
-    image_t *elementToReturn = image_parseFromJSON(ArmAPIlocalVarJSON);
-    cJSON_Delete(ArmAPIlocalVarJSON);
-    if(elementToReturn == NULL) {
-        // return 0;
+    image_t *elementToReturn = NULL;
+    if(apiClient->response_code >= 200 && apiClient->response_code < 300) {
+        cJSON *ArmAPIlocalVarJSON = cJSON_Parse(apiClient->dataReceived);
+        elementToReturn = image_parseFromJSON(ArmAPIlocalVarJSON);
+        cJSON_Delete(ArmAPIlocalVarJSON);
+        if(elementToReturn == NULL) {
+            // return 0;
+        }
     }
 
     //return type
@@ -3195,11 +3261,14 @@ ArmAPI_v1UsersLogin(apiClient_t *apiClient, credentials_t * credentials )
     //    printf("%s\n","Forbidden");
     //}
     //nonprimitive not container
-    cJSON *ArmAPIlocalVarJSON = cJSON_Parse(apiClient->dataReceived);
-    token_t *elementToReturn = token_parseFromJSON(ArmAPIlocalVarJSON);
-    cJSON_Delete(ArmAPIlocalVarJSON);
-    if(elementToReturn == NULL) {
-        // return 0;
+    token_t *elementToReturn = NULL;
+    if(apiClient->response_code >= 200 && apiClient->response_code < 300) {
+        cJSON *ArmAPIlocalVarJSON = cJSON_Parse(apiClient->dataReceived);
+        elementToReturn = token_parseFromJSON(ArmAPIlocalVarJSON);
+        cJSON_Delete(ArmAPIlocalVarJSON);
+        if(elementToReturn == NULL) {
+            // return 0;
+        }
     }
 
     //return type
