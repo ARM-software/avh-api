@@ -14,6 +14,15 @@ static void sigint_handler(int sig)
     interrupted = 1;
 }
 
+/* Prints an error string along with the latest status code from the web api */
+static void report_api_error(apiClient_t *api_client, const char *str)
+{
+    if(api_client->response_code)
+        printf("%s - error code: %ld\n", str, api_client->response_code);
+    else
+        printf("%s\n", str);
+}
+
 static char *get_a_project_id(apiClient_t *api_client)
 {
     list_t *list = NULL;
@@ -24,7 +33,7 @@ static char *get_a_project_id(apiClient_t *api_client)
     printf("Finding a project...\n");
     list = ArmAPI_v1GetProjects(api_client, NULL, 1);
     if(!list) {
-        printf("Failed to retrieve project list\n");
+        report_api_error(api_client, "Failed to retrieve project list");
         return NULL;
     }
 
@@ -61,7 +70,7 @@ static model_t *get_stm32u5_model(apiClient_t *api_client)
     printf("Getting our model...\n");
     list = ArmAPI_v1GetModels(api_client);
     if(!list) {
-        printf("Failed to retrieve model list\n");
+        report_api_error(api_client, "Failed to retrieve model list");
         return NULL;
     }
 
@@ -99,7 +108,7 @@ static firmware_t *get_a_model_firmware(apiClient_t *api_client, model_t *model)
     printf("Finding a a software version for flavor %s...\n", model->flavor);
     list = ArmAPI_v1GetModelSoftware(api_client, model->model);
     if(!list) {
-        printf("Failed to retrieve software list for model\n");
+        report_api_error(api_client, "Failed to retrieve software list for model");
         return NULL;
     }
 
@@ -167,7 +176,7 @@ static int instance_wait_until_ready(apiClient_t *api_client, instance_t **insta
 
         temp = ArmAPI_v1GetInstance(api_client, instance->id, NULL);
         if(!temp) {
-            printf(" device seems to be gone\n");
+            report_api_error(api_client, " device seems to be gone");
             return 1;
         }
         instance_free(instance);
@@ -313,7 +322,7 @@ static int connect_wifi(apiClient_t *api_client, instance_t *instance)
 
     console = get_console_socket(api_client, instance, context);
     if(!console) {
-        printf("Failed to connect to the console\n");
+        report_api_error(api_client, "Failed to connect to the console");
         goto fail;
     }
 
@@ -336,6 +345,10 @@ static int stop_instance(apiClient_t *api_client, instance_t **instance_p)
     fflush(stdout);
 
     ArmAPI_v1StopInstance(api_client, instance->id, NULL);
+    if(api_client->response_code != 204) {
+        report_api_error(api_client, " instance won't stop");
+        return 1;
+    }
 
     while(instance->state != arm_api_instance_state__off) {
         instance_t *temp = NULL;
@@ -352,7 +365,7 @@ static int stop_instance(apiClient_t *api_client, instance_t **instance_p)
 
         temp = ArmAPI_v1GetInstance(api_client, instance->id, NULL);
         if(!temp) {
-            printf(" device seems to be gone\n");
+            report_api_error(api_client, " device seems to be gone");
             return 1;
         }
         instance_free(instance);
@@ -374,7 +387,7 @@ static int take_snapshot(apiClient_t *api_client, instance_t *instance)
 
     snapshot = ArmAPI_v1CreateSnapshot(api_client, instance->id, &options);
     if(!snapshot) {
-        printf("Snapshot failed\n");
+        report_api_error(api_client, "Snapshot failed");
         return 1;
     }
 
@@ -399,7 +412,7 @@ static int take_snapshot(apiClient_t *api_client, instance_t *instance)
         temp = NULL;
 
         if(!snapshot) {
-            printf(" snapshot seems to be gone\n");
+            report_api_error(api_client, " snapshot seems to be gone");
             return 1;
         }
     }
@@ -426,7 +439,7 @@ static int list_snapshots(apiClient_t *api_client, instance_t *instance)
 
     list = ArmAPI_v1GetSnapshots(api_client, instance->id);
     if(!list) {
-        printf("Failed to retrieve list of snapshots\n");
+        report_api_error(api_client, "Failed to retrieve list of snapshots");
         return 1;
     }
 
@@ -502,7 +515,7 @@ int main(int argc, char *argv[])
 
     token = ArmAPI_v1AuthLogin(api_client, auth_body);
     if(!token) {
-        printf("Failure on authentication\n");
+        report_api_error(api_client, "Failure on authentication");
         goto out;
     }
     api_client->accessToken = strdup(token->token);
@@ -532,7 +545,7 @@ int main(int argc, char *argv[])
     sigaction(SIGINT, &int_action, NULL);
     instance = create_instance(api_client, "STM32U5-C-API-Test", project_id, model->flavor, firmware->version);
     if(!instance) {
-        printf("Failed to create an instance\n");
+        report_api_error(api_client, "Failed to create an instance");
         goto out;
     }
 
@@ -553,6 +566,8 @@ int main(int argc, char *argv[])
 out:
     if(instance) {
         ArmAPI_v1DeleteInstance(api_client, instance->id);
+        if(api_client->response_code != 204)
+            report_api_error(api_client, "Failed to request deletion of device instance");
         instance_free(instance);
         instance = NULL;
     }
