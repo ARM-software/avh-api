@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <string.h>
+#include <signal.h>
 #include <unistd.h>
 
 #include <libwebsockets.h>
@@ -191,15 +192,24 @@ static int instance_wait_until_ready(apiClient_t *api_client, instance_t **insta
 #define WIFI_SSID_REQUESTED 1
 #define WIFI_PASS_REQUESTED 2
 static int console_request = 0;
+static char *ipAddress = NULL;
 
 /* Must be enough for "Arm" or "password", plus the newline */
 #define LWS_MAX_OUTLEN   16
+#define LWS_PREBUF ((LWS_PRE/8 + 1) * 8)
 
 static int wifi_callback(struct lws *socket, enum lws_callback_reasons reason, void *user, void *in, size_t len)
 {
     const char *outstr = NULL;
-    unsigned char outbuf[LWS_PRE + LWS_MAX_OUTLEN];
+    unsigned char buf[LWS_PREBUF + LWS_MAX_OUTLEN];
+    unsigned char *outbuf = buf + LWS_PREBUF;
+    static char *data = NULL;
+    static unsigned int data_length = 0;
     size_t outlen;
+
+    if (!data) {
+      data = malloc(0);
+    }
 
     switch(reason) {
     case LWS_CALLBACK_CLIENT_CONNECTION_ERROR:
@@ -209,28 +219,57 @@ static int wifi_callback(struct lws *socket, enum lws_callback_reasons reason, v
     case LWS_CALLBACK_CLIENT_RECEIVE:
         if(len < 1)
             break;
-        *(char *)(in + len - 1) = '\0';
-        if(strstr(in, "Please enter your wifi ssid")) {
+        char *newdata = realloc(data, data_length + len);
+        if (newdata == NULL) {
+          perror("Unable to allocate memory");
+          exit(1);
+        }
+        data = newdata;
+        memcpy(data + data_length, in, len);
+        data_length += len;
+
+        char *line = (char*)data;
+        char *saveptr = line;
+        for (saveptr = strchr(line, '\n'); saveptr != NULL; line = saveptr+1, saveptr = strchr(line, '\n')) {
+          *saveptr = '\0';
+          printf("<< %s\n", line);
+          if(strstr(line, "Please enter your wifi ssid")) {
             console_request = WIFI_SSID_REQUESTED;
             lws_callback_on_writable(socket);
-        } else if(strstr(in, "Please enter your wifi password")) {
+          } else if(strstr(line, "Please enter your wifi password")) {
             console_request = WIFI_PASS_REQUESTED;
             lws_callback_on_writable(socket);
+          } else if(strstr(line, "IP address :")) {
+            char *ip = strchr(line, ':');
+            while (!(*ip >= '0' && *ip <= '9')) {
+              ip++;
+            }
+            char *trailingDot = strrchr(ip, '.');
+            *trailingDot = '\0';
+            if (ipAddress) {
+              free(ipAddress);
+            }
+            ipAddress = strdup(ip);
+          } else if(strstr(line, "Listening started")) {
+            interrupted = 1; // Done
+          }
         }
+        data_length -= line - data;
+        memmove(data, line, data_length);
         break;
     case LWS_CALLBACK_CLIENT_WRITEABLE:
-        memset(outbuf, 0, LWS_PRE + LWS_MAX_OUTLEN);
+        memset(outbuf, 0, LWS_MAX_OUTLEN);
         if(console_request == WIFI_SSID_REQUESTED) {
             outstr = "Arm";
         } else if(console_request == WIFI_PASS_REQUESTED) {
             outstr = "password";
-            interrupted = 1; /* We are done with the console */
         } else {
-            interrupted = 1; /* This should never happen */
+            interrupted = 1; // This should never happen
             break;
         }
         console_request = 0;
-        outlen = snprintf((char *)outbuf + LWS_PRE, LWS_MAX_OUTLEN, "%s\n", outstr);
+        outlen = snprintf((char *)outbuf, LWS_MAX_OUTLEN, "%s\n", outstr);
+        fprintf(stderr, ">> %s", outbuf);
         if(lws_write(socket, outbuf, outlen, LWS_WRITE_TEXT) < 0) {
             printf("Websockets write failed\n");
             interrupted = 1;
@@ -238,6 +277,10 @@ static int wifi_callback(struct lws *socket, enum lws_callback_reasons reason, v
         break;
     default:
         break;
+    }
+    if (interrupted && data) {
+      free(data);
+      data = NULL;
     }
     return 0;
 }
@@ -263,6 +306,8 @@ static struct lws *get_console_socket(apiClient_t *api_client, instance_t *insta
     endpoint = ArmAPI_v1GetInstanceConsole(api_client, instance->id);
     if(!endpoint)
         return NULL;
+
+    printf("Connecting to console url: %s\n", endpoint->url);
 
     if(strlen(endpoint->url) < sizeof(scheme) - 1) {
         printf("Websockets url is missing scheme\n");
@@ -479,7 +524,7 @@ static int list_snapshots(apiClient_t *api_client, instance_t *instance)
 int main(int argc, char *argv[])
 {
     struct sigaction int_action = { .sa_handler = sigint_handler };
-    const char *endpoint = NULL, *username = NULL, *password = NULL;
+    const char *endpoint = NULL, *username = NULL, *password = NULL, *apitoken = NULL;
     apiClient_t *api_client = NULL;
     cJSON *auth_body_json = NULL;
     object_t *auth_body = NULL;
@@ -492,21 +537,29 @@ int main(int argc, char *argv[])
 
     apiClient_setupGlobalEnv();
 
-    if(argc != 4) {
-        printf("Usage: %s <ApiEndpoint> <username> <password>\n", argv[0]);
+    if(argc != 4 && argc != 3) {
+        printf("Usage: %s <ApiEndpoint> <apitoken>\n", argv[0]);
         return 1;
     }
     endpoint = argv[1];
-    username = argv[2];
-    password = argv[3];
+    if (argc == 3) {
+      apitoken = argv[2];
+    } else {
+      username = argv[2];
+      password = argv[3];
+    }
 
     api_client = apiClient_create_with_base_path(endpoint, NULL);
 
     auth_body_json = cJSON_CreateObject();
     if(!auth_body_json)
         goto out;
-    cJSON_AddStringToObject(auth_body_json, "username", username);
-    cJSON_AddStringToObject(auth_body_json, "password", password);
+    if (apitoken) {
+      cJSON_AddStringToObject(auth_body_json, "apiToken", apitoken);
+    } else {
+      cJSON_AddStringToObject(auth_body_json, "username", username);
+      cJSON_AddStringToObject(auth_body_json, "password", password);
+    }
     auth_body = object_parseFromJSON(auth_body_json);
     cJSON_Delete(auth_body_json);
     auth_body_json = NULL;
@@ -554,6 +607,10 @@ int main(int argc, char *argv[])
 
     if(connect_wifi(api_client, instance))
         printf("Failed to connect to wifi\n");
+
+    if (ipAddress) {
+        printf("Acquired IP: %s\n", ipAddress);
+    }
 
     if(stop_instance(api_client, &instance))
         goto out;

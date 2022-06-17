@@ -1,6 +1,5 @@
-CFLAGS = -O2 -Wall -g
-LDFLAGS = -L../api/build/
-LIBRARIES = -lwebsockets -l:libarm_api.so
+CFLAGS := $(CFLAGS) -O2 -Wall -g
+LIBRARIES := -lwebsockets -larm_api
 
 all: test
 
