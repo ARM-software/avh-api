@@ -5,7 +5,7 @@
 
 
 
-token_t *token_create(
+static token_t *token_create_internal(
     char *token,
     char *expiration
     ) {
@@ -16,12 +16,26 @@ token_t *token_create(
     token_local_var->token = token;
     token_local_var->expiration = expiration;
 
+    token_local_var->_library_owned = 1;
     return token_local_var;
 }
 
+__attribute__((deprecated)) token_t *token_create(
+    char *token,
+    char *expiration
+    ) {
+    return token_create_internal (
+        token,
+        expiration
+        );
+}
 
 void token_free(token_t *token) {
     if(NULL == token){
+        return ;
+    }
+    if(token->_library_owned != 1){
+        fprintf(stderr, "WARNING: %s() does NOT free objects allocated by the user\n", "token_free");
         return ;
     }
     listEntry_t *listEntry;
@@ -95,7 +109,7 @@ token_t *token_parseFromJSON(cJSON *tokenJSON){
     }
 
 
-    token_local_var = token_create (
+    token_local_var = token_create_internal (
         strdup(token->valuestring),
         expiration ? strdup(expiration->valuestring) : NULL
         );

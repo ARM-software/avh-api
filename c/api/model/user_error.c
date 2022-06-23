@@ -22,7 +22,7 @@ arm_api_user_error_ERRORID_e error_iduser_error_FromString(char* error_id){
     return 0;
 }
 
-user_error_t *user_error_create(
+static user_error_t *user_error_create_internal(
     char *error,
     arm_api_user_error_ERRORID_e error_id,
     char *field
@@ -35,12 +35,28 @@ user_error_t *user_error_create(
     user_error_local_var->error_id = error_id;
     user_error_local_var->field = field;
 
+    user_error_local_var->_library_owned = 1;
     return user_error_local_var;
 }
 
+__attribute__((deprecated)) user_error_t *user_error_create(
+    char *error,
+    arm_api_user_error_ERRORID_e error_id,
+    char *field
+    ) {
+    return user_error_create_internal (
+        error,
+        error_id,
+        field
+        );
+}
 
 void user_error_free(user_error_t *user_error) {
     if(NULL == user_error){
+        return ;
+    }
+    if(user_error->_library_owned != 1){
+        fprintf(stderr, "WARNING: %s() does NOT free objects allocated by the user\n", "user_error_free");
         return ;
     }
     listEntry_t *listEntry;
@@ -141,7 +157,7 @@ user_error_t *user_error_parseFromJSON(cJSON *user_errorJSON){
     }
 
 
-    user_error_local_var = user_error_create (
+    user_error_local_var = user_error_create_internal (
         strdup(error->valuestring),
         error_idVariable,
         field ? strdup(field->valuestring) : NULL

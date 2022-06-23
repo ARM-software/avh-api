@@ -21,9 +21,10 @@ typedef struct instance_console_endpoint_t instance_console_endpoint_t;
 typedef struct instance_console_endpoint_t {
     char *url; // string
 
+    int _library_owned; // Is the library responsible for freeing this object?
 } instance_console_endpoint_t;
 
-instance_console_endpoint_t *instance_console_endpoint_create(
+__attribute__((deprecated)) instance_console_endpoint_t *instance_console_endpoint_create(
     char *url
 );
 

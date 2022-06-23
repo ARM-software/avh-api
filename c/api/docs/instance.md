@@ -21,7 +21,7 @@ Name | Type | Description | Notes
 **panicked** | **int** |  | [optional] 
 **created** | **char \*** | Time instance was created | [optional] 
 **model** | **char \*** | Model of virtual machine device | [optional] 
-**ipsw** | **char \*** | URL that ipsw used to create this instance is available at | [optional] 
+**fwpackage** | **char \*** | URL that package used to create this instance is available at | [optional] 
 **os** | **char \*** |  | [optional] 
 **agent** | **char \*** |  | [optional] 
 **netmon** | [**instance_netmon_state_t**](instance_netmon_state.md) \* |  | [optional] 

@@ -21,9 +21,10 @@ typedef struct api_token_t api_token_t;
 typedef struct api_token_t {
     char *api_token; // string
 
+    int _library_owned; // Is the library responsible for freeing this object?
 } api_token_t;
 
-api_token_t *api_token_create(
+__attribute__((deprecated)) api_token_t *api_token_create(
     char *api_token
 );
 

@@ -5,7 +5,7 @@
 
 
 
-model_t *model_create(
+static model_t *model_create_internal(
     char *type,
     char *name,
     char *flavor,
@@ -32,12 +32,42 @@ model_t *model_create(
     model_local_var->bdid = bdid;
     model_local_var->peripherals = peripherals;
 
+    model_local_var->_library_owned = 1;
     return model_local_var;
 }
 
+__attribute__((deprecated)) model_t *model_create(
+    char *type,
+    char *name,
+    char *flavor,
+    char *description,
+    char *model,
+    char *board_config,
+    char *platform,
+    double cpid,
+    double bdid,
+    int peripherals
+    ) {
+    return model_create_internal (
+        type,
+        name,
+        flavor,
+        description,
+        model,
+        board_config,
+        platform,
+        cpid,
+        bdid,
+        peripherals
+        );
+}
 
 void model_free(model_t *model) {
     if(NULL == model){
+        return ;
+    }
+    if(model->_library_owned != 1){
+        fprintf(stderr, "WARNING: %s() does NOT free objects allocated by the user\n", "model_free");
         return ;
     }
     listEntry_t *listEntry;
@@ -303,7 +333,7 @@ model_t *model_parseFromJSON(cJSON *modelJSON){
     }
 
 
-    model_local_var = model_create (
+    model_local_var = model_create_internal (
         strdup(type->valuestring),
         strdup(name->valuestring),
         strdup(flavor->valuestring),

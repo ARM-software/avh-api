@@ -5,13 +5,13 @@
 
 
 char* instance_state_instance_state_ToString(arm_api_instance_state__e instance_state) {
-    char *instance_stateArray[] =  { "NULL", "on", "off", "deleting", "creating", "restoring", "paused", "rebooting", "error" };
+    char *instance_stateArray[] =  { "NULL", "on", "off", "booting", "deleting", "creating", "restoring", "paused", "rebooting", "error" };
     return instance_stateArray[instance_state];
 }
 
 arm_api_instance_state__e instance_state_instance_state_FromString(char* instance_state) {
     int stringToReturn = 0;
-    char *instance_stateArray[] =  { "NULL", "on", "off", "deleting", "creating", "restoring", "paused", "rebooting", "error" };
+    char *instance_stateArray[] =  { "NULL", "on", "off", "booting", "deleting", "creating", "restoring", "paused", "rebooting", "error" };
     size_t sizeofArray = sizeof(instance_stateArray) / sizeof(instance_stateArray[0]);
     while(stringToReturn < sizeofArray) {
         if(strcmp(instance_state, instance_stateArray[stringToReturn]) == 0) {

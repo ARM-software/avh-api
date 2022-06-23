@@ -23,9 +23,10 @@ typedef struct project_quota_t {
     double instances; //numeric
     double ram; //numeric
 
+    int _library_owned; // Is the library responsible for freeing this object?
 } project_quota_t;
 
-project_quota_t *project_quota_create(
+__attribute__((deprecated)) project_quota_t *project_quota_create(
     double cores,
     double instances,
     double ram

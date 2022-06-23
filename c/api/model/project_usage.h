@@ -24,9 +24,10 @@ typedef struct project_usage_t {
     double ram; //numeric
     double gpu; //numeric
 
+    int _library_owned; // Is the library responsible for freeing this object?
 } project_usage_t;
 
-project_usage_t *project_usage_create(
+__attribute__((deprecated)) project_usage_t *project_usage_create(
     double cores,
     double instances,
     double ram,

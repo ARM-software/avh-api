@@ -23,9 +23,10 @@ typedef struct instance_return_t {
     char *id; // string
     arm_api_instance_state__e state; //referenced enum
 
+    int _library_owned; // Is the library responsible for freeing this object?
 } instance_return_t;
 
-instance_return_t *instance_return_create(
+__attribute__((deprecated)) instance_return_t *instance_return_create(
     char *id,
     arm_api_instance_state__e state
 );

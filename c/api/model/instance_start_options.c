@@ -5,7 +5,7 @@
 
 
 
-instance_start_options_t *instance_start_options_create(
+static instance_start_options_t *instance_start_options_create_internal(
     int paused
     ) {
     instance_start_options_t *instance_start_options_local_var = malloc(sizeof(instance_start_options_t));
@@ -14,12 +14,24 @@ instance_start_options_t *instance_start_options_create(
     }
     instance_start_options_local_var->paused = paused;
 
+    instance_start_options_local_var->_library_owned = 1;
     return instance_start_options_local_var;
 }
 
+__attribute__((deprecated)) instance_start_options_t *instance_start_options_create(
+    int paused
+    ) {
+    return instance_start_options_create_internal (
+        paused
+        );
+}
 
 void instance_start_options_free(instance_start_options_t *instance_start_options) {
     if(NULL == instance_start_options){
+        return ;
+    }
+    if(instance_start_options->_library_owned != 1){
+        fprintf(stderr, "WARNING: %s() does NOT free objects allocated by the user\n", "instance_start_options_free");
         return ;
     }
     listEntry_t *listEntry;
@@ -61,7 +73,7 @@ instance_start_options_t *instance_start_options_parseFromJSON(cJSON *instance_s
     }
 
 
-    instance_start_options_local_var = instance_start_options_create (
+    instance_start_options_local_var = instance_start_options_create_internal (
         paused ? paused->valueint : 0
         );
 

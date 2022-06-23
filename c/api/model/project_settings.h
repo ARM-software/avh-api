@@ -23,9 +23,10 @@ typedef struct project_settings_t {
     int internet_access; //boolean
     int dhcp; //boolean
 
+    int _library_owned; // Is the library responsible for freeing this object?
 } project_settings_t;
 
-project_settings_t *project_settings_create(
+__attribute__((deprecated)) project_settings_t *project_settings_create(
     double version,
     int internet_access,
     int dhcp

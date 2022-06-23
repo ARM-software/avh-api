@@ -5,7 +5,7 @@
 
 
 
-instance_stop_options_t *instance_stop_options_create(
+static instance_stop_options_t *instance_stop_options_create_internal(
     int soft
     ) {
     instance_stop_options_t *instance_stop_options_local_var = malloc(sizeof(instance_stop_options_t));
@@ -14,12 +14,24 @@ instance_stop_options_t *instance_stop_options_create(
     }
     instance_stop_options_local_var->soft = soft;
 
+    instance_stop_options_local_var->_library_owned = 1;
     return instance_stop_options_local_var;
 }
 
+__attribute__((deprecated)) instance_stop_options_t *instance_stop_options_create(
+    int soft
+    ) {
+    return instance_stop_options_create_internal (
+        soft
+        );
+}
 
 void instance_stop_options_free(instance_stop_options_t *instance_stop_options) {
     if(NULL == instance_stop_options){
+        return ;
+    }
+    if(instance_stop_options->_library_owned != 1){
+        fprintf(stderr, "WARNING: %s() does NOT free objects allocated by the user\n", "instance_stop_options_free");
         return ;
     }
     listEntry_t *listEntry;
@@ -61,7 +73,7 @@ instance_stop_options_t *instance_stop_options_parseFromJSON(cJSON *instance_sto
     }
 
 
-    instance_stop_options_local_var = instance_stop_options_create (
+    instance_stop_options_local_var = instance_stop_options_create_internal (
         soft ? soft->valueint : 0
         );
 

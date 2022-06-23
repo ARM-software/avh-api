@@ -5,7 +5,7 @@
 
 
 
-credentials_t *credentials_create(
+static credentials_t *credentials_create_internal(
     char *username,
     char *password
     ) {
@@ -16,12 +16,26 @@ credentials_t *credentials_create(
     credentials_local_var->username = username;
     credentials_local_var->password = password;
 
+    credentials_local_var->_library_owned = 1;
     return credentials_local_var;
 }
 
+__attribute__((deprecated)) credentials_t *credentials_create(
+    char *username,
+    char *password
+    ) {
+    return credentials_create_internal (
+        username,
+        password
+        );
+}
 
 void credentials_free(credentials_t *credentials) {
     if(NULL == credentials){
+        return ;
+    }
+    if(credentials->_library_owned != 1){
+        fprintf(stderr, "WARNING: %s() does NOT free objects allocated by the user\n", "credentials_free");
         return ;
     }
     listEntry_t *listEntry;
@@ -99,7 +113,7 @@ credentials_t *credentials_parseFromJSON(cJSON *credentialsJSON){
     }
 
 
-    credentials_local_var = credentials_create (
+    credentials_local_var = credentials_create_internal (
         strdup(username->valuestring),
         strdup(password->valuestring)
         );

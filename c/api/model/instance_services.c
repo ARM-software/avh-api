@@ -5,7 +5,7 @@
 
 
 
-instance_services_t *instance_services_create(
+static instance_services_t *instance_services_create_internal(
     vpn_definition_t *vpn
     ) {
     instance_services_t *instance_services_local_var = malloc(sizeof(instance_services_t));
@@ -14,12 +14,24 @@ instance_services_t *instance_services_create(
     }
     instance_services_local_var->vpn = vpn;
 
+    instance_services_local_var->_library_owned = 1;
     return instance_services_local_var;
 }
 
+__attribute__((deprecated)) instance_services_t *instance_services_create(
+    vpn_definition_t *vpn
+    ) {
+    return instance_services_create_internal (
+        vpn
+        );
+}
 
 void instance_services_free(instance_services_t *instance_services) {
     if(NULL == instance_services){
+        return ;
+    }
+    if(instance_services->_library_owned != 1){
+        fprintf(stderr, "WARNING: %s() does NOT free objects allocated by the user\n", "instance_services_free");
         return ;
     }
     listEntry_t *listEntry;
@@ -70,7 +82,7 @@ instance_services_t *instance_services_parseFromJSON(cJSON *instance_servicesJSO
     }
 
 
-    instance_services_local_var = instance_services_create (
+    instance_services_local_var = instance_services_create_internal (
         vpn ? vpn_local_nonprim : NULL
         );
 

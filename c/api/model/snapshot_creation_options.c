@@ -5,7 +5,7 @@
 
 
 
-snapshot_creation_options_t *snapshot_creation_options_create(
+static snapshot_creation_options_t *snapshot_creation_options_create_internal(
     char *name
     ) {
     snapshot_creation_options_t *snapshot_creation_options_local_var = malloc(sizeof(snapshot_creation_options_t));
@@ -14,12 +14,24 @@ snapshot_creation_options_t *snapshot_creation_options_create(
     }
     snapshot_creation_options_local_var->name = name;
 
+    snapshot_creation_options_local_var->_library_owned = 1;
     return snapshot_creation_options_local_var;
 }
 
+__attribute__((deprecated)) snapshot_creation_options_t *snapshot_creation_options_create(
+    char *name
+    ) {
+    return snapshot_creation_options_create_internal (
+        name
+        );
+}
 
 void snapshot_creation_options_free(snapshot_creation_options_t *snapshot_creation_options) {
     if(NULL == snapshot_creation_options){
+        return ;
+    }
+    if(snapshot_creation_options->_library_owned != 1){
+        fprintf(stderr, "WARNING: %s() does NOT free objects allocated by the user\n", "snapshot_creation_options_free");
         return ;
     }
     listEntry_t *listEntry;
@@ -69,7 +81,7 @@ snapshot_creation_options_t *snapshot_creation_options_parseFromJSON(cJSON *snap
     }
 
 
-    snapshot_creation_options_local_var = snapshot_creation_options_create (
+    snapshot_creation_options_local_var = snapshot_creation_options_create_internal (
         strdup(name->valuestring)
         );
 

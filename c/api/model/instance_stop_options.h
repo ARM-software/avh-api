@@ -21,9 +21,10 @@ typedef struct instance_stop_options_t instance_stop_options_t;
 typedef struct instance_stop_options_t {
     int soft; //boolean
 
+    int _library_owned; // Is the library responsible for freeing this object?
 } instance_stop_options_t;
 
-instance_stop_options_t *instance_stop_options_create(
+__attribute__((deprecated)) instance_stop_options_t *instance_stop_options_create(
     int soft
 );
 

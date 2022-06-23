@@ -5,16 +5,14 @@
 
 
 
-instance_boot_options_t *instance_boot_options_create(
+static instance_boot_options_t *instance_boot_options_create_internal(
     char *boot_args,
     char *restore_boot_args,
     char *udid,
     char *ecid,
     char *random_seed,
-    int no_snapshot_mount,
     int pac,
-    int aprr,
-    list_t *cdhashes
+    int aprr
     ) {
     instance_boot_options_t *instance_boot_options_local_var = malloc(sizeof(instance_boot_options_t));
     if (!instance_boot_options_local_var) {
@@ -25,17 +23,39 @@ instance_boot_options_t *instance_boot_options_create(
     instance_boot_options_local_var->udid = udid;
     instance_boot_options_local_var->ecid = ecid;
     instance_boot_options_local_var->random_seed = random_seed;
-    instance_boot_options_local_var->no_snapshot_mount = no_snapshot_mount;
     instance_boot_options_local_var->pac = pac;
     instance_boot_options_local_var->aprr = aprr;
-    instance_boot_options_local_var->cdhashes = cdhashes;
 
+    instance_boot_options_local_var->_library_owned = 1;
     return instance_boot_options_local_var;
 }
 
+__attribute__((deprecated)) instance_boot_options_t *instance_boot_options_create(
+    char *boot_args,
+    char *restore_boot_args,
+    char *udid,
+    char *ecid,
+    char *random_seed,
+    int pac,
+    int aprr
+    ) {
+    return instance_boot_options_create_internal (
+        boot_args,
+        restore_boot_args,
+        udid,
+        ecid,
+        random_seed,
+        pac,
+        aprr
+        );
+}
 
 void instance_boot_options_free(instance_boot_options_t *instance_boot_options) {
     if(NULL == instance_boot_options){
+        return ;
+    }
+    if(instance_boot_options->_library_owned != 1){
+        fprintf(stderr, "WARNING: %s() does NOT free objects allocated by the user\n", "instance_boot_options_free");
         return ;
     }
     listEntry_t *listEntry;
@@ -58,13 +78,6 @@ void instance_boot_options_free(instance_boot_options_t *instance_boot_options) 
     if (instance_boot_options->random_seed) {
         free(instance_boot_options->random_seed);
         instance_boot_options->random_seed = NULL;
-    }
-    if (instance_boot_options->cdhashes) {
-        list_ForEach(listEntry, instance_boot_options->cdhashes) {
-            free(listEntry->data);
-        }
-        list_freeList(instance_boot_options->cdhashes);
-        instance_boot_options->cdhashes = NULL;
     }
     free(instance_boot_options);
 }
@@ -112,14 +125,6 @@ cJSON *instance_boot_options_convertToJSON(instance_boot_options_t *instance_boo
     }
 
 
-    // instance_boot_options->no_snapshot_mount
-    if(instance_boot_options->no_snapshot_mount) {
-    if(cJSON_AddBoolToObject(item, "noSnapshotMount", instance_boot_options->no_snapshot_mount) == NULL) {
-    goto fail; //Bool
-    }
-    }
-
-
     // instance_boot_options->pac
     if(instance_boot_options->pac) {
     if(cJSON_AddBoolToObject(item, "pac", instance_boot_options->pac) == NULL) {
@@ -135,23 +140,6 @@ cJSON *instance_boot_options_convertToJSON(instance_boot_options_t *instance_boo
     }
     }
 
-
-    // instance_boot_options->cdhashes
-    if(instance_boot_options->cdhashes) {
-    cJSON *cdhashes = cJSON_AddArrayToObject(item, "cdhashes");
-    if(cdhashes == NULL) {
-        goto fail; //primitive container
-    }
-
-    listEntry_t *cdhashesListEntry;
-    list_ForEach(cdhashesListEntry, instance_boot_options->cdhashes) {
-    if(cJSON_AddStringToObject(cdhashes, "", (char*)cdhashesListEntry->data) == NULL)
-    {
-        goto fail;
-    }
-    }
-    }
-
     return item;
 fail:
     if (item) {
@@ -163,9 +151,6 @@ fail:
 instance_boot_options_t *instance_boot_options_parseFromJSON(cJSON *instance_boot_optionsJSON){
 
     instance_boot_options_t *instance_boot_options_local_var = NULL;
-
-    // define the local list for instance_boot_options->cdhashes
-    list_t *cdhashesList = NULL;
 
     // instance_boot_options->boot_args
     cJSON *boot_args = cJSON_GetObjectItemCaseSensitive(instance_boot_optionsJSON, "bootArgs");
@@ -227,18 +212,6 @@ instance_boot_options_t *instance_boot_options_parseFromJSON(cJSON *instance_boo
     }
     }
 
-    // instance_boot_options->no_snapshot_mount
-    cJSON *no_snapshot_mount = cJSON_GetObjectItemCaseSensitive(instance_boot_optionsJSON, "noSnapshotMount");
-    if (cJSON_IsNull(no_snapshot_mount)) {
-        no_snapshot_mount = NULL;
-    }
-    if (no_snapshot_mount) { 
-    if(!cJSON_IsBool(no_snapshot_mount))
-    {
-    goto end; //Bool
-    }
-    }
-
     // instance_boot_options->pac
     cJSON *pac = cJSON_GetObjectItemCaseSensitive(instance_boot_optionsJSON, "pac");
     if (cJSON_IsNull(pac)) {
@@ -263,52 +236,19 @@ instance_boot_options_t *instance_boot_options_parseFromJSON(cJSON *instance_boo
     }
     }
 
-    // instance_boot_options->cdhashes
-    cJSON *cdhashes = cJSON_GetObjectItemCaseSensitive(instance_boot_optionsJSON, "cdhashes");
-    if (cJSON_IsNull(cdhashes)) {
-        cdhashes = NULL;
-    }
-    if (cdhashes) { 
-    cJSON *cdhashes_local = NULL;
-    if(!cJSON_IsArray(cdhashes)) {
-        goto end;//primitive container
-    }
-    cdhashesList = list_createList();
 
-    cJSON_ArrayForEach(cdhashes_local, cdhashes)
-    {
-        if(!cJSON_IsString(cdhashes_local))
-        {
-            goto end;
-        }
-        list_addElement(cdhashesList , strdup(cdhashes_local->valuestring));
-    }
-    }
-
-
-    instance_boot_options_local_var = instance_boot_options_create (
+    instance_boot_options_local_var = instance_boot_options_create_internal (
         boot_args ? strdup(boot_args->valuestring) : NULL,
         restore_boot_args ? strdup(restore_boot_args->valuestring) : NULL,
         udid ? strdup(udid->valuestring) : NULL,
         ecid ? strdup(ecid->valuestring) : NULL,
         random_seed ? strdup(random_seed->valuestring) : NULL,
-        no_snapshot_mount ? no_snapshot_mount->valueint : 0,
         pac ? pac->valueint : 0,
-        aprr ? aprr->valueint : 0,
-        cdhashes ? cdhashesList : NULL
+        aprr ? aprr->valueint : 0
         );
 
     return instance_boot_options_local_var;
 end:
-    if (cdhashesList) {
-        listEntry_t *listEntry = NULL;
-        list_ForEach(listEntry, cdhashesList) {
-            free(listEntry->data);
-            listEntry->data = NULL;
-        }
-        list_freeList(cdhashesList);
-        cdhashesList = NULL;
-    }
     return NULL;
 
 }

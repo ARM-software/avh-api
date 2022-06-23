@@ -29,10 +29,8 @@ typedef struct instance_create_options_t {
     char *os; // string
     char *osbuild; // string
     list_t *patches; //primitive container
-    char *ipsw; // string
-    char *ipsw_sha1; // string
-    char *ipsw_md5; // string
-    char *orig_ipsw_url; // string
+    char *fwpackage; // string
+    char *orig_fw_package_url; // string
     int encrypt; //boolean
     char *override_wifi_mac; // string
     struct volume_options_t *volume; //model
@@ -40,9 +38,10 @@ typedef struct instance_create_options_t {
     struct instance_boot_options_t *boot_options; //model
     struct model_t *device; //model
 
+    int _library_owned; // Is the library responsible for freeing this object?
 } instance_create_options_t;
 
-instance_create_options_t *instance_create_options_create(
+__attribute__((deprecated)) instance_create_options_t *instance_create_options_create(
     char *name,
     char *key,
     char *flavor,
@@ -50,10 +49,8 @@ instance_create_options_t *instance_create_options_create(
     char *os,
     char *osbuild,
     list_t *patches,
-    char *ipsw,
-    char *ipsw_sha1,
-    char *ipsw_md5,
-    char *orig_ipsw_url,
+    char *fwpackage,
+    char *orig_fw_package_url,
     int encrypt,
     char *override_wifi_mac,
     volume_options_t *volume,

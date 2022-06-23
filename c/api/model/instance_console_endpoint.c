@@ -5,7 +5,7 @@
 
 
 
-instance_console_endpoint_t *instance_console_endpoint_create(
+static instance_console_endpoint_t *instance_console_endpoint_create_internal(
     char *url
     ) {
     instance_console_endpoint_t *instance_console_endpoint_local_var = malloc(sizeof(instance_console_endpoint_t));
@@ -14,12 +14,24 @@ instance_console_endpoint_t *instance_console_endpoint_create(
     }
     instance_console_endpoint_local_var->url = url;
 
+    instance_console_endpoint_local_var->_library_owned = 1;
     return instance_console_endpoint_local_var;
 }
 
+__attribute__((deprecated)) instance_console_endpoint_t *instance_console_endpoint_create(
+    char *url
+    ) {
+    return instance_console_endpoint_create_internal (
+        url
+        );
+}
 
 void instance_console_endpoint_free(instance_console_endpoint_t *instance_console_endpoint) {
     if(NULL == instance_console_endpoint){
+        return ;
+    }
+    if(instance_console_endpoint->_library_owned != 1){
+        fprintf(stderr, "WARNING: %s() does NOT free objects allocated by the user\n", "instance_console_endpoint_free");
         return ;
     }
     listEntry_t *listEntry;
@@ -65,7 +77,7 @@ instance_console_endpoint_t *instance_console_endpoint_parseFromJSON(cJSON *inst
     }
 
 
-    instance_console_endpoint_local_var = instance_console_endpoint_create (
+    instance_console_endpoint_local_var = instance_console_endpoint_create_internal (
         url ? strdup(url->valuestring) : NULL
         );
 

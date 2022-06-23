@@ -24,23 +24,20 @@ typedef struct instance_boot_options_t {
     char *udid; // string
     char *ecid; // string
     char *random_seed; // string
-    int no_snapshot_mount; //boolean
     int pac; //boolean
     int aprr; //boolean
-    list_t *cdhashes; //primitive container
 
+    int _library_owned; // Is the library responsible for freeing this object?
 } instance_boot_options_t;
 
-instance_boot_options_t *instance_boot_options_create(
+__attribute__((deprecated)) instance_boot_options_t *instance_boot_options_create(
     char *boot_args,
     char *restore_boot_args,
     char *udid,
     char *ecid,
     char *random_seed,
-    int no_snapshot_mount,
     int pac,
-    int aprr,
-    list_t *cdhashes
+    int aprr
 );
 
 void instance_boot_options_free(instance_boot_options_t *instance_boot_options);

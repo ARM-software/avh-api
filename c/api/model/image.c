@@ -5,13 +5,13 @@
 
 
 char* typeimage_ToString(arm_api_image_TYPE_e type) {
-    char* typeArray[] =  { "NULL", "iotfirmware", "kernel", "devicetree", "ramdisk", "loaderfile", "sepfw", "seprom", "bootrom", "llb", "iboot", "ibootdata", "fw", "partition" };
+    char* typeArray[] =  { "NULL", "fwbinary", "kernel", "devicetree", "ramdisk", "loaderfile", "sepfw", "seprom", "bootrom", "llb", "iboot", "ibootdata", "fwpackage", "partition" };
 	return typeArray[type];
 }
 
 arm_api_image_TYPE_e typeimage_FromString(char* type){
     int stringToReturn = 0;
-    char *typeArray[] =  { "NULL", "iotfirmware", "kernel", "devicetree", "ramdisk", "loaderfile", "sepfw", "seprom", "bootrom", "llb", "iboot", "ibootdata", "fw", "partition" };
+    char *typeArray[] =  { "NULL", "fwbinary", "kernel", "devicetree", "ramdisk", "loaderfile", "sepfw", "seprom", "bootrom", "llb", "iboot", "ibootdata", "fwpackage", "partition" };
     size_t sizeofArray = sizeof(typeArray) / sizeof(typeArray[0]);
     while(stringToReturn < sizeofArray) {
         if(strcmp(type, typeArray[stringToReturn]) == 0) {
@@ -22,16 +22,14 @@ arm_api_image_TYPE_e typeimage_FromString(char* type){
     return 0;
 }
 
-image_t *image_create(
+static image_t *image_create_internal(
     char *status,
     char *id,
     char *name,
     arm_api_image_TYPE_e type,
-    char *self,
-    char *file,
+    char *filename,
+    char *uniqueid,
     double size,
-    double checksum,
-    char *encoding,
     char *project,
     char *created_at,
     char *updated_at
@@ -44,21 +42,49 @@ image_t *image_create(
     image_local_var->id = id;
     image_local_var->name = name;
     image_local_var->type = type;
-    image_local_var->self = self;
-    image_local_var->file = file;
+    image_local_var->filename = filename;
+    image_local_var->uniqueid = uniqueid;
     image_local_var->size = size;
-    image_local_var->checksum = checksum;
-    image_local_var->encoding = encoding;
     image_local_var->project = project;
     image_local_var->created_at = created_at;
     image_local_var->updated_at = updated_at;
 
+    image_local_var->_library_owned = 1;
     return image_local_var;
 }
 
+__attribute__((deprecated)) image_t *image_create(
+    char *status,
+    char *id,
+    char *name,
+    arm_api_image_TYPE_e type,
+    char *filename,
+    char *uniqueid,
+    double size,
+    char *project,
+    char *created_at,
+    char *updated_at
+    ) {
+    return image_create_internal (
+        status,
+        id,
+        name,
+        type,
+        filename,
+        uniqueid,
+        size,
+        project,
+        created_at,
+        updated_at
+        );
+}
 
 void image_free(image_t *image) {
     if(NULL == image){
+        return ;
+    }
+    if(image->_library_owned != 1){
+        fprintf(stderr, "WARNING: %s() does NOT free objects allocated by the user\n", "image_free");
         return ;
     }
     listEntry_t *listEntry;
@@ -74,17 +100,13 @@ void image_free(image_t *image) {
         free(image->name);
         image->name = NULL;
     }
-    if (image->self) {
-        free(image->self);
-        image->self = NULL;
+    if (image->filename) {
+        free(image->filename);
+        image->filename = NULL;
     }
-    if (image->file) {
-        free(image->file);
-        image->file = NULL;
-    }
-    if (image->encoding) {
-        free(image->encoding);
-        image->encoding = NULL;
+    if (image->uniqueid) {
+        free(image->uniqueid);
+        image->uniqueid = NULL;
     }
     if (image->project) {
         free(image->project);
@@ -138,17 +160,17 @@ cJSON *image_convertToJSON(image_t *image) {
     }
 
 
-    // image->self
-    if(image->self) {
-    if(cJSON_AddStringToObject(item, "self", image->self) == NULL) {
+    // image->filename
+    if(image->filename) {
+    if(cJSON_AddStringToObject(item, "filename", image->filename) == NULL) {
     goto fail; //String
     }
     }
 
 
-    // image->file
-    if(image->file) {
-    if(cJSON_AddStringToObject(item, "file", image->file) == NULL) {
+    // image->uniqueid
+    if(image->uniqueid) {
+    if(cJSON_AddStringToObject(item, "uniqueid", image->uniqueid) == NULL) {
     goto fail; //String
     }
     }
@@ -158,22 +180,6 @@ cJSON *image_convertToJSON(image_t *image) {
     if(image->size) {
     if(cJSON_AddNumberToObject(item, "size", image->size) == NULL) {
     goto fail; //Numeric
-    }
-    }
-
-
-    // image->checksum
-    if(image->checksum) {
-    if(cJSON_AddNumberToObject(item, "checksum", image->checksum) == NULL) {
-    goto fail; //Numeric
-    }
-    }
-
-
-    // image->encoding
-    if(image->encoding) {
-    if(cJSON_AddStringToObject(item, "encoding", image->encoding) == NULL) {
-    goto fail; //String
     }
     }
 
@@ -266,25 +272,25 @@ image_t *image_parseFromJSON(cJSON *imageJSON){
     typeVariable = typeimage_FromString(type->valuestring);
     }
 
-    // image->self
-    cJSON *self = cJSON_GetObjectItemCaseSensitive(imageJSON, "self");
-    if (cJSON_IsNull(self)) {
-        self = NULL;
+    // image->filename
+    cJSON *filename = cJSON_GetObjectItemCaseSensitive(imageJSON, "filename");
+    if (cJSON_IsNull(filename)) {
+        filename = NULL;
     }
-    if (self) { 
-    if(!cJSON_IsString(self))
+    if (filename) { 
+    if(!cJSON_IsString(filename))
     {
     goto end; //String
     }
     }
 
-    // image->file
-    cJSON *file = cJSON_GetObjectItemCaseSensitive(imageJSON, "file");
-    if (cJSON_IsNull(file)) {
-        file = NULL;
+    // image->uniqueid
+    cJSON *uniqueid = cJSON_GetObjectItemCaseSensitive(imageJSON, "uniqueid");
+    if (cJSON_IsNull(uniqueid)) {
+        uniqueid = NULL;
     }
-    if (file) { 
-    if(!cJSON_IsString(file))
+    if (uniqueid) { 
+    if(!cJSON_IsString(uniqueid))
     {
     goto end; //String
     }
@@ -299,30 +305,6 @@ image_t *image_parseFromJSON(cJSON *imageJSON){
     if(!cJSON_IsNumber(size))
     {
     goto end; //Numeric
-    }
-    }
-
-    // image->checksum
-    cJSON *checksum = cJSON_GetObjectItemCaseSensitive(imageJSON, "checksum");
-    if (cJSON_IsNull(checksum)) {
-        checksum = NULL;
-    }
-    if (checksum) { 
-    if(!cJSON_IsNumber(checksum))
-    {
-    goto end; //Numeric
-    }
-    }
-
-    // image->encoding
-    cJSON *encoding = cJSON_GetObjectItemCaseSensitive(imageJSON, "encoding");
-    if (cJSON_IsNull(encoding)) {
-        encoding = NULL;
-    }
-    if (encoding) { 
-    if(!cJSON_IsString(encoding))
-    {
-    goto end; //String
     }
     }
 
@@ -363,16 +345,14 @@ image_t *image_parseFromJSON(cJSON *imageJSON){
     }
 
 
-    image_local_var = image_create (
+    image_local_var = image_create_internal (
         strdup(status->valuestring),
         id ? strdup(id->valuestring) : NULL,
         name ? strdup(name->valuestring) : NULL,
         type ? typeVariable : -1,
-        self ? strdup(self->valuestring) : NULL,
-        file ? strdup(file->valuestring) : NULL,
+        filename ? strdup(filename->valuestring) : NULL,
+        uniqueid ? strdup(uniqueid->valuestring) : NULL,
         size ? size->valuedouble : 0,
-        checksum ? checksum->valuedouble : 0,
-        encoding ? strdup(encoding->valuestring) : NULL,
         project ? strdup(project->valuestring) : NULL,
         created_at ? strdup(created_at->valuestring) : NULL,
         updated_at ? strdup(updated_at->valuestring) : NULL

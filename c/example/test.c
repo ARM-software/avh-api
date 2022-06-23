@@ -451,7 +451,7 @@ static int take_snapshot(apiClient_t *api_client, instance_t *instance)
             goto fail;
         }
 
-        temp = ArmAPI_v1GetSnapshot(api_client, instance->id, snapshot->id);
+        temp = ArmAPI_v1GetSnapshot(api_client, snapshot->id);
         snapshot_free(snapshot);
         snapshot = temp;
         temp = NULL;
@@ -482,7 +482,7 @@ static int list_snapshots(apiClient_t *api_client, instance_t *instance)
 
     printf("Listing snapshots\n");
 
-    list = ArmAPI_v1GetSnapshots(api_client, instance->id);
+    list = ArmAPI_v1GetInstanceSnapshots(api_client, instance->id);
     if(!list) {
         report_api_error(api_client, "Failed to retrieve list of snapshots");
         return 1;
@@ -524,9 +524,8 @@ static int list_snapshots(apiClient_t *api_client, instance_t *instance)
 int main(int argc, char *argv[])
 {
     struct sigaction int_action = { .sa_handler = sigint_handler };
-    const char *endpoint = NULL, *username = NULL, *password = NULL, *apitoken = NULL;
+    char *endpoint = NULL, *apitoken = NULL;
     apiClient_t *api_client = NULL;
-    cJSON *auth_body_json = NULL;
     object_t *auth_body = NULL;
     token_t *token = NULL;
     char *project_id = NULL;
@@ -537,37 +536,17 @@ int main(int argc, char *argv[])
 
     apiClient_setupGlobalEnv();
 
-    if(argc != 4 && argc != 3) {
+    if(argc != 3) {
         printf("Usage: %s <ApiEndpoint> <apitoken>\n", argv[0]);
         return 1;
     }
     endpoint = argv[1];
-    if (argc == 3) {
-      apitoken = argv[2];
-    } else {
-      username = argv[2];
-      password = argv[3];
-    }
+    api_token_t api_token = { .api_token = argv[2] };
 
     api_client = apiClient_create_with_base_path(endpoint, NULL);
 
-    auth_body_json = cJSON_CreateObject();
-    if(!auth_body_json)
-        goto out;
-    if (apitoken) {
-      cJSON_AddStringToObject(auth_body_json, "apiToken", apitoken);
-    } else {
-      cJSON_AddStringToObject(auth_body_json, "username", username);
-      cJSON_AddStringToObject(auth_body_json, "password", password);
-    }
-    auth_body = object_parseFromJSON(auth_body_json);
-    cJSON_Delete(auth_body_json);
-    auth_body_json = NULL;
-    if(!auth_body)
-        goto out;
-
-    token = ArmAPI_v1AuthLogin(api_client, auth_body);
-    if(!token) {
+    token = ArmAPI_v1AuthLogin(api_client, &api_token);
+    if(!token || !token->token) {
         report_api_error(api_client, "Failure on authentication");
         goto out;
     }

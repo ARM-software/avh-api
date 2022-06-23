@@ -25,9 +25,10 @@ typedef struct volume_options_t {
     list_t *partitions; //nonprimitive container
     char *compute_node; // string
 
+    int _library_owned; // Is the library responsible for freeing this object?
 } volume_options_t;
 
-volume_options_t *volume_options_create(
+__attribute__((deprecated)) volume_options_t *volume_options_create(
     double allocate,
     list_t *partitions,
     char *compute_node

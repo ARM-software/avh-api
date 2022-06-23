@@ -160,10 +160,10 @@ char *assembleHeaderField(char *key, char *value) {
     return header;
 }
 
-void postData(CURL *handle, char *bodyParameters) {
+void postData(CURL *handle, char *bodyParameters, size_t bodyParametersLength) {
     curl_easy_setopt(handle, CURLOPT_POSTFIELDS, bodyParameters);
     curl_easy_setopt(handle, CURLOPT_POSTFIELDSIZE_LARGE,
-                     strlen(bodyParameters));
+                     bodyParametersLength);
 }
 
 int lengthOfKeyPair(keyValuePair_t *keyPair) {
@@ -186,6 +186,7 @@ void apiClient_invoke(apiClient_t    *apiClient,
                       list_t        *headerType,
                       list_t        *contentType,
                       char        *bodyParameters,
+                      size_t       bodyParametersLength,
                       char        *requestType) {
     CURL *handle = curl_easy_init();
     CURLcode res;
@@ -362,8 +363,8 @@ void apiClient_invoke(apiClient_t    *apiClient,
                     curl_easy_setopt(handle, CURLOPT_SSL_VERIFYHOST, 2L);
                 }
             } else {
-                curl_easy_setopt(handle, CURLOPT_SSL_VERIFYPEER, 0L);
-                curl_easy_setopt(handle, CURLOPT_SSL_VERIFYHOST, 0L);
+                curl_easy_setopt(handle, CURLOPT_SSL_VERIFYPEER, 1L);
+                curl_easy_setopt(handle, CURLOPT_SSL_VERIFYHOST, 2L);
             }
         }
 
@@ -405,7 +406,7 @@ void apiClient_invoke(apiClient_t    *apiClient,
 
 
         if(bodyParameters != NULL) {
-            postData(handle, bodyParameters);
+            postData(handle, bodyParameters, bodyParametersLength);
         }
 
         res = curl_easy_perform(handle);

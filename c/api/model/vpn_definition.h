@@ -22,9 +22,10 @@ typedef struct vpn_definition_t {
     list_t *proxy; //primitive container
     list_t *listeners; //primitive container
 
+    int _library_owned; // Is the library responsible for freeing this object?
 } vpn_definition_t;
 
-vpn_definition_t *vpn_definition_create(
+__attribute__((deprecated)) vpn_definition_t *vpn_definition_create(
     list_t *proxy,
     list_t *listeners
 );

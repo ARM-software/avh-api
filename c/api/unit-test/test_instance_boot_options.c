@@ -28,9 +28,7 @@ instance_boot_options_t* instantiate_instance_boot_options(int include_optional)
       "0",
       "0",
       1,
-      1,
-      1,
-      list_createList()
+      1
     );
   } else {
     instance_boot_options = instance_boot_options_create(
@@ -40,9 +38,7 @@ instance_boot_options_t* instantiate_instance_boot_options(int include_optional)
       "0",
       "0",
       1,
-      1,
-      1,
-      list_createList()
+      1
     );
   }
 

@@ -21,9 +21,10 @@ typedef struct snapshot_creation_options_t snapshot_creation_options_t;
 typedef struct snapshot_creation_options_t {
     char *name; // string
 
+    int _library_owned; // Is the library responsible for freeing this object?
 } snapshot_creation_options_t;
 
-snapshot_creation_options_t *snapshot_creation_options_create(
+__attribute__((deprecated)) snapshot_creation_options_t *snapshot_creation_options_create(
     char *name
 );
 

@@ -5,7 +5,7 @@
 
 
 
-project_quota_t *project_quota_create(
+static project_quota_t *project_quota_create_internal(
     double cores,
     double instances,
     double ram
@@ -18,12 +18,28 @@ project_quota_t *project_quota_create(
     project_quota_local_var->instances = instances;
     project_quota_local_var->ram = ram;
 
+    project_quota_local_var->_library_owned = 1;
     return project_quota_local_var;
 }
 
+__attribute__((deprecated)) project_quota_t *project_quota_create(
+    double cores,
+    double instances,
+    double ram
+    ) {
+    return project_quota_create_internal (
+        cores,
+        instances,
+        ram
+        );
+}
 
 void project_quota_free(project_quota_t *project_quota) {
     if(NULL == project_quota){
+        return ;
+    }
+    if(project_quota->_library_owned != 1){
+        fprintf(stderr, "WARNING: %s() does NOT free objects allocated by the user\n", "project_quota_free");
         return ;
     }
     listEntry_t *listEntry;
@@ -105,7 +121,7 @@ project_quota_t *project_quota_parseFromJSON(cJSON *project_quotaJSON){
     }
 
 
-    project_quota_local_var = project_quota_create (
+    project_quota_local_var = project_quota_create_internal (
         cores ? cores->valuedouble : 0,
         instances ? instances->valuedouble : 0,
         ram ? ram->valuedouble : 0

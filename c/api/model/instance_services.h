@@ -22,9 +22,10 @@ typedef struct instance_services_t instance_services_t;
 typedef struct instance_services_t {
     struct vpn_definition_t *vpn; //model
 
+    int _library_owned; // Is the library responsible for freeing this object?
 } instance_services_t;
 
-instance_services_t *instance_services_create(
+__attribute__((deprecated)) instance_services_t *instance_services_create(
     vpn_definition_t *vpn
 );
 

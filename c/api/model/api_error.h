@@ -23,9 +23,10 @@ typedef struct api_error_t {
     char *error_id; // string
     char *original_error; // string
 
+    int _library_owned; // Is the library responsible for freeing this object?
 } api_error_t;
 
-api_error_t *api_error_create(
+__attribute__((deprecated)) api_error_t *api_error_create(
     char *error,
     char *error_id,
     char *original_error

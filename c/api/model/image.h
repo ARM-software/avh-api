@@ -18,7 +18,7 @@ typedef struct image_t image_t;
 
 // Enum TYPE for image
 
-typedef enum  { arm_api_image_TYPE_NULL = 0, arm_api_image_TYPE_iotfirmware, arm_api_image_TYPE_kernel, arm_api_image_TYPE_devicetree, arm_api_image_TYPE_ramdisk, arm_api_image_TYPE_loaderfile, arm_api_image_TYPE_sepfw, arm_api_image_TYPE_seprom, arm_api_image_TYPE_bootrom, arm_api_image_TYPE_llb, arm_api_image_TYPE_iboot, arm_api_image_TYPE_ibootdata, arm_api_image_TYPE_fw, arm_api_image_TYPE_partition } arm_api_image_TYPE_e;
+typedef enum  { arm_api_image_TYPE_NULL = 0, arm_api_image_TYPE_fwbinary, arm_api_image_TYPE_kernel, arm_api_image_TYPE_devicetree, arm_api_image_TYPE_ramdisk, arm_api_image_TYPE_loaderfile, arm_api_image_TYPE_sepfw, arm_api_image_TYPE_seprom, arm_api_image_TYPE_bootrom, arm_api_image_TYPE_llb, arm_api_image_TYPE_iboot, arm_api_image_TYPE_ibootdata, arm_api_image_TYPE_fwpackage, arm_api_image_TYPE_partition } arm_api_image_TYPE_e;
 
 char* image_type_ToString(arm_api_image_TYPE_e type);
 
@@ -31,27 +31,24 @@ typedef struct image_t {
     char *id; // string
     char *name; // string
     arm_api_image_TYPE_e type; //enum
-    char *self; // string
-    char *file; // string
+    char *filename; // string
+    char *uniqueid; // string
     double size; //numeric
-    double checksum; //numeric
-    char *encoding; // string
     char *project; // string
     char *created_at; //date time
     char *updated_at; //date time
 
+    int _library_owned; // Is the library responsible for freeing this object?
 } image_t;
 
-image_t *image_create(
+__attribute__((deprecated)) image_t *image_create(
     char *status,
     char *id,
     char *name,
     arm_api_image_TYPE_e type,
-    char *self,
-    char *file,
+    char *filename,
+    char *uniqueid,
     double size,
-    double checksum,
-    char *encoding,
     char *project,
     char *created_at,
     char *updated_at

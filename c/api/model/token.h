@@ -22,9 +22,10 @@ typedef struct token_t {
     char *token; // string
     char *expiration; //date time
 
+    int _library_owned; // Is the library responsible for freeing this object?
 } token_t;
 
-token_t *token_create(
+__attribute__((deprecated)) token_t *token_create(
     char *token,
     char *expiration
 );

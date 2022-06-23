@@ -37,9 +37,10 @@ typedef struct firmware_t {
     char *orig_url; // string
     char *filename; // string
 
+    int _library_owned; // Is the library responsible for freeing this object?
 } firmware_t;
 
-firmware_t *firmware_create(
+__attribute__((deprecated)) firmware_t *firmware_create(
     char *version,
     char *buildid,
     char *android_flavor,

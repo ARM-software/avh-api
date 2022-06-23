@@ -5,7 +5,7 @@
 
 
 
-volume_options_t *volume_options_create(
+static volume_options_t *volume_options_create_internal(
     double allocate,
     list_t *partitions,
     char *compute_node
@@ -18,12 +18,28 @@ volume_options_t *volume_options_create(
     volume_options_local_var->partitions = partitions;
     volume_options_local_var->compute_node = compute_node;
 
+    volume_options_local_var->_library_owned = 1;
     return volume_options_local_var;
 }
 
+__attribute__((deprecated)) volume_options_t *volume_options_create(
+    double allocate,
+    list_t *partitions,
+    char *compute_node
+    ) {
+    return volume_options_create_internal (
+        allocate,
+        partitions,
+        compute_node
+        );
+}
 
 void volume_options_free(volume_options_t *volume_options) {
     if(NULL == volume_options){
+        return ;
+    }
+    if(volume_options->_library_owned != 1){
+        fprintf(stderr, "WARNING: %s() does NOT free objects allocated by the user\n", "volume_options_free");
         return ;
     }
     listEntry_t *listEntry;
@@ -143,7 +159,7 @@ volume_options_t *volume_options_parseFromJSON(cJSON *volume_optionsJSON){
     }
 
 
-    volume_options_local_var = volume_options_create (
+    volume_options_local_var = volume_options_create_internal (
         allocate ? allocate->valuedouble : 0,
         partitions ? partitionsList : NULL,
         compute_node ? strdup(compute_node->valuestring) : NULL

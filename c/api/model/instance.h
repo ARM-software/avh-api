@@ -41,7 +41,7 @@ typedef struct instance_t {
     int panicked; //boolean
     char *created; //date time
     char *model; // string
-    char *ipsw; // string
+    char *fwpackage; // string
     char *os; // string
     char *agent; // string
     struct instance_netmon_state_t *netmon; //model
@@ -49,9 +49,10 @@ typedef struct instance_t {
     int fault; //boolean
     list_t *patches; //primitive container
 
+    int _library_owned; // Is the library responsible for freeing this object?
 } instance_t;
 
-instance_t *instance_create(
+__attribute__((deprecated)) instance_t *instance_create(
     char *id,
     char *name,
     char *key,
@@ -70,7 +71,7 @@ instance_t *instance_create(
     int panicked,
     char *created,
     char *model,
-    char *ipsw,
+    char *fwpackage,
     char *os,
     char *agent,
     instance_netmon_state_t *netmon,

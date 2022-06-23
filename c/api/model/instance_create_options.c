@@ -5,7 +5,7 @@
 
 
 
-instance_create_options_t *instance_create_options_create(
+static instance_create_options_t *instance_create_options_create_internal(
     char *name,
     char *key,
     char *flavor,
@@ -13,10 +13,8 @@ instance_create_options_t *instance_create_options_create(
     char *os,
     char *osbuild,
     list_t *patches,
-    char *ipsw,
-    char *ipsw_sha1,
-    char *ipsw_md5,
-    char *orig_ipsw_url,
+    char *fwpackage,
+    char *orig_fw_package_url,
     int encrypt,
     char *override_wifi_mac,
     volume_options_t *volume,
@@ -35,10 +33,8 @@ instance_create_options_t *instance_create_options_create(
     instance_create_options_local_var->os = os;
     instance_create_options_local_var->osbuild = osbuild;
     instance_create_options_local_var->patches = patches;
-    instance_create_options_local_var->ipsw = ipsw;
-    instance_create_options_local_var->ipsw_sha1 = ipsw_sha1;
-    instance_create_options_local_var->ipsw_md5 = ipsw_md5;
-    instance_create_options_local_var->orig_ipsw_url = orig_ipsw_url;
+    instance_create_options_local_var->fwpackage = fwpackage;
+    instance_create_options_local_var->orig_fw_package_url = orig_fw_package_url;
     instance_create_options_local_var->encrypt = encrypt;
     instance_create_options_local_var->override_wifi_mac = override_wifi_mac;
     instance_create_options_local_var->volume = volume;
@@ -46,12 +42,52 @@ instance_create_options_t *instance_create_options_create(
     instance_create_options_local_var->boot_options = boot_options;
     instance_create_options_local_var->device = device;
 
+    instance_create_options_local_var->_library_owned = 1;
     return instance_create_options_local_var;
 }
 
+__attribute__((deprecated)) instance_create_options_t *instance_create_options_create(
+    char *name,
+    char *key,
+    char *flavor,
+    char *project,
+    char *os,
+    char *osbuild,
+    list_t *patches,
+    char *fwpackage,
+    char *orig_fw_package_url,
+    int encrypt,
+    char *override_wifi_mac,
+    volume_options_t *volume,
+    char *snapshot,
+    instance_boot_options_t *boot_options,
+    model_t *device
+    ) {
+    return instance_create_options_create_internal (
+        name,
+        key,
+        flavor,
+        project,
+        os,
+        osbuild,
+        patches,
+        fwpackage,
+        orig_fw_package_url,
+        encrypt,
+        override_wifi_mac,
+        volume,
+        snapshot,
+        boot_options,
+        device
+        );
+}
 
 void instance_create_options_free(instance_create_options_t *instance_create_options) {
     if(NULL == instance_create_options){
+        return ;
+    }
+    if(instance_create_options->_library_owned != 1){
+        fprintf(stderr, "WARNING: %s() does NOT free objects allocated by the user\n", "instance_create_options_free");
         return ;
     }
     listEntry_t *listEntry;
@@ -86,21 +122,13 @@ void instance_create_options_free(instance_create_options_t *instance_create_opt
         list_freeList(instance_create_options->patches);
         instance_create_options->patches = NULL;
     }
-    if (instance_create_options->ipsw) {
-        free(instance_create_options->ipsw);
-        instance_create_options->ipsw = NULL;
+    if (instance_create_options->fwpackage) {
+        free(instance_create_options->fwpackage);
+        instance_create_options->fwpackage = NULL;
     }
-    if (instance_create_options->ipsw_sha1) {
-        free(instance_create_options->ipsw_sha1);
-        instance_create_options->ipsw_sha1 = NULL;
-    }
-    if (instance_create_options->ipsw_md5) {
-        free(instance_create_options->ipsw_md5);
-        instance_create_options->ipsw_md5 = NULL;
-    }
-    if (instance_create_options->orig_ipsw_url) {
-        free(instance_create_options->orig_ipsw_url);
-        instance_create_options->orig_ipsw_url = NULL;
+    if (instance_create_options->orig_fw_package_url) {
+        free(instance_create_options->orig_fw_package_url);
+        instance_create_options->orig_fw_package_url = NULL;
     }
     if (instance_create_options->override_wifi_mac) {
         free(instance_create_options->override_wifi_mac);
@@ -196,33 +224,17 @@ cJSON *instance_create_options_convertToJSON(instance_create_options_t *instance
     }
 
 
-    // instance_create_options->ipsw
-    if(instance_create_options->ipsw) {
-    if(cJSON_AddStringToObject(item, "ipsw", instance_create_options->ipsw) == NULL) {
+    // instance_create_options->fwpackage
+    if(instance_create_options->fwpackage) {
+    if(cJSON_AddStringToObject(item, "fwpackage", instance_create_options->fwpackage) == NULL) {
     goto fail; //String
     }
     }
 
 
-    // instance_create_options->ipsw_sha1
-    if(instance_create_options->ipsw_sha1) {
-    if(cJSON_AddStringToObject(item, "ipswSHA1", instance_create_options->ipsw_sha1) == NULL) {
-    goto fail; //String
-    }
-    }
-
-
-    // instance_create_options->ipsw_md5
-    if(instance_create_options->ipsw_md5) {
-    if(cJSON_AddStringToObject(item, "ipswMD5", instance_create_options->ipsw_md5) == NULL) {
-    goto fail; //String
-    }
-    }
-
-
-    // instance_create_options->orig_ipsw_url
-    if(instance_create_options->orig_ipsw_url) {
-    if(cJSON_AddStringToObject(item, "origIpswUrl", instance_create_options->orig_ipsw_url) == NULL) {
+    // instance_create_options->orig_fw_package_url
+    if(instance_create_options->orig_fw_package_url) {
+    if(cJSON_AddStringToObject(item, "origFwPackageUrl", instance_create_options->orig_fw_package_url) == NULL) {
     goto fail; //String
     }
     }
@@ -417,49 +429,25 @@ instance_create_options_t *instance_create_options_parseFromJSON(cJSON *instance
     }
     }
 
-    // instance_create_options->ipsw
-    cJSON *ipsw = cJSON_GetObjectItemCaseSensitive(instance_create_optionsJSON, "ipsw");
-    if (cJSON_IsNull(ipsw)) {
-        ipsw = NULL;
+    // instance_create_options->fwpackage
+    cJSON *fwpackage = cJSON_GetObjectItemCaseSensitive(instance_create_optionsJSON, "fwpackage");
+    if (cJSON_IsNull(fwpackage)) {
+        fwpackage = NULL;
     }
-    if (ipsw) { 
-    if(!cJSON_IsString(ipsw))
+    if (fwpackage) { 
+    if(!cJSON_IsString(fwpackage))
     {
     goto end; //String
     }
     }
 
-    // instance_create_options->ipsw_sha1
-    cJSON *ipsw_sha1 = cJSON_GetObjectItemCaseSensitive(instance_create_optionsJSON, "ipswSHA1");
-    if (cJSON_IsNull(ipsw_sha1)) {
-        ipsw_sha1 = NULL;
+    // instance_create_options->orig_fw_package_url
+    cJSON *orig_fw_package_url = cJSON_GetObjectItemCaseSensitive(instance_create_optionsJSON, "origFwPackageUrl");
+    if (cJSON_IsNull(orig_fw_package_url)) {
+        orig_fw_package_url = NULL;
     }
-    if (ipsw_sha1) { 
-    if(!cJSON_IsString(ipsw_sha1))
-    {
-    goto end; //String
-    }
-    }
-
-    // instance_create_options->ipsw_md5
-    cJSON *ipsw_md5 = cJSON_GetObjectItemCaseSensitive(instance_create_optionsJSON, "ipswMD5");
-    if (cJSON_IsNull(ipsw_md5)) {
-        ipsw_md5 = NULL;
-    }
-    if (ipsw_md5) { 
-    if(!cJSON_IsString(ipsw_md5))
-    {
-    goto end; //String
-    }
-    }
-
-    // instance_create_options->orig_ipsw_url
-    cJSON *orig_ipsw_url = cJSON_GetObjectItemCaseSensitive(instance_create_optionsJSON, "origIpswUrl");
-    if (cJSON_IsNull(orig_ipsw_url)) {
-        orig_ipsw_url = NULL;
-    }
-    if (orig_ipsw_url) { 
-    if(!cJSON_IsString(orig_ipsw_url))
+    if (orig_fw_package_url) { 
+    if(!cJSON_IsString(orig_fw_package_url))
     {
     goto end; //String
     }
@@ -529,7 +517,7 @@ instance_create_options_t *instance_create_options_parseFromJSON(cJSON *instance
     }
 
 
-    instance_create_options_local_var = instance_create_options_create (
+    instance_create_options_local_var = instance_create_options_create_internal (
         name ? strdup(name->valuestring) : NULL,
         key ? strdup(key->valuestring) : NULL,
         strdup(flavor->valuestring),
@@ -537,10 +525,8 @@ instance_create_options_t *instance_create_options_parseFromJSON(cJSON *instance
         strdup(os->valuestring),
         osbuild ? strdup(osbuild->valuestring) : NULL,
         patches ? patchesList : NULL,
-        ipsw ? strdup(ipsw->valuestring) : NULL,
-        ipsw_sha1 ? strdup(ipsw_sha1->valuestring) : NULL,
-        ipsw_md5 ? strdup(ipsw_md5->valuestring) : NULL,
-        orig_ipsw_url ? strdup(orig_ipsw_url->valuestring) : NULL,
+        fwpackage ? strdup(fwpackage->valuestring) : NULL,
+        orig_fw_package_url ? strdup(orig_fw_package_url->valuestring) : NULL,
         encrypt ? encrypt->valueint : 0,
         override_wifi_mac ? strdup(override_wifi_mac->valuestring) : NULL,
         volume ? volume_local_nonprim : NULL,

@@ -5,7 +5,7 @@
 
 
 
-firmware_t *firmware_create(
+static firmware_t *firmware_create_internal(
     char *version,
     char *buildid,
     char *android_flavor,
@@ -42,12 +42,52 @@ firmware_t *firmware_create(
     firmware_local_var->orig_url = orig_url;
     firmware_local_var->filename = filename;
 
+    firmware_local_var->_library_owned = 1;
     return firmware_local_var;
 }
 
+__attribute__((deprecated)) firmware_t *firmware_create(
+    char *version,
+    char *buildid,
+    char *android_flavor,
+    char *api_version,
+    char *sha256sum,
+    char *sha1sum,
+    char *md5sum,
+    int size,
+    char *unique_id,
+    object_t *metadata,
+    char *releasedate,
+    char *uploaddate,
+    char *url,
+    char *orig_url,
+    char *filename
+    ) {
+    return firmware_create_internal (
+        version,
+        buildid,
+        android_flavor,
+        api_version,
+        sha256sum,
+        sha1sum,
+        md5sum,
+        size,
+        unique_id,
+        metadata,
+        releasedate,
+        uploaddate,
+        url,
+        orig_url,
+        filename
+        );
+}
 
 void firmware_free(firmware_t *firmware) {
     if(NULL == firmware){
+        return ;
+    }
+    if(firmware->_library_owned != 1){
+        fprintf(stderr, "WARNING: %s() does NOT free objects allocated by the user\n", "firmware_free");
         return ;
     }
     listEntry_t *listEntry;
@@ -428,7 +468,7 @@ firmware_t *firmware_parseFromJSON(cJSON *firmwareJSON){
     }
 
 
-    firmware_local_var = firmware_create (
+    firmware_local_var = firmware_create_internal (
         version ? strdup(version->valuestring) : NULL,
         buildid ? strdup(buildid->valuestring) : NULL,
         android_flavor ? strdup(android_flavor->valuestring) : NULL,

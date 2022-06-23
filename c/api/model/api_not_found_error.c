@@ -5,7 +5,7 @@
 
 
 
-api_not_found_error_t *api_not_found_error_create(
+static api_not_found_error_t *api_not_found_error_create_internal(
     char *error,
     char *error_id,
     char *name,
@@ -20,12 +20,30 @@ api_not_found_error_t *api_not_found_error_create(
     api_not_found_error_local_var->name = name;
     api_not_found_error_local_var->params = params;
 
+    api_not_found_error_local_var->_library_owned = 1;
     return api_not_found_error_local_var;
 }
 
+__attribute__((deprecated)) api_not_found_error_t *api_not_found_error_create(
+    char *error,
+    char *error_id,
+    char *name,
+    object_t *params
+    ) {
+    return api_not_found_error_create_internal (
+        error,
+        error_id,
+        name,
+        params
+        );
+}
 
 void api_not_found_error_free(api_not_found_error_t *api_not_found_error) {
     if(NULL == api_not_found_error){
+        return ;
+    }
+    if(api_not_found_error->_library_owned != 1){
+        fprintf(stderr, "WARNING: %s() does NOT free objects allocated by the user\n", "api_not_found_error_free");
         return ;
     }
     listEntry_t *listEntry;
@@ -154,7 +172,7 @@ api_not_found_error_t *api_not_found_error_parseFromJSON(cJSON *api_not_found_er
     }
 
 
-    api_not_found_error_local_var = api_not_found_error_create (
+    api_not_found_error_local_var = api_not_found_error_create_internal (
         strdup(error->valuestring),
         strdup(error_id->valuestring),
         name ? strdup(name->valuestring) : NULL,

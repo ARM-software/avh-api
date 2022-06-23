@@ -21,9 +21,10 @@ typedef struct instance_start_options_t instance_start_options_t;
 typedef struct instance_start_options_t {
     int paused; //boolean
 
+    int _library_owned; // Is the library responsible for freeing this object?
 } instance_start_options_t;
 
-instance_start_options_t *instance_start_options_create(
+__attribute__((deprecated)) instance_start_options_t *instance_start_options_create(
     int paused
 );
 

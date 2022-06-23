@@ -5,7 +5,7 @@
 
 
 
-project_usage_t *project_usage_create(
+static project_usage_t *project_usage_create_internal(
     double cores,
     double instances,
     double ram,
@@ -20,12 +20,30 @@ project_usage_t *project_usage_create(
     project_usage_local_var->ram = ram;
     project_usage_local_var->gpu = gpu;
 
+    project_usage_local_var->_library_owned = 1;
     return project_usage_local_var;
 }
 
+__attribute__((deprecated)) project_usage_t *project_usage_create(
+    double cores,
+    double instances,
+    double ram,
+    double gpu
+    ) {
+    return project_usage_create_internal (
+        cores,
+        instances,
+        ram,
+        gpu
+        );
+}
 
 void project_usage_free(project_usage_t *project_usage) {
     if(NULL == project_usage){
+        return ;
+    }
+    if(project_usage->_library_owned != 1){
+        fprintf(stderr, "WARNING: %s() does NOT free objects allocated by the user\n", "project_usage_free");
         return ;
     }
     listEntry_t *listEntry;
@@ -127,7 +145,7 @@ project_usage_t *project_usage_parseFromJSON(cJSON *project_usageJSON){
     }
 
 
-    project_usage_local_var = project_usage_create (
+    project_usage_local_var = project_usage_create_internal (
         cores ? cores->valuedouble : 0,
         instances ? instances->valuedouble : 0,
         ram ? ram->valuedouble : 0,

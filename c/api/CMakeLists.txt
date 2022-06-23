@@ -1,10 +1,9 @@
 cmake_minimum_required (VERSION 2.6...3.10.2)
-project (CGenerator)
+project (CGenerator C)
 
 cmake_policy(SET CMP0063 NEW)
 
 set(CMAKE_C_VISIBILITY_PRESET default)
-set(CMAKE_CXX_VISIBILITY_PRESET default)
 set(CMAKE_VISIBILITY_INLINES_HIDDEN OFF)
 set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
 
@@ -54,35 +53,84 @@ set(SRCS
     src/binary.c
     external/cJSON.c
     model/object.c
+    model/address.c
+    model/agent_app.c
+    model/agent_app_ready_response.c
+    model/agent_app_status.c
+    model/agent_apps_list.c
+    model/agent_apps_status_list.c
+    model/agent_error.c
+    model/agent_icons.c
+    model/agent_install_body.c
+    model/agent_profiles_return.c
+    model/agent_system_adb_auth.c
+    model/agent_system_get_prop_body.c
+    model/agent_value_return.c
+    model/agreed_ack.c
     model/api_conflict_error.c
     model/api_error.c
+    model/api_internal_consistency_error.c
     model/api_not_found_error.c
     model/api_token.c
+    model/bit.c
+    model/button.c
+    model/coupon_options.c
     model/credentials.c
+    model/domain_options.c
+    model/file_changes.c
     model/firmware.c
+    model/gpio_state_definition.c
+    model/gpios_state.c
+    model/grant_trial_request_response.c
     model/image.c
     model/instance.c
     model/instance_boot_options.c
     model/instance_console_endpoint.c
     model/instance_create_options.c
+    model/instance_input.c
     model/instance_netmon_state.c
     model/instance_return.c
     model/instance_services.c
     model/instance_start_options.c
     model/instance_state.c
     model/instance_stop_options.c
+    model/invitation.c
+    model/invite_revoke_params.c
+    model/invite_revoke_params_ids.c
+    model/kernel_task.c
+    model/kernel_thread.c
+    model/media_play_body.c
     model/model.c
     model/model_software.c
+    model/password_change_body.c
+    model/password_reset_body.c
+    model/patch_instance_options.c
+    model/peripherals_data.c
+    model/plan_options.c
     model/project.c
+    model/project_key.c
     model/project_quota.c
     model/project_settings.c
     model/project_usage.c
+    model/rate_info.c
+    model/reset_link_body.c
+    model/rotate_body.c
     model/snapshot.c
     model/snapshot_creation_options.c
     model/snapshot_status.c
+    model/subscriber_invite.c
+    model/team_create.c
+    model/text_input.c
     model/token.c
+    model/touch_curve_input.c
+    model/touch_input.c
+    model/trial.c
+    model/trial_extension.c
+    model/trial_request_metadata.c
+    model/trial_request_options.c
     model/user_error.c
     model/v1_set_state_body.c
+    model/validation_error.c
     model/volume_options.c
     model/vpn_definition.c
     api/ArmAPI.c
@@ -96,35 +144,85 @@ set(HDRS
     include/keyValuePair.h
     external/cJSON.h
     model/object.h
+    model/any_type.h
+    model/address.h
+    model/agent_app.h
+    model/agent_app_ready_response.h
+    model/agent_app_status.h
+    model/agent_apps_list.h
+    model/agent_apps_status_list.h
+    model/agent_error.h
+    model/agent_icons.h
+    model/agent_install_body.h
+    model/agent_profiles_return.h
+    model/agent_system_adb_auth.h
+    model/agent_system_get_prop_body.h
+    model/agent_value_return.h
+    model/agreed_ack.h
     model/api_conflict_error.h
     model/api_error.h
+    model/api_internal_consistency_error.h
     model/api_not_found_error.h
     model/api_token.h
+    model/bit.h
+    model/button.h
+    model/coupon_options.h
     model/credentials.h
+    model/domain_options.h
+    model/file_changes.h
     model/firmware.h
+    model/gpio_state_definition.h
+    model/gpios_state.h
+    model/grant_trial_request_response.h
     model/image.h
     model/instance.h
     model/instance_boot_options.h
     model/instance_console_endpoint.h
     model/instance_create_options.h
+    model/instance_input.h
     model/instance_netmon_state.h
     model/instance_return.h
     model/instance_services.h
     model/instance_start_options.h
     model/instance_state.h
     model/instance_stop_options.h
+    model/invitation.h
+    model/invite_revoke_params.h
+    model/invite_revoke_params_ids.h
+    model/kernel_task.h
+    model/kernel_thread.h
+    model/media_play_body.h
     model/model.h
     model/model_software.h
+    model/password_change_body.h
+    model/password_reset_body.h
+    model/patch_instance_options.h
+    model/peripherals_data.h
+    model/plan_options.h
     model/project.h
+    model/project_key.h
     model/project_quota.h
     model/project_settings.h
     model/project_usage.h
+    model/rate_info.h
+    model/reset_link_body.h
+    model/rotate_body.h
     model/snapshot.h
     model/snapshot_creation_options.h
     model/snapshot_status.h
+    model/subscriber_invite.h
+    model/team_create.h
+    model/text_input.h
     model/token.h
+    model/touch_curve_input.h
+    model/touch_input.h
+    model/trial.h
+    model/trial_extension.h
+    model/trial_request_metadata.h
+    model/trial_request_options.h
     model/user_error.h
     model/v1_set_state_body.h
+    model/validation_error.h
     model/volume_options.h
     model/vpn_definition.h
     api/ArmAPI.h

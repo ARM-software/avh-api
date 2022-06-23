@@ -5,7 +5,7 @@
 
 
 
-model_software_t *model_software_create(
+static model_software_t *model_software_create_internal(
     char *name,
     char *board_config,
     char *platform,
@@ -24,12 +24,34 @@ model_software_t *model_software_create(
     model_software_local_var->bdid = bdid;
     model_software_local_var->firmwares = firmwares;
 
+    model_software_local_var->_library_owned = 1;
     return model_software_local_var;
 }
 
+__attribute__((deprecated)) model_software_t *model_software_create(
+    char *name,
+    char *board_config,
+    char *platform,
+    double cpid,
+    double bdid,
+    list_t *firmwares
+    ) {
+    return model_software_create_internal (
+        name,
+        board_config,
+        platform,
+        cpid,
+        bdid,
+        firmwares
+        );
+}
 
 void model_software_free(model_software_t *model_software) {
     if(NULL == model_software){
+        return ;
+    }
+    if(model_software->_library_owned != 1){
+        fprintf(stderr, "WARNING: %s() does NOT free objects allocated by the user\n", "model_software_free");
         return ;
     }
     listEntry_t *listEntry;
@@ -217,7 +239,7 @@ model_software_t *model_software_parseFromJSON(cJSON *model_softwareJSON){
     }
 
 
-    model_software_local_var = model_software_create (
+    model_software_local_var = model_software_create_internal (
         name ? strdup(name->valuestring) : NULL,
         board_config ? strdup(board_config->valuestring) : NULL,
         platform ? strdup(platform->valuestring) : NULL,

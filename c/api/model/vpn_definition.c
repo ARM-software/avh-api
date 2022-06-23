@@ -5,7 +5,7 @@
 
 
 
-vpn_definition_t *vpn_definition_create(
+static vpn_definition_t *vpn_definition_create_internal(
     list_t *proxy,
     list_t *listeners
     ) {
@@ -16,12 +16,26 @@ vpn_definition_t *vpn_definition_create(
     vpn_definition_local_var->proxy = proxy;
     vpn_definition_local_var->listeners = listeners;
 
+    vpn_definition_local_var->_library_owned = 1;
     return vpn_definition_local_var;
 }
 
+__attribute__((deprecated)) vpn_definition_t *vpn_definition_create(
+    list_t *proxy,
+    list_t *listeners
+    ) {
+    return vpn_definition_create_internal (
+        proxy,
+        listeners
+        );
+}
 
 void vpn_definition_free(vpn_definition_t *vpn_definition) {
     if(NULL == vpn_definition){
+        return ;
+    }
+    if(vpn_definition->_library_owned != 1){
+        fprintf(stderr, "WARNING: %s() does NOT free objects allocated by the user\n", "vpn_definition_free");
         return ;
     }
     listEntry_t *listEntry;
@@ -141,7 +155,7 @@ vpn_definition_t *vpn_definition_parseFromJSON(cJSON *vpn_definitionJSON){
     }
 
 
-    vpn_definition_local_var = vpn_definition_create (
+    vpn_definition_local_var = vpn_definition_create_internal (
         proxy ? proxyList : NULL,
         listeners ? listenersList : NULL
         );

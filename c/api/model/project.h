@@ -28,9 +28,10 @@ typedef struct project_t {
     struct project_quota_t *quotas; //model
     struct project_usage_t *quotas_used; //model
 
+    int _library_owned; // Is the library responsible for freeing this object?
 } project_t;
 
-project_t *project_create(
+__attribute__((deprecated)) project_t *project_create(
     char *id,
     char *name,
     project_settings_t *settings,

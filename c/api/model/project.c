@@ -5,7 +5,7 @@
 
 
 
-project_t *project_create(
+static project_t *project_create_internal(
     char *id,
     char *name,
     project_settings_t *settings,
@@ -22,12 +22,32 @@ project_t *project_create(
     project_local_var->quotas = quotas;
     project_local_var->quotas_used = quotas_used;
 
+    project_local_var->_library_owned = 1;
     return project_local_var;
 }
 
+__attribute__((deprecated)) project_t *project_create(
+    char *id,
+    char *name,
+    project_settings_t *settings,
+    project_quota_t *quotas,
+    project_usage_t *quotas_used
+    ) {
+    return project_create_internal (
+        id,
+        name,
+        settings,
+        quotas,
+        quotas_used
+        );
+}
 
 void project_free(project_t *project) {
     if(NULL == project){
+        return ;
+    }
+    if(project->_library_owned != 1){
+        fprintf(stderr, "WARNING: %s() does NOT free objects allocated by the user\n", "project_free");
         return ;
     }
     listEntry_t *listEntry;
@@ -188,7 +208,7 @@ project_t *project_parseFromJSON(cJSON *projectJSON){
     }
 
 
-    project_local_var = project_create (
+    project_local_var = project_create_internal (
         strdup(id->valuestring),
         name ? strdup(name->valuestring) : NULL,
         settings ? settings_local_nonprim : NULL,

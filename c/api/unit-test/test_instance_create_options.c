@@ -34,8 +34,6 @@ instance_create_options_t* instantiate_instance_create_options(int include_optio
       list_createList(),
       "0",
       "0",
-      "0",
-      "0",
       1,
       "0",
        // false, not to have infinite recursion
@@ -55,8 +53,6 @@ instance_create_options_t* instantiate_instance_create_options(int include_optio
       "0",
       "0",
       list_createList(),
-      "0",
-      "0",
       "0",
       "0",
       1,

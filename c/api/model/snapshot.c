@@ -5,7 +5,7 @@
 
 
 
-snapshot_t *snapshot_create(
+static snapshot_t *snapshot_create_internal(
     char *id,
     char *name,
     char *instance,
@@ -28,12 +28,38 @@ snapshot_t *snapshot_create(
     snapshot_local_var->live = live;
     snapshot_local_var->local = local;
 
+    snapshot_local_var->_library_owned = 1;
     return snapshot_local_var;
 }
 
+__attribute__((deprecated)) snapshot_t *snapshot_create(
+    char *id,
+    char *name,
+    char *instance,
+    snapshot_status_t *status,
+    double date,
+    int fresh,
+    int live,
+    int local
+    ) {
+    return snapshot_create_internal (
+        id,
+        name,
+        instance,
+        status,
+        date,
+        fresh,
+        live,
+        local
+        );
+}
 
 void snapshot_free(snapshot_t *snapshot) {
     if(NULL == snapshot){
+        return ;
+    }
+    if(snapshot->_library_owned != 1){
+        fprintf(stderr, "WARNING: %s() does NOT free objects allocated by the user\n", "snapshot_free");
         return ;
     }
     listEntry_t *listEntry;
@@ -236,7 +262,7 @@ snapshot_t *snapshot_parseFromJSON(cJSON *snapshotJSON){
     }
 
 
-    snapshot_local_var = snapshot_create (
+    snapshot_local_var = snapshot_create_internal (
         id ? strdup(id->valuestring) : NULL,
         name ? strdup(name->valuestring) : NULL,
         instance ? strdup(instance->valuestring) : NULL,

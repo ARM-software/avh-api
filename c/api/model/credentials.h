@@ -22,9 +22,10 @@ typedef struct credentials_t {
     char *username; // string
     char *password; // string
 
+    int _library_owned; // Is the library responsible for freeing this object?
 } credentials_t;
 
-credentials_t *credentials_create(
+__attribute__((deprecated)) credentials_t *credentials_create(
     char *username,
     char *password
 );

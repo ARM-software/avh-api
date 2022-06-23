@@ -22,7 +22,7 @@ arm_api_api_conflict_error_ERRORID_e error_idapi_conflict_error_FromString(char*
     return 0;
 }
 
-api_conflict_error_t *api_conflict_error_create(
+static api_conflict_error_t *api_conflict_error_create_internal(
     char *error,
     arm_api_api_conflict_error_ERRORID_e error_id,
     object_t *object
@@ -35,12 +35,28 @@ api_conflict_error_t *api_conflict_error_create(
     api_conflict_error_local_var->error_id = error_id;
     api_conflict_error_local_var->object = object;
 
+    api_conflict_error_local_var->_library_owned = 1;
     return api_conflict_error_local_var;
 }
 
+__attribute__((deprecated)) api_conflict_error_t *api_conflict_error_create(
+    char *error,
+    arm_api_api_conflict_error_ERRORID_e error_id,
+    object_t *object
+    ) {
+    return api_conflict_error_create_internal (
+        error,
+        error_id,
+        object
+        );
+}
 
 void api_conflict_error_free(api_conflict_error_t *api_conflict_error) {
     if(NULL == api_conflict_error){
+        return ;
+    }
+    if(api_conflict_error->_library_owned != 1){
+        fprintf(stderr, "WARNING: %s() does NOT free objects allocated by the user\n", "api_conflict_error_free");
         return ;
     }
     listEntry_t *listEntry;
@@ -144,7 +160,7 @@ api_conflict_error_t *api_conflict_error_parseFromJSON(cJSON *api_conflict_error
     }
 
 
-    api_conflict_error_local_var = api_conflict_error_create (
+    api_conflict_error_local_var = api_conflict_error_create_internal (
         strdup(error->valuestring),
         error_idVariable,
         object ? object_local_object : NULL

@@ -5,7 +5,7 @@
 
 
 
-v1_set_state_body_t *v1_set_state_body_create(
+static v1_set_state_body_t *v1_set_state_body_create_internal(
     arm_api_instance_state__e state
     ) {
     v1_set_state_body_t *v1_set_state_body_local_var = malloc(sizeof(v1_set_state_body_t));
@@ -14,12 +14,24 @@ v1_set_state_body_t *v1_set_state_body_create(
     }
     v1_set_state_body_local_var->state = state;
 
+    v1_set_state_body_local_var->_library_owned = 1;
     return v1_set_state_body_local_var;
 }
 
+__attribute__((deprecated)) v1_set_state_body_t *v1_set_state_body_create(
+    arm_api_instance_state__e state
+    ) {
+    return v1_set_state_body_create_internal (
+        state
+        );
+}
 
 void v1_set_state_body_free(v1_set_state_body_t *v1_set_state_body) {
     if(NULL == v1_set_state_body){
+        return ;
+    }
+    if(v1_set_state_body->_library_owned != 1){
+        fprintf(stderr, "WARNING: %s() does NOT free objects allocated by the user\n", "v1_set_state_body_free");
         return ;
     }
     listEntry_t *listEntry;
@@ -70,7 +82,7 @@ v1_set_state_body_t *v1_set_state_body_parseFromJSON(cJSON *v1_set_state_bodyJSO
     state_local_nonprim = instance_state_parseFromJSON(state); //custom
 
 
-    v1_set_state_body_local_var = v1_set_state_body_create (
+    v1_set_state_body_local_var = v1_set_state_body_create_internal (
         state_local_nonprim
         );
 

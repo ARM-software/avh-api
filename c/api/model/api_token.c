@@ -5,7 +5,7 @@
 
 
 
-api_token_t *api_token_create(
+static api_token_t *api_token_create_internal(
     char *api_token
     ) {
     api_token_t *api_token_local_var = malloc(sizeof(api_token_t));
@@ -14,12 +14,24 @@ api_token_t *api_token_create(
     }
     api_token_local_var->api_token = api_token;
 
+    api_token_local_var->_library_owned = 1;
     return api_token_local_var;
 }
 
+__attribute__((deprecated)) api_token_t *api_token_create(
+    char *api_token
+    ) {
+    return api_token_create_internal (
+        api_token
+        );
+}
 
 void api_token_free(api_token_t *api_token) {
     if(NULL == api_token){
+        return ;
+    }
+    if(api_token->_library_owned != 1){
+        fprintf(stderr, "WARNING: %s() does NOT free objects allocated by the user\n", "api_token_free");
         return ;
     }
     listEntry_t *listEntry;
@@ -69,7 +81,7 @@ api_token_t *api_token_parseFromJSON(cJSON *api_tokenJSON){
     }
 
 
-    api_token_local_var = api_token_create (
+    api_token_local_var = api_token_create_internal (
         strdup(api_token->valuestring)
         );
 

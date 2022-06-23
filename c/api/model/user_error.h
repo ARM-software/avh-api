@@ -31,9 +31,10 @@ typedef struct user_error_t {
     arm_api_user_error_ERRORID_e error_id; //enum
     char *field; // string
 
+    int _library_owned; // Is the library responsible for freeing this object?
 } user_error_t;
 
-user_error_t *user_error_create(
+__attribute__((deprecated)) user_error_t *user_error_create(
     char *error,
     arm_api_user_error_ERRORID_e error_id,
     char *field

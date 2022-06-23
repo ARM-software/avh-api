@@ -22,9 +22,10 @@ typedef struct snapshot_status_t {
     char *task; // string
     int created; //boolean
 
+    int _library_owned; // Is the library responsible for freeing this object?
 } snapshot_status_t;
 
-snapshot_status_t *snapshot_status_create(
+__attribute__((deprecated)) snapshot_status_t *snapshot_status_create(
     char *task,
     int created
 );

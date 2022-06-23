@@ -26,9 +26,10 @@ typedef struct api_not_found_error_t {
     char *name; // string
     object_t *params; //object
 
+    int _library_owned; // Is the library responsible for freeing this object?
 } api_not_found_error_t;
 
-api_not_found_error_t *api_not_found_error_create(
+__attribute__((deprecated)) api_not_found_error_t *api_not_found_error_create(
     char *error,
     char *error_id,
     char *name,

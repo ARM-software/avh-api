@@ -5,7 +5,7 @@
 
 
 
-project_settings_t *project_settings_create(
+static project_settings_t *project_settings_create_internal(
     double version,
     int internet_access,
     int dhcp
@@ -18,12 +18,28 @@ project_settings_t *project_settings_create(
     project_settings_local_var->internet_access = internet_access;
     project_settings_local_var->dhcp = dhcp;
 
+    project_settings_local_var->_library_owned = 1;
     return project_settings_local_var;
 }
 
+__attribute__((deprecated)) project_settings_t *project_settings_create(
+    double version,
+    int internet_access,
+    int dhcp
+    ) {
+    return project_settings_create_internal (
+        version,
+        internet_access,
+        dhcp
+        );
+}
 
 void project_settings_free(project_settings_t *project_settings) {
     if(NULL == project_settings){
+        return ;
+    }
+    if(project_settings->_library_owned != 1){
+        fprintf(stderr, "WARNING: %s() does NOT free objects allocated by the user\n", "project_settings_free");
         return ;
     }
     listEntry_t *listEntry;
@@ -105,7 +121,7 @@ project_settings_t *project_settings_parseFromJSON(cJSON *project_settingsJSON){
     }
 
 
-    project_settings_local_var = project_settings_create (
+    project_settings_local_var = project_settings_create_internal (
         version ? version->valuedouble : 0,
         internet_access ? internet_access->valueint : 0,
         dhcp ? dhcp->valueint : 0

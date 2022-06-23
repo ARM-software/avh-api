@@ -5,7 +5,7 @@
 
 
 
-snapshot_status_t *snapshot_status_create(
+static snapshot_status_t *snapshot_status_create_internal(
     char *task,
     int created
     ) {
@@ -16,12 +16,26 @@ snapshot_status_t *snapshot_status_create(
     snapshot_status_local_var->task = task;
     snapshot_status_local_var->created = created;
 
+    snapshot_status_local_var->_library_owned = 1;
     return snapshot_status_local_var;
 }
 
+__attribute__((deprecated)) snapshot_status_t *snapshot_status_create(
+    char *task,
+    int created
+    ) {
+    return snapshot_status_create_internal (
+        task,
+        created
+        );
+}
 
 void snapshot_status_free(snapshot_status_t *snapshot_status) {
     if(NULL == snapshot_status){
+        return ;
+    }
+    if(snapshot_status->_library_owned != 1){
+        fprintf(stderr, "WARNING: %s() does NOT free objects allocated by the user\n", "snapshot_status_free");
         return ;
     }
     listEntry_t *listEntry;
@@ -87,7 +101,7 @@ snapshot_status_t *snapshot_status_parseFromJSON(cJSON *snapshot_statusJSON){
     }
 
 
-    snapshot_status_local_var = snapshot_status_create (
+    snapshot_status_local_var = snapshot_status_create_internal (
         task ? strdup(task->valuestring) : NULL,
         created ? created->valueint : 0
         );

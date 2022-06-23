@@ -5,7 +5,7 @@
 
 
 
-instance_netmon_state_t *instance_netmon_state_create(
+static instance_netmon_state_t *instance_netmon_state_create_internal(
     int enabled
     ) {
     instance_netmon_state_t *instance_netmon_state_local_var = malloc(sizeof(instance_netmon_state_t));
@@ -14,12 +14,24 @@ instance_netmon_state_t *instance_netmon_state_create(
     }
     instance_netmon_state_local_var->enabled = enabled;
 
+    instance_netmon_state_local_var->_library_owned = 1;
     return instance_netmon_state_local_var;
 }
 
+__attribute__((deprecated)) instance_netmon_state_t *instance_netmon_state_create(
+    int enabled
+    ) {
+    return instance_netmon_state_create_internal (
+        enabled
+        );
+}
 
 void instance_netmon_state_free(instance_netmon_state_t *instance_netmon_state) {
     if(NULL == instance_netmon_state){
+        return ;
+    }
+    if(instance_netmon_state->_library_owned != 1){
+        fprintf(stderr, "WARNING: %s() does NOT free objects allocated by the user\n", "instance_netmon_state_free");
         return ;
     }
     listEntry_t *listEntry;
@@ -61,7 +73,7 @@ instance_netmon_state_t *instance_netmon_state_parseFromJSON(cJSON *instance_net
     }
 
 
-    instance_netmon_state_local_var = instance_netmon_state_create (
+    instance_netmon_state_local_var = instance_netmon_state_create_internal (
         enabled ? enabled->valueint : 0
         );
 

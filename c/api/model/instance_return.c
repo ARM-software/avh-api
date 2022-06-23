@@ -5,7 +5,7 @@
 
 
 
-instance_return_t *instance_return_create(
+static instance_return_t *instance_return_create_internal(
     char *id,
     arm_api_instance_state__e state
     ) {
@@ -16,12 +16,26 @@ instance_return_t *instance_return_create(
     instance_return_local_var->id = id;
     instance_return_local_var->state = state;
 
+    instance_return_local_var->_library_owned = 1;
     return instance_return_local_var;
 }
 
+__attribute__((deprecated)) instance_return_t *instance_return_create(
+    char *id,
+    arm_api_instance_state__e state
+    ) {
+    return instance_return_create_internal (
+        id,
+        state
+        );
+}
 
 void instance_return_free(instance_return_t *instance_return) {
     if(NULL == instance_return){
+        return ;
+    }
+    if(instance_return->_library_owned != 1){
+        fprintf(stderr, "WARNING: %s() does NOT free objects allocated by the user\n", "instance_return_free");
         return ;
     }
     listEntry_t *listEntry;
@@ -100,7 +114,7 @@ instance_return_t *instance_return_parseFromJSON(cJSON *instance_returnJSON){
     state_local_nonprim = instance_state_parseFromJSON(state); //custom
 
 
-    instance_return_local_var = instance_return_create (
+    instance_return_local_var = instance_return_create_internal (
         strdup(id->valuestring),
         state_local_nonprim
         );

@@ -27,9 +27,10 @@ typedef struct model_software_t {
     double bdid; //numeric
     list_t *firmwares; //nonprimitive container
 
+    int _library_owned; // Is the library responsible for freeing this object?
 } model_software_t;
 
-model_software_t *model_software_create(
+__attribute__((deprecated)) model_software_t *model_software_create(
     char *name,
     char *board_config,
     char *platform,

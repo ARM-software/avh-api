@@ -5,7 +5,7 @@
 
 
 
-api_error_t *api_error_create(
+static api_error_t *api_error_create_internal(
     char *error,
     char *error_id,
     char *original_error
@@ -18,12 +18,28 @@ api_error_t *api_error_create(
     api_error_local_var->error_id = error_id;
     api_error_local_var->original_error = original_error;
 
+    api_error_local_var->_library_owned = 1;
     return api_error_local_var;
 }
 
+__attribute__((deprecated)) api_error_t *api_error_create(
+    char *error,
+    char *error_id,
+    char *original_error
+    ) {
+    return api_error_create_internal (
+        error,
+        error_id,
+        original_error
+        );
+}
 
 void api_error_free(api_error_t *api_error) {
     if(NULL == api_error){
+        return ;
+    }
+    if(api_error->_library_owned != 1){
+        fprintf(stderr, "WARNING: %s() does NOT free objects allocated by the user\n", "api_error_free");
         return ;
     }
     listEntry_t *listEntry;
@@ -125,7 +141,7 @@ api_error_t *api_error_parseFromJSON(cJSON *api_errorJSON){
     }
 
 
-    api_error_local_var = api_error_create (
+    api_error_local_var = api_error_create_internal (
         strdup(error->valuestring),
         strdup(error_id->valuestring),
         original_error ? strdup(original_error->valuestring) : NULL

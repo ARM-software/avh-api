@@ -9,33 +9,66 @@
 #include "../model/api_conflict_error.h"
 #include "../model/api_error.h"
 #include "../model/api_not_found_error.h"
-#include "../model/credentials.h"
+#include "../model/api_token.h"
 #include "../model/firmware.h"
+#include "../model/gpios_state.h"
 #include "../model/image.h"
 #include "../model/instance.h"
 #include "../model/instance_console_endpoint.h"
 #include "../model/instance_create_options.h"
+#include "../model/instance_input.h"
 #include "../model/instance_return.h"
 #include "../model/instance_start_options.h"
 #include "../model/instance_state.h"
 #include "../model/instance_stop_options.h"
+#include "../model/kernel_task.h"
+#include "../model/media_play_body.h"
 #include "../model/model.h"
 #include "../model/object.h"
+#include "../model/patch_instance_options.h"
+#include "../model/peripherals_data.h"
 #include "../model/project.h"
+#include "../model/project_key.h"
+#include "../model/project_settings.h"
 #include "../model/snapshot.h"
 #include "../model/snapshot_creation_options.h"
 #include "../model/token.h"
 #include "../model/user_error.h"
 #include "../model/v1_set_state_body.h"
+#include "../model/validation_error.h"
 
 // Enum ENCODING for ArmAPI_v1CreateImage
 typedef enum  { arm_api_v1CreateImage_ENCODING_NULL = 0, arm_api_v1CreateImage_ENCODING_plain } arm_api_v1CreateImage_encoding_e;
+
+// Enum FORMAT for ArmAPI_v1GetInstanceScreenshot
+typedef enum  { arm_api_v1GetInstanceScreenshot_FORMAT_NULL = 0, arm_api_v1GetInstanceScreenshot_FORMAT_png, arm_api_v1GetInstanceScreenshot_FORMAT_jpeg } arm_api_v1GetInstanceScreenshot_format_e;
+
+// Enum FORMAT for ArmAPI_v1GetProjectVpnConfig
+typedef enum  { arm_api_v1GetProjectVpnConfig_FORMAT_NULL = 0, arm_api_v1GetProjectVpnConfig_FORMAT_ovpn } arm_api_v1GetProjectVpnConfig_format_e;
+
+
+// Add Project Authorized Key
+//
+char*
+ArmAPI_v1AddProjectKey(apiClient_t *apiClient, char * projectId , project_key_t * project_key );
 
 
 // Log In
 //
 token_t*
-ArmAPI_v1AuthLogin(apiClient_t *apiClient, object_t * body );
+ArmAPI_v1AuthLogin(apiClient_t *apiClient, api_token_t * api_token );
+
+
+// Clear CoreTrace logs
+//
+void
+ArmAPI_v1ClearCoreTrace(apiClient_t *apiClient, char * instanceId );
+
+
+// Clear Panics
+//
+void
+ArmAPI_v1ClearInstancePanics(apiClient_t *apiClient, char * instanceId );
 
 
 // Create a new Image
@@ -48,6 +81,12 @@ ArmAPI_v1CreateImage(apiClient_t *apiClient, char * type , arm_api_v1CreateImage
 //
 instance_return_t*
 ArmAPI_v1CreateInstance(apiClient_t *apiClient, instance_create_options_t * instance_create_options );
+
+
+// Create a Project
+//
+project_t*
+ArmAPI_v1CreateProject(apiClient_t *apiClient, project_t * project );
 
 
 // Create Instance Snapshot
@@ -66,6 +105,36 @@ ArmAPI_v1DeleteImage(apiClient_t *apiClient, char * imageId );
 //
 void
 ArmAPI_v1DeleteInstance(apiClient_t *apiClient, char * instanceId );
+
+
+// Delete a Snapshot
+//
+void
+ArmAPI_v1DeleteInstanceSnapshot(apiClient_t *apiClient, char * instanceId , char * snapshotId );
+
+
+// Delete a Project
+//
+void
+ArmAPI_v1DeleteProject(apiClient_t *apiClient, char * projectId );
+
+
+// Delete a Snapshot
+//
+void
+ArmAPI_v1DeleteSnapshot(apiClient_t *apiClient, char * snapshotId );
+
+
+// Disable an exposed port on an instance for device access.
+//
+void
+ArmAPI_v1DisableExposePort(apiClient_t *apiClient, char * instanceId );
+
+
+// Enable an exposed port on an instance for device access.
+//
+void
+ArmAPI_v1EnableExposePort(apiClient_t *apiClient, char * instanceId );
 
 
 // Get Image Metadata
@@ -92,10 +161,46 @@ instance_console_endpoint_t*
 ArmAPI_v1GetInstanceConsole(apiClient_t *apiClient, char * instanceId );
 
 
+// Get Console Log
+//
+char*
+ArmAPI_v1GetInstanceConsoleLog(apiClient_t *apiClient, char * instanceId );
+
+
+// Get Instance GPIOs
+//
+gpios_state_t*
+ArmAPI_v1GetInstanceGpios(apiClient_t *apiClient, char * instanceId );
+
+
+// Get Panics
+//
+list_t*
+ArmAPI_v1GetInstancePanics(apiClient_t *apiClient, char * instanceId );
+
+
 // Get Instance Peripherals
 //
-object_t*
+peripherals_data_t*
 ArmAPI_v1GetInstancePeripherals(apiClient_t *apiClient, char * instanceId );
+
+
+// Get Instance Screenshot
+//
+binary_t*
+ArmAPI_v1GetInstanceScreenshot(apiClient_t *apiClient, char * instanceId , arm_api_v1GetInstanceScreenshot_format_e format , int scale );
+
+
+// Get Instance Snapshot
+//
+snapshot_t*
+ArmAPI_v1GetInstanceSnapshot(apiClient_t *apiClient, char * instanceId , char * snapshotId );
+
+
+// Get Instance Snapshots
+//
+list_t*
+ArmAPI_v1GetInstanceSnapshots(apiClient_t *apiClient, char * instanceId );
 
 
 // Get state of Instance
@@ -122,7 +227,7 @@ list_t*
 ArmAPI_v1GetModels(apiClient_t *apiClient);
 
 
-// Get Project
+// Get a Project
 //
 project_t*
 ArmAPI_v1GetProject(apiClient_t *apiClient, char * projectId );
@@ -134,34 +239,66 @@ list_t*
 ArmAPI_v1GetProjectInstances(apiClient_t *apiClient, char * projectId , char * name , list_t * returnAttr );
 
 
+// Get Project Authorized Keys
+//
+list_t*
+ArmAPI_v1GetProjectKeys(apiClient_t *apiClient, char * projectId );
+
+
+// Get Project VPN Configuration
+//
+char*
+ArmAPI_v1GetProjectVpnConfig(apiClient_t *apiClient, char * projectId , arm_api_v1GetProjectVpnConfig_format_e format );
+
+
 // Get Projects
 //
 list_t*
 ArmAPI_v1GetProjects(apiClient_t *apiClient, char * name , int ids_only );
 
 
-// Get Instance Snapshots
+// Get Snapshot
 //
 snapshot_t*
-ArmAPI_v1GetSnapshot(apiClient_t *apiClient, char * instanceId , char * snapshotId );
+ArmAPI_v1GetSnapshot(apiClient_t *apiClient, char * snapshotId );
 
 
-// Get Instance Snapshots
+// Get Running Threads (CoreTrace)
 //
 list_t*
-ArmAPI_v1GetSnapshots(apiClient_t *apiClient, char * instanceId );
+ArmAPI_v1ListThreads(apiClient_t *apiClient, char * instanceId );
+
+
+// Start playing media
+//
+void
+ArmAPI_v1MediaPlay(apiClient_t *apiClient, char * instanceId , media_play_body_t * media_play_body );
+
+
+// Stop playing media
+//
+void
+ArmAPI_v1MediaStop(apiClient_t *apiClient, char * instanceId );
 
 
 // Update Instance
 //
-object_t*
-ArmAPI_v1PatchInstance(apiClient_t *apiClient, char * instanceId , object_t * body );
+instance_t*
+ArmAPI_v1PatchInstance(apiClient_t *apiClient, char * instanceId , patch_instance_options_t * patch_instance_options );
 
 
 // Pause an Instance
 //
 void
 ArmAPI_v1PauseInstance(apiClient_t *apiClient, char * instanceId );
+
+
+// Provide Instance Input
+//
+// Sends a touch or button event to the VM.  - Buttons (or keys) to be held during the input are specified as an array of strings, each string must be either a single ascii character or one of the following keywords:   - VM Buttons: finger, homeButton, holdButton, volumeUp, volumeDown, ringerSwitch, backButton, overviewButton   - Keyboard Buttons: again, alt, alterase, apostrophe, back, backslash, backspace, bassboost, bookmarks, bsp, calc, camera, cancel, caps, capslock, chat, close, closecd, comma, compose, computer, config, connect, copy, ctrl, cut, cyclewindows, dashboard, del, delete, deletefile, dot, down, edit, eject, ejectclose, email, end, enter, equal, esc, escape, exit, f1, f10, f11, f12, f13, f14, f15, f16, f17, f18, f19, f2, f20, f21, f22, f23, f24, f3, f4, f5, f6, f7, f8, f9, fastfwd, file, finance, find, forward, front, grave, hangeul, hanja, help, henkan, home, homepage, hp, hrgn, ins, insert, iso, k102, kp0, kp1, kp2, kp3, kp4, kp5, kp6, kp7, kp8, kp9, kpasterisk, kpcomma, kpdot, kpenter, kpequal, kpjpcomma, kpleftparen, kpminus, kpplus, kpplusminus, kprightparen, kpslash, ktkn, ktknhrgn, left, leftalt, leftbrace, leftctrl, leftmeta, leftshift, linefeed, macro, mail, menu, meta, minus, move, msdos, muhenkan, mute, new, next, numlock, open, pagedown, pageup, paste, pause, pausecd, pgdn, pgup, phone, play, playcd, playpause, power, previous, print, prog1, prog2, prog3, prog4, props, question, record, redo, refresh, return, rewind, right, rightalt, rightbrace, rightctrl, rightmeta, rightshift, ro, rotate, scale, screenlock, scrolldown, scrolllock, scrollup, search, semicolon, sendfile, setup, shift, shop, slash, sleep, sound, space, sport, stop, stopcd, suspend, sysrq, tab, undo, up, voldown, volup, wakeup, www, xfer, yen, zkhk
+//
+int
+ArmAPI_v1PostInstanceInput(apiClient_t *apiClient, char * instanceId , list_t * instance_input );
 
 
 // API Status
@@ -178,16 +315,34 @@ void
 ArmAPI_v1RebootInstance(apiClient_t *apiClient, char * instanceId );
 
 
+// Delete Project Authorized Key
+//
+void
+ArmAPI_v1RemoveProjectKey(apiClient_t *apiClient, char * projectId , char * keyId );
+
+
+// Rename a Snapshot
+//
+snapshot_t*
+ArmAPI_v1RenameInstanceSnapshot(apiClient_t *apiClient, char * instanceId , char * snapshotId , snapshot_creation_options_t * snapshot_creation_options );
+
+
 // Restore a Snapshot
 //
 void
-ArmAPI_v1RestoreSnapshot(apiClient_t *apiClient, char * instanceId , char * snapshotId );
+ArmAPI_v1RestoreInstanceSnapshot(apiClient_t *apiClient, char * instanceId , char * snapshotId );
+
+
+// Set Instance GPIOs
+//
+gpios_state_t*
+ArmAPI_v1SetInstanceGpios(apiClient_t *apiClient, char * instanceId , gpios_state_t * gpios_state );
 
 
 // Set Instance Peripherals
 //
-object_t*
-ArmAPI_v1SetInstancePeripherals(apiClient_t *apiClient, char * instanceId , char * body );
+peripherals_data_t*
+ArmAPI_v1SetInstancePeripherals(apiClient_t *apiClient, char * instanceId , peripherals_data_t * peripherals_data );
 
 
 // Set state of Instance
@@ -196,16 +351,16 @@ void
 ArmAPI_v1SetInstanceState(apiClient_t *apiClient, char * instanceId , v1_set_state_body_t * v1_set_state_body );
 
 
-// Delete a Snapshot
-//
-void
-ArmAPI_v1SnapshotDelete(apiClient_t *apiClient, char * instanceId , char * snapshotId );
-
-
 // Rename a Snapshot
 //
 snapshot_t*
-ArmAPI_v1SnapshotRename(apiClient_t *apiClient, char * instanceId , char * snapshotId , snapshot_creation_options_t * snapshot_creation_options );
+ArmAPI_v1SnapshotRename(apiClient_t *apiClient, char * snapshotId , snapshot_creation_options_t * snapshot_creation_options );
+
+
+// Start CoreTrace on an instance
+//
+void
+ArmAPI_v1StartCoreTrace(apiClient_t *apiClient, char * instanceId );
 
 
 // Start an Instance
@@ -214,10 +369,28 @@ void
 ArmAPI_v1StartInstance(apiClient_t *apiClient, char * instanceId , instance_start_options_t * instance_start_options );
 
 
+// Start Network Monitor on an instance.
+//
+void
+ArmAPI_v1StartNetworkMonitor(apiClient_t *apiClient, char * instanceId );
+
+
+// Stop CoreTrace on an instance.
+//
+void
+ArmAPI_v1StopCoreTrace(apiClient_t *apiClient, char * instanceId );
+
+
 // Stop an Instance
 //
 void
 ArmAPI_v1StopInstance(apiClient_t *apiClient, char * instanceId , instance_stop_options_t * instance_stop_options );
+
+
+// Stop Network Monitor on an instance.
+//
+void
+ArmAPI_v1StopNetworkMonitor(apiClient_t *apiClient, char * instanceId );
 
 
 // Unpause an Instance
@@ -226,17 +399,23 @@ void
 ArmAPI_v1UnpauseInstance(apiClient_t *apiClient, char * instanceId );
 
 
+// Update a Project
+//
+project_t*
+ArmAPI_v1UpdateProject(apiClient_t *apiClient, char * projectId , project_t * project );
+
+
+// Change Project Settings
+//
+void
+ArmAPI_v1UpdateProjectSettings(apiClient_t *apiClient, char * projectId , project_settings_t * project_settings );
+
+
 // Upload Image Data
 //
 // If the active project has enough remaining quota, updates an Image with the contents of the request body.
 //
 image_t*
 ArmAPI_v1UploadImageData(apiClient_t *apiClient, char * imageId , char * body );
-
-
-// Log In
-//
-token_t*
-ArmAPI_v1UsersLogin(apiClient_t *apiClient, credentials_t * credentials );
 
 

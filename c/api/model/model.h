@@ -30,9 +30,10 @@ typedef struct model_t {
     double bdid; //numeric
     int peripherals; //boolean
 
+    int _library_owned; // Is the library responsible for freeing this object?
 } model_t;
 
-model_t *model_create(
+__attribute__((deprecated)) model_t *model_create(
     char *type,
     char *name,
     char *flavor,

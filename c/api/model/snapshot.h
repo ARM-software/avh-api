@@ -29,9 +29,10 @@ typedef struct snapshot_t {
     int live; //boolean
     int local; //boolean
 
+    int _library_owned; // Is the library responsible for freeing this object?
 } snapshot_t;
 
-snapshot_t *snapshot_create(
+__attribute__((deprecated)) snapshot_t *snapshot_create(
     char *id,
     char *name,
     char *instance,

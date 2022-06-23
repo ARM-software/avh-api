@@ -5,7 +5,7 @@
 
 
 
-instance_t *instance_create(
+static instance_t *instance_create_internal(
     char *id,
     char *name,
     char *key,
@@ -24,7 +24,7 @@ instance_t *instance_create(
     int panicked,
     char *created,
     char *model,
-    char *ipsw,
+    char *fwpackage,
     char *os,
     char *agent,
     instance_netmon_state_t *netmon,
@@ -54,7 +54,7 @@ instance_t *instance_create(
     instance_local_var->panicked = panicked;
     instance_local_var->created = created;
     instance_local_var->model = model;
-    instance_local_var->ipsw = ipsw;
+    instance_local_var->fwpackage = fwpackage;
     instance_local_var->os = os;
     instance_local_var->agent = agent;
     instance_local_var->netmon = netmon;
@@ -62,12 +62,72 @@ instance_t *instance_create(
     instance_local_var->fault = fault;
     instance_local_var->patches = patches;
 
+    instance_local_var->_library_owned = 1;
     return instance_local_var;
 }
 
+__attribute__((deprecated)) instance_t *instance_create(
+    char *id,
+    char *name,
+    char *key,
+    char *flavor,
+    char *type,
+    char *project,
+    arm_api_instance_state__e state,
+    char *state_changed,
+    char *user_task,
+    char *task_state,
+    char *error,
+    instance_boot_options_t *boot_options,
+    char *service_ip,
+    char *wifi_ip,
+    instance_services_t *services,
+    int panicked,
+    char *created,
+    char *model,
+    char *fwpackage,
+    char *os,
+    char *agent,
+    instance_netmon_state_t *netmon,
+    char *expose_port,
+    int fault,
+    list_t *patches
+    ) {
+    return instance_create_internal (
+        id,
+        name,
+        key,
+        flavor,
+        type,
+        project,
+        state,
+        state_changed,
+        user_task,
+        task_state,
+        error,
+        boot_options,
+        service_ip,
+        wifi_ip,
+        services,
+        panicked,
+        created,
+        model,
+        fwpackage,
+        os,
+        agent,
+        netmon,
+        expose_port,
+        fault,
+        patches
+        );
+}
 
 void instance_free(instance_t *instance) {
     if(NULL == instance){
+        return ;
+    }
+    if(instance->_library_owned != 1){
+        fprintf(stderr, "WARNING: %s() does NOT free objects allocated by the user\n", "instance_free");
         return ;
     }
     listEntry_t *listEntry;
@@ -135,9 +195,9 @@ void instance_free(instance_t *instance) {
         free(instance->model);
         instance->model = NULL;
     }
-    if (instance->ipsw) {
-        free(instance->ipsw);
-        instance->ipsw = NULL;
+    if (instance->fwpackage) {
+        free(instance->fwpackage);
+        instance->fwpackage = NULL;
     }
     if (instance->os) {
         free(instance->os);
@@ -327,9 +387,9 @@ cJSON *instance_convertToJSON(instance_t *instance) {
     }
 
 
-    // instance->ipsw
-    if(instance->ipsw) {
-    if(cJSON_AddStringToObject(item, "ipsw", instance->ipsw) == NULL) {
+    // instance->fwpackage
+    if(instance->fwpackage) {
+    if(cJSON_AddStringToObject(item, "fwpackage", instance->fwpackage) == NULL) {
     goto fail; //String
     }
     }
@@ -630,13 +690,13 @@ instance_t *instance_parseFromJSON(cJSON *instanceJSON){
     }
     }
 
-    // instance->ipsw
-    cJSON *ipsw = cJSON_GetObjectItemCaseSensitive(instanceJSON, "ipsw");
-    if (cJSON_IsNull(ipsw)) {
-        ipsw = NULL;
+    // instance->fwpackage
+    cJSON *fwpackage = cJSON_GetObjectItemCaseSensitive(instanceJSON, "fwpackage");
+    if (cJSON_IsNull(fwpackage)) {
+        fwpackage = NULL;
     }
-    if (ipsw) { 
-    if(!cJSON_IsString(ipsw))
+    if (fwpackage) { 
+    if(!cJSON_IsString(fwpackage))
     {
     goto end; //String
     }
@@ -722,7 +782,7 @@ instance_t *instance_parseFromJSON(cJSON *instanceJSON){
     }
 
 
-    instance_local_var = instance_create (
+    instance_local_var = instance_create_internal (
         id ? strdup(id->valuestring) : NULL,
         name ? strdup(name->valuestring) : NULL,
         key ? strdup(key->valuestring) : NULL,
@@ -741,7 +801,7 @@ instance_t *instance_parseFromJSON(cJSON *instanceJSON){
         panicked ? panicked->valueint : 0,
         created ? strdup(created->valuestring) : NULL,
         model ? strdup(model->valuestring) : NULL,
-        ipsw ? strdup(ipsw->valuestring) : NULL,
+        fwpackage ? strdup(fwpackage->valuestring) : NULL,
         os ? strdup(os->valuestring) : NULL,
         agent ? strdup(agent->valuestring) : NULL,
         netmon ? netmon_local_nonprim : NULL,

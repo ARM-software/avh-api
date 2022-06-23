@@ -18,7 +18,7 @@ typedef struct instance_state_t instance_state_t;
 
 // Enum  for instance_state
 
-typedef enum { arm_api_instance_state__NULL = 0, arm_api_instance_state__on, arm_api_instance_state__off, arm_api_instance_state__deleting, arm_api_instance_state__creating, arm_api_instance_state__restoring, arm_api_instance_state__paused, arm_api_instance_state__rebooting, arm_api_instance_state__error } arm_api_instance_state__e;
+typedef enum { arm_api_instance_state__NULL = 0, arm_api_instance_state__on, arm_api_instance_state__off, arm_api_instance_state__booting, arm_api_instance_state__deleting, arm_api_instance_state__creating, arm_api_instance_state__restoring, arm_api_instance_state__paused, arm_api_instance_state__rebooting, arm_api_instance_state__error } arm_api_instance_state__e;
 
 char* instance_state_instance_state_ToString(arm_api_instance_state__e instance_state);
 

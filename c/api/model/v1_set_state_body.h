@@ -22,9 +22,10 @@ typedef struct v1_set_state_body_t v1_set_state_body_t;
 typedef struct v1_set_state_body_t {
     arm_api_instance_state__e state; //referenced enum
 
+    int _library_owned; // Is the library responsible for freeing this object?
 } v1_set_state_body_t;
 
-v1_set_state_body_t *v1_set_state_body_create(
+__attribute__((deprecated)) v1_set_state_body_t *v1_set_state_body_create(
     arm_api_instance_state__e state
 );
 
