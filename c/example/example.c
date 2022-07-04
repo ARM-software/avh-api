@@ -5,8 +5,8 @@
 
 #include <libwebsockets.h>
 
-#include "apiClient.h"
-#include "ArmAPI.h"
+#include <arm_api/include/apiClient.h>
+#include <arm_api/api/ArmAPI.h>
 
 static int interrupted = 0;
 
@@ -524,7 +524,7 @@ static int list_snapshots(apiClient_t *api_client, instance_t *instance)
 int main(int argc, char *argv[])
 {
     struct sigaction int_action = { .sa_handler = sigint_handler };
-    char *endpoint = NULL, *apitoken = NULL;
+    char *endpoint = NULL;
     apiClient_t *api_client = NULL;
     object_t *auth_body = NULL;
     token_t *token = NULL;

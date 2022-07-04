@@ -1,10 +1,10 @@
 CFLAGS := $(CFLAGS) -O2 -Wall -g
 LIBRARIES := -lwebsockets -larm_api
 
-all: test
+all: example
 
-test: test.c
-	gcc $(LDFLAGS) $(CFLAGS) -I ../api/include/ -I ../api/api -o test test.c $(LIBRARIES)
+example: example.c
+	$(CC) $(LDFLAGS) $(CFLAGS) -o $@ $^ $(LIBRARIES)
 
 clean:
-	rm -rf test
+	rm -f example

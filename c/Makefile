@@ -3,9 +3,9 @@ USERNAME = username
 PASSWORD = password
 
 API_URL = $(API)/untaggedapi.json
-.PHONY: example build all update
+.PHONY: example build all update install
 
-all: api
+all: build
 
 update:
 	@echo Ensuring openapi spec is up-to-date
@@ -16,11 +16,21 @@ api: config.json openapi.json
 	rm -rf api
 	openapi-generator-cli generate -i openapi.json -g c -c config.json -o api/
 
-build: api
-	cd api; python3 setup.py build
+build/.built: api
+	[ -d build ] || mkdir build 
+	cmake -S api -B build
+	cmake --build build
+	touch build/.built
+
+build: build/.built
+
+install: build
+	cmake --install build
 
 example:
-	$(error TODO)
+	@echo "*** Example requires make install to have been completed successfully ***"
+	make -C example
 
 clean:
-	rm -rf api
+	rm -rf build
+	make -C example clean
