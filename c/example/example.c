@@ -334,7 +334,7 @@ static struct lws *get_console_socket(apiClient_t *api_client, instance_t *insta
     info.origin = host;
     info.path = path;
     info.protocol = protocols[0].name;
-    info.ssl_connection = LCCSCF_USE_SSL | LCCSCF_ALLOW_SELFSIGNED;
+    info.ssl_connection = LCCSCF_USE_SSL;
 
     console = lws_client_connect_via_info(&info);
 fail:
@@ -537,7 +537,7 @@ int main(int argc, char *argv[])
     apiClient_setupGlobalEnv();
 
     if(argc != 3) {
-        printf("Usage: %s <ApiEndpoint> <apitoken>\n", argv[0]);
+        printf("Usage: %s <ApiEndpoint> <ApiToken>\n\n\tApiEndpoint: https://app.avh.arm.com/api\n\tApiToken: Obtained from UI\n", argv[0]);
         return 1;
     }
     endpoint = argv[1];
