@@ -4,7 +4,7 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **coupon_options** | [**coupon_options_t**](coupon_options.md) \* |  | [optional] 
-**plan_options** | [**plan_options_t**](plan_options.md) \* |  | [optional] 
+**plan** | [**plan_t**](plan.md) \* |  | [optional] 
 **trial** | [**trial_t**](trial.md) \* |  | [optional] 
 **name** | **char \*** | Name | [optional] 
 **email** | **char \*** | Email | [optional] 

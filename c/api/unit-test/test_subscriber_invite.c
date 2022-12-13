@@ -17,7 +17,7 @@
 subscriber_invite_t* instantiate_subscriber_invite(int include_optional);
 
 #include "test_coupon_options.c"
-#include "test_plan_options.c"
+#include "test_plan.c"
 #include "test_trial.c"
 
 
@@ -28,7 +28,7 @@ subscriber_invite_t* instantiate_subscriber_invite(int include_optional) {
        // false, not to have infinite recursion
       instantiate_coupon_options(0),
        // false, not to have infinite recursion
-      instantiate_plan_options(0),
+      instantiate_plan(0),
        // false, not to have infinite recursion
       instantiate_trial(0),
       "0",

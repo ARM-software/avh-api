@@ -73,18 +73,25 @@ set(SRCS
     model/api_not_found_error.c
     model/api_token.c
     model/bit.c
+    model/btrace_enable_options.c
     model/button.c
     model/coupon_options.c
+    model/create_team.c
+    model/created_by.c
     model/credentials.c
     model/domain_options.c
+    model/extension.c
+    model/features.c
     model/file_changes.c
     model/firmware.c
     model/gpio_state_definition.c
     model/gpios_state.c
     model/grant_trial_request_response.c
+    model/hook.c
     model/image.c
     model/instance.c
     model/instance_boot_options.c
+    model/instance_boot_options_additional_tag.c
     model/instance_console_endpoint.c
     model/instance_create_options.c
     model/instance_input.c
@@ -97,6 +104,7 @@ set(SRCS
     model/invitation.c
     model/invite_revoke_params.c
     model/invite_revoke_params_ids.c
+    model/kcrange.c
     model/kernel_task.c
     model/kernel_thread.c
     model/media_play_body.c
@@ -106,7 +114,7 @@ set(SRCS
     model/password_reset_body.c
     model/patch_instance_options.c
     model/peripherals_data.c
-    model/plan_options.c
+    model/plan.c
     model/project.c
     model/project_key.c
     model/project_quota.c
@@ -114,11 +122,13 @@ set(SRCS
     model/project_usage.c
     model/rate_info.c
     model/reset_link_body.c
+    model/role.c
     model/rotate_body.c
     model/snapshot.c
     model/snapshot_creation_options.c
     model/snapshot_status.c
     model/subscriber_invite.c
+    model/team.c
     model/team_create.c
     model/text_input.c
     model/token.c
@@ -128,11 +138,17 @@ set(SRCS
     model/trial_extension.c
     model/trial_request_metadata.c
     model/trial_request_options.c
+    model/update_extension.c
+    model/user.c
     model/user_error.c
+    model/v1_create_hook_parameters.c
+    model/v1_load_extension_parameters.c
     model/v1_set_state_body.c
     model/validation_error.c
     model/volume_options.c
     model/vpn_definition.c
+    model/web_player_create_session_request.c
+    model/web_player_session.c
     api/ArmAPI.c
 
 )
@@ -165,18 +181,25 @@ set(HDRS
     model/api_not_found_error.h
     model/api_token.h
     model/bit.h
+    model/btrace_enable_options.h
     model/button.h
     model/coupon_options.h
+    model/create_team.h
+    model/created_by.h
     model/credentials.h
     model/domain_options.h
+    model/extension.h
+    model/features.h
     model/file_changes.h
     model/firmware.h
     model/gpio_state_definition.h
     model/gpios_state.h
     model/grant_trial_request_response.h
+    model/hook.h
     model/image.h
     model/instance.h
     model/instance_boot_options.h
+    model/instance_boot_options_additional_tag.h
     model/instance_console_endpoint.h
     model/instance_create_options.h
     model/instance_input.h
@@ -189,6 +212,7 @@ set(HDRS
     model/invitation.h
     model/invite_revoke_params.h
     model/invite_revoke_params_ids.h
+    model/kcrange.h
     model/kernel_task.h
     model/kernel_thread.h
     model/media_play_body.h
@@ -198,7 +222,7 @@ set(HDRS
     model/password_reset_body.h
     model/patch_instance_options.h
     model/peripherals_data.h
-    model/plan_options.h
+    model/plan.h
     model/project.h
     model/project_key.h
     model/project_quota.h
@@ -206,11 +230,13 @@ set(HDRS
     model/project_usage.h
     model/rate_info.h
     model/reset_link_body.h
+    model/role.h
     model/rotate_body.h
     model/snapshot.h
     model/snapshot_creation_options.h
     model/snapshot_status.h
     model/subscriber_invite.h
+    model/team.h
     model/team_create.h
     model/text_input.h
     model/token.h
@@ -220,11 +246,17 @@ set(HDRS
     model/trial_extension.h
     model/trial_request_metadata.h
     model/trial_request_options.h
+    model/update_extension.h
+    model/user.h
     model/user_error.h
+    model/v1_create_hook_parameters.h
+    model/v1_load_extension_parameters.h
     model/v1_set_state_body.h
     model/validation_error.h
     model/volume_options.h
     model/vpn_definition.h
+    model/web_player_create_session_request.h
+    model/web_player_session.h
     api/ArmAPI.h
 
 )

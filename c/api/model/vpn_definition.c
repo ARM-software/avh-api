@@ -41,14 +41,14 @@ void vpn_definition_free(vpn_definition_t *vpn_definition) {
     listEntry_t *listEntry;
     if (vpn_definition->proxy) {
         list_ForEach(listEntry, vpn_definition->proxy) {
-            free(listEntry->data);
+            object_free(listEntry->data);
         }
         list_freeList(vpn_definition->proxy);
         vpn_definition->proxy = NULL;
     }
     if (vpn_definition->listeners) {
         list_ForEach(listEntry, vpn_definition->listeners) {
-            free(listEntry->data);
+            object_free(listEntry->data);
         }
         list_freeList(vpn_definition->listeners);
         vpn_definition->listeners = NULL;
@@ -63,14 +63,17 @@ cJSON *vpn_definition_convertToJSON(vpn_definition_t *vpn_definition) {
     if(vpn_definition->proxy) {
     cJSON *proxy = cJSON_AddArrayToObject(item, "proxy");
     if(proxy == NULL) {
-        goto fail; //primitive container
+    goto fail; //nonprimitive container
     }
 
     listEntry_t *proxyListEntry;
+    if (vpn_definition->proxy) {
     list_ForEach(proxyListEntry, vpn_definition->proxy) {
-    if(cJSON_AddStringToObject(proxy, "", (char*)proxyListEntry->data) == NULL)
-    {
-        goto fail;
+    cJSON *itemLocal = object_convertToJSON(proxyListEntry->data);
+    if(itemLocal == NULL) {
+    goto fail;
+    }
+    cJSON_AddItemToArray(proxy, itemLocal);
     }
     }
     }
@@ -80,14 +83,17 @@ cJSON *vpn_definition_convertToJSON(vpn_definition_t *vpn_definition) {
     if(vpn_definition->listeners) {
     cJSON *listeners = cJSON_AddArrayToObject(item, "listeners");
     if(listeners == NULL) {
-        goto fail; //primitive container
+    goto fail; //nonprimitive container
     }
 
     listEntry_t *listenersListEntry;
+    if (vpn_definition->listeners) {
     list_ForEach(listenersListEntry, vpn_definition->listeners) {
-    if(cJSON_AddStringToObject(listeners, "", (char*)listenersListEntry->data) == NULL)
-    {
-        goto fail;
+    cJSON *itemLocal = object_convertToJSON(listenersListEntry->data);
+    if(itemLocal == NULL) {
+    goto fail;
+    }
+    cJSON_AddItemToArray(listeners, itemLocal);
     }
     }
     }
@@ -116,19 +122,21 @@ vpn_definition_t *vpn_definition_parseFromJSON(cJSON *vpn_definitionJSON){
         proxy = NULL;
     }
     if (proxy) { 
-    cJSON *proxy_local = NULL;
-    if(!cJSON_IsArray(proxy)) {
-        goto end;//primitive container
+    cJSON *proxy_local_nonprimitive = NULL;
+    if(!cJSON_IsArray(proxy)){
+        goto end; //nonprimitive container
     }
+
     proxyList = list_createList();
 
-    cJSON_ArrayForEach(proxy_local, proxy)
+    cJSON_ArrayForEach(proxy_local_nonprimitive,proxy )
     {
-        if(!cJSON_IsString(proxy_local))
-        {
+        if(!cJSON_IsObject(proxy_local_nonprimitive)){
             goto end;
         }
-        list_addElement(proxyList , strdup(proxy_local->valuestring));
+        object_t *proxyItem = object_parseFromJSON(proxy_local_nonprimitive);
+
+        list_addElement(proxyList, proxyItem);
     }
     }
 
@@ -138,19 +146,21 @@ vpn_definition_t *vpn_definition_parseFromJSON(cJSON *vpn_definitionJSON){
         listeners = NULL;
     }
     if (listeners) { 
-    cJSON *listeners_local = NULL;
-    if(!cJSON_IsArray(listeners)) {
-        goto end;//primitive container
+    cJSON *listeners_local_nonprimitive = NULL;
+    if(!cJSON_IsArray(listeners)){
+        goto end; //nonprimitive container
     }
+
     listenersList = list_createList();
 
-    cJSON_ArrayForEach(listeners_local, listeners)
+    cJSON_ArrayForEach(listeners_local_nonprimitive,listeners )
     {
-        if(!cJSON_IsString(listeners_local))
-        {
+        if(!cJSON_IsObject(listeners_local_nonprimitive)){
             goto end;
         }
-        list_addElement(listenersList , strdup(listeners_local->valuestring));
+        object_t *listenersItem = object_parseFromJSON(listeners_local_nonprimitive);
+
+        list_addElement(listenersList, listenersItem);
     }
     }
 
@@ -165,7 +175,7 @@ end:
     if (proxyList) {
         listEntry_t *listEntry = NULL;
         list_ForEach(listEntry, proxyList) {
-            free(listEntry->data);
+            object_free(listEntry->data);
             listEntry->data = NULL;
         }
         list_freeList(proxyList);
@@ -174,7 +184,7 @@ end:
     if (listenersList) {
         listEntry_t *listEntry = NULL;
         list_ForEach(listEntry, listenersList) {
-            free(listEntry->data);
+            object_free(listEntry->data);
             listEntry->data = NULL;
         }
         list_freeList(listenersList);

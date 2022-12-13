@@ -14,12 +14,14 @@ static instance_t *instance_create_internal(
     char *project,
     arm_api_instance_state__e state,
     char *state_changed,
+    char *started_at,
     char *user_task,
     char *task_state,
     char *error,
     instance_boot_options_t *boot_options,
     char *service_ip,
     char *wifi_ip,
+    char *secondary_ip,
     instance_services_t *services,
     int panicked,
     char *created,
@@ -30,7 +32,8 @@ static instance_t *instance_create_internal(
     instance_netmon_state_t *netmon,
     char *expose_port,
     int fault,
-    list_t *patches
+    list_t *patches,
+    created_by_t *created_by
     ) {
     instance_t *instance_local_var = malloc(sizeof(instance_t));
     if (!instance_local_var) {
@@ -44,12 +47,14 @@ static instance_t *instance_create_internal(
     instance_local_var->project = project;
     instance_local_var->state = state;
     instance_local_var->state_changed = state_changed;
+    instance_local_var->started_at = started_at;
     instance_local_var->user_task = user_task;
     instance_local_var->task_state = task_state;
     instance_local_var->error = error;
     instance_local_var->boot_options = boot_options;
     instance_local_var->service_ip = service_ip;
     instance_local_var->wifi_ip = wifi_ip;
+    instance_local_var->secondary_ip = secondary_ip;
     instance_local_var->services = services;
     instance_local_var->panicked = panicked;
     instance_local_var->created = created;
@@ -61,6 +66,7 @@ static instance_t *instance_create_internal(
     instance_local_var->expose_port = expose_port;
     instance_local_var->fault = fault;
     instance_local_var->patches = patches;
+    instance_local_var->created_by = created_by;
 
     instance_local_var->_library_owned = 1;
     return instance_local_var;
@@ -75,12 +81,14 @@ __attribute__((deprecated)) instance_t *instance_create(
     char *project,
     arm_api_instance_state__e state,
     char *state_changed,
+    char *started_at,
     char *user_task,
     char *task_state,
     char *error,
     instance_boot_options_t *boot_options,
     char *service_ip,
     char *wifi_ip,
+    char *secondary_ip,
     instance_services_t *services,
     int panicked,
     char *created,
@@ -91,7 +99,8 @@ __attribute__((deprecated)) instance_t *instance_create(
     instance_netmon_state_t *netmon,
     char *expose_port,
     int fault,
-    list_t *patches
+    list_t *patches,
+    created_by_t *created_by
     ) {
     return instance_create_internal (
         id,
@@ -102,12 +111,14 @@ __attribute__((deprecated)) instance_t *instance_create(
         project,
         state,
         state_changed,
+        started_at,
         user_task,
         task_state,
         error,
         boot_options,
         service_ip,
         wifi_ip,
+        secondary_ip,
         services,
         panicked,
         created,
@@ -118,7 +129,8 @@ __attribute__((deprecated)) instance_t *instance_create(
         netmon,
         expose_port,
         fault,
-        patches
+        patches,
+        created_by
         );
 }
 
@@ -159,6 +171,10 @@ void instance_free(instance_t *instance) {
         free(instance->state_changed);
         instance->state_changed = NULL;
     }
+    if (instance->started_at) {
+        free(instance->started_at);
+        instance->started_at = NULL;
+    }
     if (instance->user_task) {
         free(instance->user_task);
         instance->user_task = NULL;
@@ -182,6 +198,10 @@ void instance_free(instance_t *instance) {
     if (instance->wifi_ip) {
         free(instance->wifi_ip);
         instance->wifi_ip = NULL;
+    }
+    if (instance->secondary_ip) {
+        free(instance->secondary_ip);
+        instance->secondary_ip = NULL;
     }
     if (instance->services) {
         instance_services_free(instance->services);
@@ -221,6 +241,10 @@ void instance_free(instance_t *instance) {
         }
         list_freeList(instance->patches);
         instance->patches = NULL;
+    }
+    if (instance->created_by) {
+        created_by_free(instance->created_by);
+        instance->created_by = NULL;
     }
     free(instance);
 }
@@ -297,6 +321,14 @@ cJSON *instance_convertToJSON(instance_t *instance) {
     }
 
 
+    // instance->started_at
+    if(instance->started_at) {
+    if(cJSON_AddStringToObject(item, "startedAt", instance->started_at) == NULL) {
+    goto fail; //String
+    }
+    }
+
+
     // instance->user_task
     if(instance->user_task) {
     if(cJSON_AddStringToObject(item, "userTask", instance->user_task) == NULL) {
@@ -345,6 +377,14 @@ cJSON *instance_convertToJSON(instance_t *instance) {
     // instance->wifi_ip
     if(instance->wifi_ip) {
     if(cJSON_AddStringToObject(item, "wifiIp", instance->wifi_ip) == NULL) {
+    goto fail; //String
+    }
+    }
+
+
+    // instance->secondary_ip
+    if(instance->secondary_ip) {
+    if(cJSON_AddStringToObject(item, "secondaryIp", instance->secondary_ip) == NULL) {
     goto fail; //String
     }
     }
@@ -456,6 +496,19 @@ cJSON *instance_convertToJSON(instance_t *instance) {
     }
     }
 
+
+    // instance->created_by
+    if(instance->created_by) {
+    cJSON *created_by_local_JSON = created_by_convertToJSON(instance->created_by);
+    if(created_by_local_JSON == NULL) {
+    goto fail; //model
+    }
+    cJSON_AddItemToObject(item, "createdBy", created_by_local_JSON);
+    if(item->child == NULL) {
+    goto fail;
+    }
+    }
+
     return item;
 fail:
     if (item) {
@@ -482,6 +535,9 @@ instance_t *instance_parseFromJSON(cJSON *instanceJSON){
 
     // define the local list for instance->patches
     list_t *patchesList = NULL;
+
+    // define the local variable for instance->created_by
+    created_by_t *created_by_local_nonprim = NULL;
 
     // instance->id
     cJSON *id = cJSON_GetObjectItemCaseSensitive(instanceJSON, "id");
@@ -576,6 +632,18 @@ instance_t *instance_parseFromJSON(cJSON *instanceJSON){
     }
     }
 
+    // instance->started_at
+    cJSON *started_at = cJSON_GetObjectItemCaseSensitive(instanceJSON, "startedAt");
+    if (cJSON_IsNull(started_at)) {
+        started_at = NULL;
+    }
+    if (started_at) { 
+    if(!cJSON_IsString(started_at))
+    {
+    goto end; //String
+    }
+    }
+
     // instance->user_task
     cJSON *user_task = cJSON_GetObjectItemCaseSensitive(instanceJSON, "userTask");
     if (cJSON_IsNull(user_task)) {
@@ -640,6 +708,18 @@ instance_t *instance_parseFromJSON(cJSON *instanceJSON){
     }
     if (wifi_ip) { 
     if(!cJSON_IsString(wifi_ip))
+    {
+    goto end; //String
+    }
+    }
+
+    // instance->secondary_ip
+    cJSON *secondary_ip = cJSON_GetObjectItemCaseSensitive(instanceJSON, "secondaryIp");
+    if (cJSON_IsNull(secondary_ip)) {
+        secondary_ip = NULL;
+    }
+    if (secondary_ip) { 
+    if(!cJSON_IsString(secondary_ip))
     {
     goto end; //String
     }
@@ -781,6 +861,15 @@ instance_t *instance_parseFromJSON(cJSON *instanceJSON){
     }
     }
 
+    // instance->created_by
+    cJSON *created_by = cJSON_GetObjectItemCaseSensitive(instanceJSON, "createdBy");
+    if (cJSON_IsNull(created_by)) {
+        created_by = NULL;
+    }
+    if (created_by) { 
+    created_by_local_nonprim = created_by_parseFromJSON(created_by); //nonprimitive
+    }
+
 
     instance_local_var = instance_create_internal (
         id ? strdup(id->valuestring) : NULL,
@@ -791,12 +880,14 @@ instance_t *instance_parseFromJSON(cJSON *instanceJSON){
         project ? strdup(project->valuestring) : NULL,
         state ? state_local_nonprim : 0,
         state_changed ? strdup(state_changed->valuestring) : NULL,
+        started_at ? strdup(started_at->valuestring) : NULL,
         user_task ? strdup(user_task->valuestring) : NULL,
         task_state ? strdup(task_state->valuestring) : NULL,
         error ? strdup(error->valuestring) : NULL,
         boot_options ? boot_options_local_nonprim : NULL,
         service_ip ? strdup(service_ip->valuestring) : NULL,
         wifi_ip ? strdup(wifi_ip->valuestring) : NULL,
+        secondary_ip ? strdup(secondary_ip->valuestring) : NULL,
         services ? services_local_nonprim : NULL,
         panicked ? panicked->valueint : 0,
         created ? strdup(created->valuestring) : NULL,
@@ -807,7 +898,8 @@ instance_t *instance_parseFromJSON(cJSON *instanceJSON){
         netmon ? netmon_local_nonprim : NULL,
         expose_port ? strdup(expose_port->valuestring) : NULL,
         fault ? fault->valueint : 0,
-        patches ? patchesList : NULL
+        patches ? patchesList : NULL,
+        created_by ? created_by_local_nonprim : NULL
         );
 
     return instance_local_var;
@@ -835,6 +927,10 @@ end:
         }
         list_freeList(patchesList);
         patchesList = NULL;
+    }
+    if (created_by_local_nonprim) {
+        created_by_free(created_by_local_nonprim);
+        created_by_local_nonprim = NULL;
     }
     return NULL;
 

@@ -25,7 +25,7 @@ arm_api_patch_instance_options_STATE_e statepatch_instance_options_FromString(ch
 static patch_instance_options_t *patch_instance_options_create_internal(
     char *name,
     arm_api_patch_instance_options_STATE_e state,
-    char *boot_options,
+    instance_boot_options_t *boot_options,
     char *proxy
     ) {
     patch_instance_options_t *patch_instance_options_local_var = malloc(sizeof(patch_instance_options_t));
@@ -44,7 +44,7 @@ static patch_instance_options_t *patch_instance_options_create_internal(
 __attribute__((deprecated)) patch_instance_options_t *patch_instance_options_create(
     char *name,
     arm_api_patch_instance_options_STATE_e state,
-    char *boot_options,
+    instance_boot_options_t *boot_options,
     char *proxy
     ) {
     return patch_instance_options_create_internal (
@@ -69,7 +69,7 @@ void patch_instance_options_free(patch_instance_options_t *patch_instance_option
         patch_instance_options->name = NULL;
     }
     if (patch_instance_options->boot_options) {
-        free(patch_instance_options->boot_options);
+        instance_boot_options_free(patch_instance_options->boot_options);
         patch_instance_options->boot_options = NULL;
     }
     if (patch_instance_options->proxy) {
@@ -101,8 +101,13 @@ cJSON *patch_instance_options_convertToJSON(patch_instance_options_t *patch_inst
 
     // patch_instance_options->boot_options
     if(patch_instance_options->boot_options) {
-    if(cJSON_AddStringToObject(item, "bootOptions", patch_instance_options->boot_options) == NULL) {
-    goto fail; //String
+    cJSON *boot_options_local_JSON = instance_boot_options_convertToJSON(patch_instance_options->boot_options);
+    if(boot_options_local_JSON == NULL) {
+    goto fail; //model
+    }
+    cJSON_AddItemToObject(item, "bootOptions", boot_options_local_JSON);
+    if(item->child == NULL) {
+    goto fail;
     }
     }
 
@@ -125,6 +130,9 @@ fail:
 patch_instance_options_t *patch_instance_options_parseFromJSON(cJSON *patch_instance_optionsJSON){
 
     patch_instance_options_t *patch_instance_options_local_var = NULL;
+
+    // define the local variable for patch_instance_options->boot_options
+    instance_boot_options_t *boot_options_local_nonprim = NULL;
 
     // patch_instance_options->name
     cJSON *name = cJSON_GetObjectItemCaseSensitive(patch_instance_optionsJSON, "name");
@@ -158,10 +166,7 @@ patch_instance_options_t *patch_instance_options_parseFromJSON(cJSON *patch_inst
         boot_options = NULL;
     }
     if (boot_options) { 
-    if(!cJSON_IsString(boot_options))
-    {
-    goto end; //String
-    }
+    boot_options_local_nonprim = instance_boot_options_parseFromJSON(boot_options); //nonprimitive
     }
 
     // patch_instance_options->proxy
@@ -180,12 +185,16 @@ patch_instance_options_t *patch_instance_options_parseFromJSON(cJSON *patch_inst
     patch_instance_options_local_var = patch_instance_options_create_internal (
         name ? strdup(name->valuestring) : NULL,
         state ? stateVariable : -1,
-        boot_options ? strdup(boot_options->valuestring) : NULL,
+        boot_options ? boot_options_local_nonprim : NULL,
         proxy ? strdup(proxy->valuestring) : NULL
         );
 
     return patch_instance_options_local_var;
 end:
+    if (boot_options_local_nonprim) {
+        instance_boot_options_free(boot_options_local_nonprim);
+        boot_options_local_nonprim = NULL;
+    }
     return NULL;
 
 }

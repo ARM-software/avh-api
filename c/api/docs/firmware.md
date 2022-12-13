@@ -5,7 +5,7 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **version** | **char \*** |  | [optional] 
 **buildid** | **char \*** |  | [optional] 
-**android_flavor** | **char \*** | Andoird only flavor | [optional] 
+**android_flavor** | **char \*** | Android only flavor | [optional] 
 **api_version** | **char \*** | Android only API version | [optional] 
 **sha256sum** | **char \*** |  | [optional] 
 **sha1sum** | **char \*** |  | [optional] 

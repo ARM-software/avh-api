@@ -15,6 +15,7 @@
 
 typedef struct patch_instance_options_t patch_instance_options_t;
 
+#include "instance_boot_options.h"
 
 // Enum STATE for patch_instance_options
 
@@ -29,7 +30,7 @@ arm_api_patch_instance_options_STATE_e patch_instance_options_state_FromString(c
 typedef struct patch_instance_options_t {
     char *name; // string
     arm_api_patch_instance_options_STATE_e state; //enum
-    char *boot_options; // string
+    struct instance_boot_options_t *boot_options; //model
     char *proxy; // string
 
     int _library_owned; // Is the library responsible for freeing this object?
@@ -38,7 +39,7 @@ typedef struct patch_instance_options_t {
 __attribute__((deprecated)) patch_instance_options_t *patch_instance_options_create(
     char *name,
     arm_api_patch_instance_options_STATE_e state,
-    char *boot_options,
+    instance_boot_options_t *boot_options,
     char *proxy
 );
 

@@ -7,7 +7,7 @@
 
 static subscriber_invite_t *subscriber_invite_create_internal(
     coupon_options_t *coupon_options,
-    plan_options_t *plan_options,
+    plan_t *plan,
     trial_t *trial,
     char *name,
     char *email,
@@ -25,7 +25,7 @@ static subscriber_invite_t *subscriber_invite_create_internal(
         return NULL;
     }
     subscriber_invite_local_var->coupon_options = coupon_options;
-    subscriber_invite_local_var->plan_options = plan_options;
+    subscriber_invite_local_var->plan = plan;
     subscriber_invite_local_var->trial = trial;
     subscriber_invite_local_var->name = name;
     subscriber_invite_local_var->email = email;
@@ -44,7 +44,7 @@ static subscriber_invite_t *subscriber_invite_create_internal(
 
 __attribute__((deprecated)) subscriber_invite_t *subscriber_invite_create(
     coupon_options_t *coupon_options,
-    plan_options_t *plan_options,
+    plan_t *plan,
     trial_t *trial,
     char *name,
     char *email,
@@ -59,7 +59,7 @@ __attribute__((deprecated)) subscriber_invite_t *subscriber_invite_create(
     ) {
     return subscriber_invite_create_internal (
         coupon_options,
-        plan_options,
+        plan,
         trial,
         name,
         email,
@@ -87,9 +87,9 @@ void subscriber_invite_free(subscriber_invite_t *subscriber_invite) {
         coupon_options_free(subscriber_invite->coupon_options);
         subscriber_invite->coupon_options = NULL;
     }
-    if (subscriber_invite->plan_options) {
-        plan_options_free(subscriber_invite->plan_options);
-        subscriber_invite->plan_options = NULL;
+    if (subscriber_invite->plan) {
+        plan_free(subscriber_invite->plan);
+        subscriber_invite->plan = NULL;
     }
     if (subscriber_invite->trial) {
         trial_free(subscriber_invite->trial);
@@ -146,13 +146,13 @@ cJSON *subscriber_invite_convertToJSON(subscriber_invite_t *subscriber_invite) {
     }
 
 
-    // subscriber_invite->plan_options
-    if(subscriber_invite->plan_options) {
-    cJSON *plan_options_local_JSON = plan_options_convertToJSON(subscriber_invite->plan_options);
-    if(plan_options_local_JSON == NULL) {
+    // subscriber_invite->plan
+    if(subscriber_invite->plan) {
+    cJSON *plan_local_JSON = plan_convertToJSON(subscriber_invite->plan);
+    if(plan_local_JSON == NULL) {
     goto fail; //model
     }
-    cJSON_AddItemToObject(item, "plan_options", plan_options_local_JSON);
+    cJSON_AddItemToObject(item, "plan", plan_local_JSON);
     if(item->child == NULL) {
     goto fail;
     }
@@ -272,8 +272,8 @@ subscriber_invite_t *subscriber_invite_parseFromJSON(cJSON *subscriber_inviteJSO
     // define the local variable for subscriber_invite->coupon_options
     coupon_options_t *coupon_options_local_nonprim = NULL;
 
-    // define the local variable for subscriber_invite->plan_options
-    plan_options_t *plan_options_local_nonprim = NULL;
+    // define the local variable for subscriber_invite->plan
+    plan_t *plan_local_nonprim = NULL;
 
     // define the local variable for subscriber_invite->trial
     trial_t *trial_local_nonprim = NULL;
@@ -287,13 +287,13 @@ subscriber_invite_t *subscriber_invite_parseFromJSON(cJSON *subscriber_inviteJSO
     coupon_options_local_nonprim = coupon_options_parseFromJSON(coupon_options); //nonprimitive
     }
 
-    // subscriber_invite->plan_options
-    cJSON *plan_options = cJSON_GetObjectItemCaseSensitive(subscriber_inviteJSON, "plan_options");
-    if (cJSON_IsNull(plan_options)) {
-        plan_options = NULL;
+    // subscriber_invite->plan
+    cJSON *plan = cJSON_GetObjectItemCaseSensitive(subscriber_inviteJSON, "plan");
+    if (cJSON_IsNull(plan)) {
+        plan = NULL;
     }
-    if (plan_options) { 
-    plan_options_local_nonprim = plan_options_parseFromJSON(plan_options); //nonprimitive
+    if (plan) { 
+    plan_local_nonprim = plan_parseFromJSON(plan); //nonprimitive
     }
 
     // subscriber_invite->trial
@@ -446,7 +446,7 @@ subscriber_invite_t *subscriber_invite_parseFromJSON(cJSON *subscriber_inviteJSO
 
     subscriber_invite_local_var = subscriber_invite_create_internal (
         coupon_options ? coupon_options_local_nonprim : NULL,
-        plan_options ? plan_options_local_nonprim : NULL,
+        plan ? plan_local_nonprim : NULL,
         trial ? trial_local_nonprim : NULL,
         name ? strdup(name->valuestring) : NULL,
         email ? strdup(email->valuestring) : NULL,
@@ -466,9 +466,9 @@ end:
         coupon_options_free(coupon_options_local_nonprim);
         coupon_options_local_nonprim = NULL;
     }
-    if (plan_options_local_nonprim) {
-        plan_options_free(plan_options_local_nonprim);
-        plan_options_local_nonprim = NULL;
+    if (plan_local_nonprim) {
+        plan_free(plan_local_nonprim);
+        plan_local_nonprim = NULL;
     }
     if (trial_local_nonprim) {
         trial_free(trial_local_nonprim);

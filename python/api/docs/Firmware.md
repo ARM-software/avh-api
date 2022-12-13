@@ -1,12 +1,13 @@
 # Firmware
 
 
+
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **version** | **str, none_type** |  | [optional] 
 **buildid** | **str, none_type** |  | [optional] 
-**android_flavor** | **str, none_type** | Andoird only flavor | [optional] 
+**android_flavor** | **str, none_type** | Android only flavor | [optional] 
 **api_version** | **str, none_type** | Android only API version | [optional] 
 **sha256sum** | **str, none_type** |  | [optional] 
 **sha1sum** | **str, none_type** |  | [optional] 

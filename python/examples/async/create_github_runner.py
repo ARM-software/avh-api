@@ -165,8 +165,16 @@ async def main():
 
     print('Finding software for our model...')
     api_response = await api_instance.v1_get_model_software('rpi4b')
-    software = api_response[0]
-  
+    software = None
+    for sw in api_response:
+        if sw.buildid == 'lite':
+            software = sw
+            break
+
+    if software == None:
+        print('Failed to find rpi lite firmware software')
+        exit(1)
+
     print('Creating a new instance...')
     api_response = await api_instance.v1_create_instance({
       "name": 'Docker-Runner',

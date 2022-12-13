@@ -6,7 +6,7 @@
 # raise a `RecursionError`.
 # In order to avoid this, import only the API that you directly need like:
 #
-#   from .api.arm_api import ArmApi
+#   from avh_api.api.arm_api import ArmApi
 #
 # or import this package, but before doing it, use:
 #

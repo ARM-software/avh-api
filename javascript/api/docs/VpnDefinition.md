@@ -4,7 +4,7 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**proxy** | **[String]** |  | [optional] 
-**listeners** | **[String]** |  | [optional] 
+**proxy** | **[Object]** |  | [optional] 
+**listeners** | **[Object]** |  | [optional] 
 
 

@@ -15,12 +15,14 @@
 
 typedef struct vpn_definition_t vpn_definition_t;
 
+#include "any_type.h"
+#include "object.h"
 
 
 
 typedef struct vpn_definition_t {
-    list_t *proxy; //primitive container
-    list_t *listeners; //primitive container
+    list_t *proxy; //nonprimitive container
+    list_t *listeners; //nonprimitive container
 
     int _library_owned; // Is the library responsible for freeing this object?
 } vpn_definition_t;

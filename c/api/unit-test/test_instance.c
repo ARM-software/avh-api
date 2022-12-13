@@ -19,6 +19,7 @@ instance_t* instantiate_instance(int include_optional);
 #include "test_instance_boot_options.c"
 #include "test_instance_services.c"
 #include "test_instance_netmon_state.c"
+#include "test_created_by.c"
 
 
 instance_t* instantiate_instance(int include_optional) {
@@ -36,8 +37,10 @@ instance_t* instantiate_instance(int include_optional) {
       "0",
       "0",
       "0",
+      "0",
        // false, not to have infinite recursion
       instantiate_instance_boot_options(0),
+      "0",
       "0",
       "0",
        // false, not to have infinite recursion
@@ -52,7 +55,9 @@ instance_t* instantiate_instance(int include_optional) {
       instantiate_instance_netmon_state(0),
       "0",
       1,
-      list_createList()
+      list_createList(),
+       // false, not to have infinite recursion
+      instantiate_created_by(0)
     );
   } else {
     instance = instance_create(
@@ -67,7 +72,9 @@ instance_t* instantiate_instance(int include_optional) {
       "0",
       "0",
       "0",
+      "0",
       NULL,
+      "0",
       "0",
       "0",
       NULL,
@@ -80,7 +87,8 @@ instance_t* instantiate_instance(int include_optional) {
       NULL,
       "0",
       1,
-      list_createList()
+      list_createList(),
+      NULL
     );
   }
 

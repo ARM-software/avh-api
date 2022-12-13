@@ -16,6 +16,7 @@
 #include "../model/patch_instance_options.h"
 patch_instance_options_t* instantiate_patch_instance_options(int include_optional);
 
+#include "test_instance_boot_options.c"
 
 
 patch_instance_options_t* instantiate_patch_instance_options(int include_optional) {
@@ -24,14 +25,15 @@ patch_instance_options_t* instantiate_patch_instance_options(int include_optiona
     patch_instance_options = patch_instance_options_create(
       "0",
       arm_api_patch_instance_options_STATE_on,
-      "0",
+       // false, not to have infinite recursion
+      instantiate_instance_boot_options(0),
       "0"
     );
   } else {
     patch_instance_options = patch_instance_options_create(
       "0",
       arm_api_patch_instance_options_STATE_on,
-      "0",
+      NULL,
       "0"
     );
   }

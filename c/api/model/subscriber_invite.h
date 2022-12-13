@@ -16,14 +16,14 @@
 typedef struct subscriber_invite_t subscriber_invite_t;
 
 #include "coupon_options.h"
-#include "plan_options.h"
+#include "plan.h"
 #include "trial.h"
 
 
 
 typedef struct subscriber_invite_t {
     struct coupon_options_t *coupon_options; //model
-    struct plan_options_t *plan_options; //model
+    struct plan_t *plan; //model
     struct trial_t *trial; //model
     char *name; // string
     char *email; // string
@@ -41,7 +41,7 @@ typedef struct subscriber_invite_t {
 
 __attribute__((deprecated)) subscriber_invite_t *subscriber_invite_create(
     coupon_options_t *coupon_options,
-    plan_options_t *plan_options,
+    plan_t *plan,
     trial_t *trial,
     char *name,
     char *email,

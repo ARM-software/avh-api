@@ -63,6 +63,58 @@ end:
 }
 */
 
+// Functions for enum SORT for ArmAPI_v1GetHooks
+
+static char* v1GetHooks_SORT_ToString(arm_api_v1GetHooks_sort_e SORT){
+    char *SORTArray[] =  { "NULL", "ASC", "DESC" };
+    return SORTArray[SORT];
+}
+
+static arm_api_v1GetHooks_sort_e v1GetHooks_SORT_FromString(char* SORT){
+    int stringToReturn = 0;
+    char *SORTArray[] =  { "NULL", "ASC", "DESC" };
+    size_t sizeofArray = sizeof(SORTArray) / sizeof(SORTArray[0]);
+    while(stringToReturn < sizeofArray) {
+        if(strcmp(SORT, SORTArray[stringToReturn]) == 0) {
+            return stringToReturn;
+        }
+        stringToReturn++;
+    }
+    return 0;
+}
+
+/*
+// Function v1GetHooks_SORT_convertToJSON is not currently used,
+// since conversion to JSON passes through the conversion of the model, and ToString. The function is kept for future reference.
+//
+static cJSON *v1GetHooks_SORT_convertToJSON(arm_api_v1GetHooks_sort_e SORT) {
+    cJSON *item = cJSON_CreateObject();
+    if(cJSON_AddStringToObject(item, "sort", v1GetHooks_SORT_ToString(SORT)) == NULL) {
+        goto fail;
+    }
+    return item;
+    fail:
+    cJSON_Delete(item);
+    return NULL;
+}
+
+// Function v1GetHooks_SORT_parseFromJSON is not currently used,
+// since conversion from JSON passes through the conversion of the model, and FromString. The function is kept for future reference.
+//
+static arm_api_v1GetHooks_sort_e v1GetHooks_SORT_parseFromJSON(cJSON* SORTJSON) {
+    arm_api_v1GetHooks_sort_e SORTVariable = 0;
+    cJSON *SORTVar = cJSON_GetObjectItemCaseSensitive(SORTJSON, "sort");
+    if(!cJSON_IsString(SORTVar) || (SORTVar->valuestring == NULL))
+    {
+        goto end;
+    }
+    SORTVariable = v1GetHooks_SORT_FromString(SORTVar->valuestring);
+    return SORTVariable;
+end:
+    return 0;
+}
+*/
+
 // Functions for enum FORMAT for ArmAPI_v1GetInstanceScreenshot
 
 static char* v1GetInstanceScreenshot_FORMAT_ToString(arm_api_v1GetInstanceScreenshot_format_e FORMAT){
@@ -168,6 +220,91 @@ end:
 */
 
 
+// Get Trial Status
+//
+// Allow users to check the trial status of an email.
+//
+object_t*
+ArmAPI_trialStatus(apiClient_t *apiClient, char * trialEmail )
+{
+    list_t    *localVarQueryParameters = NULL;
+    list_t    *localVarHeaderParameters = NULL;
+    list_t    *localVarFormParameters = NULL;
+    list_t *localVarHeaderType = list_createList();
+    list_t *localVarContentType = NULL;
+    char      *localVarBodyParameters = NULL;
+    size_t     localVarBodyLength = 0;
+
+    // clear the error code from the previous api call
+    apiClient->response_code = 0;
+
+    // create the path
+    long sizeOfPath = strlen("/v1/billing/trial-status/{trialEmail}")+1;
+    char *localVarPath = malloc(sizeOfPath);
+    snprintf(localVarPath, sizeOfPath, "/v1/billing/trial-status/{trialEmail}");
+
+    if(!trialEmail)
+        goto end;
+
+
+    // Path Params
+    long sizeOfPathParams_trialEmail = strlen(trialEmail)+3 + strlen("{ trialEmail }");
+    if(trialEmail == NULL) {
+        goto end;
+    }
+    char* localVarToReplace_trialEmail = malloc(sizeOfPathParams_trialEmail);
+    sprintf(localVarToReplace_trialEmail, "{%s}", "trialEmail");
+
+    localVarPath = strReplace(localVarPath, localVarToReplace_trialEmail, trialEmail);
+
+
+    list_addElement(localVarHeaderType,"application/json"); //produces
+    apiClient_invoke(apiClient,
+                    localVarPath,
+                    localVarQueryParameters,
+                    localVarHeaderParameters,
+                    localVarFormParameters,
+                    localVarHeaderType,
+                    localVarContentType,
+                    localVarBodyParameters,
+                    localVarBodyLength,
+                    "GET");
+
+    // uncomment below to debug the error response
+    //if (apiClient->response_code == 200) {
+    //    printf("%s\n","Success");
+    //}
+    //nonprimitive not container
+    object_t *elementToReturn = NULL;
+    if(apiClient->response_code >= 200 && apiClient->response_code < 300) {
+        cJSON *ArmAPIlocalVarJSON = cJSON_Parse(apiClient->dataReceived);
+        elementToReturn = object_parseFromJSON(ArmAPIlocalVarJSON);
+        cJSON_Delete(ArmAPIlocalVarJSON);
+        if(elementToReturn == NULL) {
+            // return 0;
+        }
+    }
+
+    //return type
+    if (apiClient->dataReceived) {
+        free(apiClient->dataReceived);
+        apiClient->dataReceived = NULL;
+        apiClient->dataReceivedLen = 0;
+    }
+    
+    
+    
+    list_freeList(localVarHeaderType);
+    
+    free(localVarPath);
+    free(localVarToReplace_trialEmail);
+    return elementToReturn;
+end:
+    free(localVarPath);
+    return NULL;
+
+}
+
 // Add Project Authorized Key
 //
 char*
@@ -264,6 +401,308 @@ end:
 
 }
 
+// Add team role to project
+//
+// This endpoint is available for Enterprise accounts only
+//
+void
+ArmAPI_v1AddTeamRoleToProject(apiClient_t *apiClient, char * projectId , char * teamId , char * roleId )
+{
+    list_t    *localVarQueryParameters = NULL;
+    list_t    *localVarHeaderParameters = NULL;
+    list_t    *localVarFormParameters = NULL;
+    list_t *localVarHeaderType = list_createList();
+    list_t *localVarContentType = NULL;
+    char      *localVarBodyParameters = NULL;
+    size_t     localVarBodyLength = 0;
+
+    // clear the error code from the previous api call
+    apiClient->response_code = 0;
+
+    // create the path
+    long sizeOfPath = strlen("/v1/roles/projects/{projectId}/teams/{teamId}/roles/{roleId}")+1;
+    char *localVarPath = malloc(sizeOfPath);
+    snprintf(localVarPath, sizeOfPath, "/v1/roles/projects/{projectId}/teams/{teamId}/roles/{roleId}");
+
+    if(!projectId)
+        goto end;
+    if(!teamId)
+        goto end;
+    if(!roleId)
+        goto end;
+
+
+    // Path Params
+    long sizeOfPathParams_projectId = strlen(projectId)+3 + strlen(teamId)+3 + strlen(roleId)+3 + strlen("{ projectId }");
+    if(projectId == NULL) {
+        goto end;
+    }
+    char* localVarToReplace_projectId = malloc(sizeOfPathParams_projectId);
+    sprintf(localVarToReplace_projectId, "{%s}", "projectId");
+
+    localVarPath = strReplace(localVarPath, localVarToReplace_projectId, projectId);
+
+    // Path Params
+    long sizeOfPathParams_teamId = strlen(projectId)+3 + strlen(teamId)+3 + strlen(roleId)+3 + strlen("{ teamId }");
+    if(teamId == NULL) {
+        goto end;
+    }
+    char* localVarToReplace_teamId = malloc(sizeOfPathParams_teamId);
+    sprintf(localVarToReplace_teamId, "{%s}", "teamId");
+
+    localVarPath = strReplace(localVarPath, localVarToReplace_teamId, teamId);
+
+    // Path Params
+    long sizeOfPathParams_roleId = strlen(projectId)+3 + strlen(teamId)+3 + strlen(roleId)+3 + strlen("{ roleId }");
+    if(roleId == NULL) {
+        goto end;
+    }
+    char* localVarToReplace_roleId = malloc(sizeOfPathParams_roleId);
+    sprintf(localVarToReplace_roleId, "{%s}", "roleId");
+
+    localVarPath = strReplace(localVarPath, localVarToReplace_roleId, roleId);
+
+
+    list_addElement(localVarHeaderType,"application/json"); //produces
+    apiClient_invoke(apiClient,
+                    localVarPath,
+                    localVarQueryParameters,
+                    localVarHeaderParameters,
+                    localVarFormParameters,
+                    localVarHeaderType,
+                    localVarContentType,
+                    localVarBodyParameters,
+                    localVarBodyLength,
+                    "PUT");
+
+    // uncomment below to debug the error response
+    //if (apiClient->response_code == 200) {
+    //    printf("%s\n","Success");
+    //}
+    // uncomment below to debug the error response
+    //if (apiClient->response_code == 400) {
+    //    printf("%s\n","Bad Request");
+    //}
+    // uncomment below to debug the error response
+    //if (apiClient->response_code == 403) {
+    //    printf("%s\n","Forbidden");
+    //}
+    //No return type
+end:
+    if (apiClient->dataReceived) {
+        free(apiClient->dataReceived);
+        apiClient->dataReceived = NULL;
+        apiClient->dataReceivedLen = 0;
+    }
+    
+    
+    
+    list_freeList(localVarHeaderType);
+    
+    free(localVarPath);
+    free(localVarToReplace_projectId);
+    free(localVarToReplace_teamId);
+    free(localVarToReplace_roleId);
+
+}
+
+// Add user role to project
+//
+// This endpoint is available for Enterprise accounts only
+//
+void
+ArmAPI_v1AddUserRoleToProject(apiClient_t *apiClient, char * projectId , char * userId , char * roleId )
+{
+    list_t    *localVarQueryParameters = NULL;
+    list_t    *localVarHeaderParameters = NULL;
+    list_t    *localVarFormParameters = NULL;
+    list_t *localVarHeaderType = list_createList();
+    list_t *localVarContentType = NULL;
+    char      *localVarBodyParameters = NULL;
+    size_t     localVarBodyLength = 0;
+
+    // clear the error code from the previous api call
+    apiClient->response_code = 0;
+
+    // create the path
+    long sizeOfPath = strlen("/v1/roles/projects/{projectId}/users/{userId}/roles/{roleId}")+1;
+    char *localVarPath = malloc(sizeOfPath);
+    snprintf(localVarPath, sizeOfPath, "/v1/roles/projects/{projectId}/users/{userId}/roles/{roleId}");
+
+    if(!projectId)
+        goto end;
+    if(!userId)
+        goto end;
+    if(!roleId)
+        goto end;
+
+
+    // Path Params
+    long sizeOfPathParams_projectId = strlen(projectId)+3 + strlen(userId)+3 + strlen(roleId)+3 + strlen("{ projectId }");
+    if(projectId == NULL) {
+        goto end;
+    }
+    char* localVarToReplace_projectId = malloc(sizeOfPathParams_projectId);
+    sprintf(localVarToReplace_projectId, "{%s}", "projectId");
+
+    localVarPath = strReplace(localVarPath, localVarToReplace_projectId, projectId);
+
+    // Path Params
+    long sizeOfPathParams_userId = strlen(projectId)+3 + strlen(userId)+3 + strlen(roleId)+3 + strlen("{ userId }");
+    if(userId == NULL) {
+        goto end;
+    }
+    char* localVarToReplace_userId = malloc(sizeOfPathParams_userId);
+    sprintf(localVarToReplace_userId, "{%s}", "userId");
+
+    localVarPath = strReplace(localVarPath, localVarToReplace_userId, userId);
+
+    // Path Params
+    long sizeOfPathParams_roleId = strlen(projectId)+3 + strlen(userId)+3 + strlen(roleId)+3 + strlen("{ roleId }");
+    if(roleId == NULL) {
+        goto end;
+    }
+    char* localVarToReplace_roleId = malloc(sizeOfPathParams_roleId);
+    sprintf(localVarToReplace_roleId, "{%s}", "roleId");
+
+    localVarPath = strReplace(localVarPath, localVarToReplace_roleId, roleId);
+
+
+    list_addElement(localVarHeaderType,"application/json"); //produces
+    apiClient_invoke(apiClient,
+                    localVarPath,
+                    localVarQueryParameters,
+                    localVarHeaderParameters,
+                    localVarFormParameters,
+                    localVarHeaderType,
+                    localVarContentType,
+                    localVarBodyParameters,
+                    localVarBodyLength,
+                    "PUT");
+
+    // uncomment below to debug the error response
+    //if (apiClient->response_code == 200) {
+    //    printf("%s\n","Success");
+    //}
+    // uncomment below to debug the error response
+    //if (apiClient->response_code == 400) {
+    //    printf("%s\n","Bad Request");
+    //}
+    // uncomment below to debug the error response
+    //if (apiClient->response_code == 403) {
+    //    printf("%s\n","Forbidden");
+    //}
+    //No return type
+end:
+    if (apiClient->dataReceived) {
+        free(apiClient->dataReceived);
+        apiClient->dataReceived = NULL;
+        apiClient->dataReceivedLen = 0;
+    }
+    
+    
+    
+    list_freeList(localVarHeaderType);
+    
+    free(localVarPath);
+    free(localVarToReplace_projectId);
+    free(localVarToReplace_userId);
+    free(localVarToReplace_roleId);
+
+}
+
+// Add user to team
+//
+// This endpoint is available for Enterprise accounts only
+//
+void
+ArmAPI_v1AddUserToTeam(apiClient_t *apiClient, char * teamId , char * userId )
+{
+    list_t    *localVarQueryParameters = NULL;
+    list_t    *localVarHeaderParameters = NULL;
+    list_t    *localVarFormParameters = NULL;
+    list_t *localVarHeaderType = list_createList();
+    list_t *localVarContentType = NULL;
+    char      *localVarBodyParameters = NULL;
+    size_t     localVarBodyLength = 0;
+
+    // clear the error code from the previous api call
+    apiClient->response_code = 0;
+
+    // create the path
+    long sizeOfPath = strlen("/v1/teams/{teamId}/users/{userId}")+1;
+    char *localVarPath = malloc(sizeOfPath);
+    snprintf(localVarPath, sizeOfPath, "/v1/teams/{teamId}/users/{userId}");
+
+    if(!teamId)
+        goto end;
+    if(!userId)
+        goto end;
+
+
+    // Path Params
+    long sizeOfPathParams_teamId = strlen(teamId)+3 + strlen(userId)+3 + strlen("{ teamId }");
+    if(teamId == NULL) {
+        goto end;
+    }
+    char* localVarToReplace_teamId = malloc(sizeOfPathParams_teamId);
+    sprintf(localVarToReplace_teamId, "{%s}", "teamId");
+
+    localVarPath = strReplace(localVarPath, localVarToReplace_teamId, teamId);
+
+    // Path Params
+    long sizeOfPathParams_userId = strlen(teamId)+3 + strlen(userId)+3 + strlen("{ userId }");
+    if(userId == NULL) {
+        goto end;
+    }
+    char* localVarToReplace_userId = malloc(sizeOfPathParams_userId);
+    sprintf(localVarToReplace_userId, "{%s}", "userId");
+
+    localVarPath = strReplace(localVarPath, localVarToReplace_userId, userId);
+
+
+    list_addElement(localVarHeaderType,"application/json"); //produces
+    apiClient_invoke(apiClient,
+                    localVarPath,
+                    localVarQueryParameters,
+                    localVarHeaderParameters,
+                    localVarFormParameters,
+                    localVarHeaderType,
+                    localVarContentType,
+                    localVarBodyParameters,
+                    localVarBodyLength,
+                    "PUT");
+
+    // uncomment below to debug the error response
+    //if (apiClient->response_code == 204) {
+    //    printf("%s\n","Success");
+    //}
+    // uncomment below to debug the error response
+    //if (apiClient->response_code == 403) {
+    //    printf("%s\n","Forbidden");
+    //}
+    // uncomment below to debug the error response
+    //if (apiClient->response_code == 500) {
+    //    printf("%s\n","Internal Server Error");
+    //}
+    //No return type
+end:
+    if (apiClient->dataReceived) {
+        free(apiClient->dataReceived);
+        apiClient->dataReceived = NULL;
+        apiClient->dataReceivedLen = 0;
+    }
+    
+    
+    
+    list_freeList(localVarHeaderType);
+    
+    free(localVarPath);
+    free(localVarToReplace_teamId);
+    free(localVarToReplace_userId);
+
+}
+
 // Log In
 //
 token_t*
@@ -354,6 +793,97 @@ end:
 
 }
 
+// Pre-authorize an btrace download
+//
+object_t*
+ArmAPI_v1BtracePreauthorize(apiClient_t *apiClient, char * instanceId )
+{
+    list_t    *localVarQueryParameters = NULL;
+    list_t    *localVarHeaderParameters = NULL;
+    list_t    *localVarFormParameters = NULL;
+    list_t *localVarHeaderType = list_createList();
+    list_t *localVarContentType = NULL;
+    char      *localVarBodyParameters = NULL;
+    size_t     localVarBodyLength = 0;
+
+    // clear the error code from the previous api call
+    apiClient->response_code = 0;
+
+    // create the path
+    long sizeOfPath = strlen("/v1/instances/{instanceId}/btrace-authorize")+1;
+    char *localVarPath = malloc(sizeOfPath);
+    snprintf(localVarPath, sizeOfPath, "/v1/instances/{instanceId}/btrace-authorize");
+
+    if(!instanceId)
+        goto end;
+
+
+    // Path Params
+    long sizeOfPathParams_instanceId = strlen(instanceId)+3 + strlen("{ instanceId }");
+    if(instanceId == NULL) {
+        goto end;
+    }
+    char* localVarToReplace_instanceId = malloc(sizeOfPathParams_instanceId);
+    sprintf(localVarToReplace_instanceId, "{%s}", "instanceId");
+
+    localVarPath = strReplace(localVarPath, localVarToReplace_instanceId, instanceId);
+
+
+    list_addElement(localVarHeaderType,"application/json"); //produces
+    apiClient_invoke(apiClient,
+                    localVarPath,
+                    localVarQueryParameters,
+                    localVarHeaderParameters,
+                    localVarFormParameters,
+                    localVarHeaderType,
+                    localVarContentType,
+                    localVarBodyParameters,
+                    localVarBodyLength,
+                    "GET");
+
+    // uncomment below to debug the error response
+    //if (apiClient->response_code == 200) {
+    //    printf("%s\n","Token");
+    //}
+    // uncomment below to debug the error response
+    //if (apiClient->response_code == 400) {
+    //    printf("%s\n","Bad Request");
+    //}
+    // uncomment below to debug the error response
+    //if (apiClient->response_code == 403) {
+    //    printf("%s\n","Forbidden");
+    //}
+    //nonprimitive not container
+    object_t *elementToReturn = NULL;
+    if(apiClient->response_code >= 200 && apiClient->response_code < 300) {
+        cJSON *ArmAPIlocalVarJSON = cJSON_Parse(apiClient->dataReceived);
+        elementToReturn = object_parseFromJSON(ArmAPIlocalVarJSON);
+        cJSON_Delete(ArmAPIlocalVarJSON);
+        if(elementToReturn == NULL) {
+            // return 0;
+        }
+    }
+
+    //return type
+    if (apiClient->dataReceived) {
+        free(apiClient->dataReceived);
+        apiClient->dataReceived = NULL;
+        apiClient->dataReceivedLen = 0;
+    }
+    
+    
+    
+    list_freeList(localVarHeaderType);
+    
+    free(localVarPath);
+    free(localVarToReplace_instanceId);
+    return elementToReturn;
+end:
+    free(localVarPath);
+    return NULL;
+
+}
+
 // Clear CoreTrace logs
 //
 void
@@ -405,6 +935,156 @@ ArmAPI_v1ClearCoreTrace(apiClient_t *apiClient, char * instanceId )
     // uncomment below to debug the error response
     //if (apiClient->response_code == 204) {
     //    printf("%s\n","Accepted");
+    //}
+    // uncomment below to debug the error response
+    //if (apiClient->response_code == 403) {
+    //    printf("%s\n","Forbidden");
+    //}
+    //No return type
+end:
+    if (apiClient->dataReceived) {
+        free(apiClient->dataReceived);
+        apiClient->dataReceived = NULL;
+        apiClient->dataReceivedLen = 0;
+    }
+    
+    
+    
+    list_freeList(localVarHeaderType);
+    
+    free(localVarPath);
+    free(localVarToReplace_instanceId);
+
+}
+
+// Clear HyperTrace logs
+//
+void
+ArmAPI_v1ClearHyperTrace(apiClient_t *apiClient, char * instanceId )
+{
+    list_t    *localVarQueryParameters = NULL;
+    list_t    *localVarHeaderParameters = NULL;
+    list_t    *localVarFormParameters = NULL;
+    list_t *localVarHeaderType = list_createList();
+    list_t *localVarContentType = NULL;
+    char      *localVarBodyParameters = NULL;
+    size_t     localVarBodyLength = 0;
+
+    // clear the error code from the previous api call
+    apiClient->response_code = 0;
+
+    // create the path
+    long sizeOfPath = strlen("/v1/instances/{instanceId}/btrace")+1;
+    char *localVarPath = malloc(sizeOfPath);
+    snprintf(localVarPath, sizeOfPath, "/v1/instances/{instanceId}/btrace");
+
+    if(!instanceId)
+        goto end;
+
+
+    // Path Params
+    long sizeOfPathParams_instanceId = strlen(instanceId)+3 + strlen("{ instanceId }");
+    if(instanceId == NULL) {
+        goto end;
+    }
+    char* localVarToReplace_instanceId = malloc(sizeOfPathParams_instanceId);
+    sprintf(localVarToReplace_instanceId, "{%s}", "instanceId");
+
+    localVarPath = strReplace(localVarPath, localVarToReplace_instanceId, instanceId);
+
+
+    list_addElement(localVarHeaderType,"application/json"); //produces
+    apiClient_invoke(apiClient,
+                    localVarPath,
+                    localVarQueryParameters,
+                    localVarHeaderParameters,
+                    localVarFormParameters,
+                    localVarHeaderType,
+                    localVarContentType,
+                    localVarBodyParameters,
+                    localVarBodyLength,
+                    "DELETE");
+
+    // uncomment below to debug the error response
+    //if (apiClient->response_code == 204) {
+    //    printf("%s\n","Accepted");
+    //}
+    // uncomment below to debug the error response
+    //if (apiClient->response_code == 403) {
+    //    printf("%s\n","Forbidden");
+    //}
+    //No return type
+end:
+    if (apiClient->dataReceived) {
+        free(apiClient->dataReceived);
+        apiClient->dataReceived = NULL;
+        apiClient->dataReceivedLen = 0;
+    }
+    
+    
+    
+    list_freeList(localVarHeaderType);
+    
+    free(localVarPath);
+    free(localVarToReplace_instanceId);
+
+}
+
+// Clear Hooks on an instance
+//
+void
+ArmAPI_v1ClearHyperTraceHooks(apiClient_t *apiClient, char * instanceId )
+{
+    list_t    *localVarQueryParameters = NULL;
+    list_t    *localVarHeaderParameters = NULL;
+    list_t    *localVarFormParameters = NULL;
+    list_t *localVarHeaderType = list_createList();
+    list_t *localVarContentType = NULL;
+    char      *localVarBodyParameters = NULL;
+    size_t     localVarBodyLength = 0;
+
+    // clear the error code from the previous api call
+    apiClient->response_code = 0;
+
+    // create the path
+    long sizeOfPath = strlen("/v1/instances/{instanceId}/hooks/clear")+1;
+    char *localVarPath = malloc(sizeOfPath);
+    snprintf(localVarPath, sizeOfPath, "/v1/instances/{instanceId}/hooks/clear");
+
+    if(!instanceId)
+        goto end;
+
+
+    // Path Params
+    long sizeOfPathParams_instanceId = strlen(instanceId)+3 + strlen("{ instanceId }");
+    if(instanceId == NULL) {
+        goto end;
+    }
+    char* localVarToReplace_instanceId = malloc(sizeOfPathParams_instanceId);
+    sprintf(localVarToReplace_instanceId, "{%s}", "instanceId");
+
+    localVarPath = strReplace(localVarPath, localVarToReplace_instanceId, instanceId);
+
+
+    list_addElement(localVarHeaderType,"application/json"); //produces
+    apiClient_invoke(apiClient,
+                    localVarPath,
+                    localVarQueryParameters,
+                    localVarHeaderParameters,
+                    localVarFormParameters,
+                    localVarHeaderType,
+                    localVarContentType,
+                    localVarBodyParameters,
+                    localVarBodyLength,
+                    "POST");
+
+    // uncomment below to debug the error response
+    //if (apiClient->response_code == 204) {
+    //    printf("%s\n","No Content");
+    //}
+    // uncomment below to debug the error response
+    //if (apiClient->response_code == 400) {
+    //    printf("%s\n","Bad Request");
     //}
     // uncomment below to debug the error response
     //if (apiClient->response_code == 403) {
@@ -500,10 +1180,117 @@ end:
 
 }
 
+// Create hypervisor hook for Instance
+//
+hook_t*
+ArmAPI_v1CreateHook(apiClient_t *apiClient, char * instanceId , v1_create_hook_parameters_t * v1_create_hook_parameters )
+{
+    list_t    *localVarQueryParameters = NULL;
+    list_t    *localVarHeaderParameters = NULL;
+    list_t    *localVarFormParameters = NULL;
+    list_t *localVarHeaderType = list_createList();
+    list_t *localVarContentType = list_createList();
+    char      *localVarBodyParameters = NULL;
+    size_t     localVarBodyLength = 0;
+
+    // clear the error code from the previous api call
+    apiClient->response_code = 0;
+
+    // create the path
+    long sizeOfPath = strlen("/v1/instances/{instanceId}/hooks")+1;
+    char *localVarPath = malloc(sizeOfPath);
+    snprintf(localVarPath, sizeOfPath, "/v1/instances/{instanceId}/hooks");
+
+    if(!instanceId)
+        goto end;
+
+
+    // Path Params
+    long sizeOfPathParams_instanceId = strlen(instanceId)+3 + strlen("{ instanceId }");
+    if(instanceId == NULL) {
+        goto end;
+    }
+    char* localVarToReplace_instanceId = malloc(sizeOfPathParams_instanceId);
+    sprintf(localVarToReplace_instanceId, "{%s}", "instanceId");
+
+    localVarPath = strReplace(localVarPath, localVarToReplace_instanceId, instanceId);
+
+
+
+    // Body Param
+    cJSON *localVarSingleItemJSON_v1_create_hook_parameters = NULL;
+    if (v1_create_hook_parameters != NULL)
+    {
+        //not string, not binary
+        localVarSingleItemJSON_v1_create_hook_parameters = v1_create_hook_parameters_convertToJSON(v1_create_hook_parameters);
+        localVarBodyParameters = cJSON_Print(localVarSingleItemJSON_v1_create_hook_parameters);
+        localVarBodyLength = strlen(localVarBodyParameters);
+    }
+    list_addElement(localVarHeaderType,"application/json"); //produces
+    list_addElement(localVarContentType,"application/json"); //consumes
+    apiClient_invoke(apiClient,
+                    localVarPath,
+                    localVarQueryParameters,
+                    localVarHeaderParameters,
+                    localVarFormParameters,
+                    localVarHeaderType,
+                    localVarContentType,
+                    localVarBodyParameters,
+                    localVarBodyLength,
+                    "POST");
+
+    // uncomment below to debug the error response
+    //if (apiClient->response_code == 201) {
+    //    printf("%s\n","Hook");
+    //}
+    // uncomment below to debug the error response
+    //if (apiClient->response_code == 400) {
+    //    printf("%s\n","Bad Request");
+    //}
+    // uncomment below to debug the error response
+    //if (apiClient->response_code == 403) {
+    //    printf("%s\n","Forbidden");
+    //}
+    //nonprimitive not container
+    hook_t *elementToReturn = NULL;
+    if(apiClient->response_code >= 200 && apiClient->response_code < 300) {
+        cJSON *ArmAPIlocalVarJSON = cJSON_Parse(apiClient->dataReceived);
+        elementToReturn = hook_parseFromJSON(ArmAPIlocalVarJSON);
+        cJSON_Delete(ArmAPIlocalVarJSON);
+        if(elementToReturn == NULL) {
+            // return 0;
+        }
+    }
+
+    //return type
+    if (apiClient->dataReceived) {
+        free(apiClient->dataReceived);
+        apiClient->dataReceived = NULL;
+        apiClient->dataReceivedLen = 0;
+    }
+    
+    
+    
+    list_freeList(localVarHeaderType);
+    list_freeList(localVarContentType);
+    free(localVarPath);
+    free(localVarToReplace_instanceId);
+    if (localVarSingleItemJSON_v1_create_hook_parameters) {
+        cJSON_Delete(localVarSingleItemJSON_v1_create_hook_parameters);
+        localVarSingleItemJSON_v1_create_hook_parameters = NULL;
+    }
+    free(localVarBodyParameters);
+    return elementToReturn;
+end:
+    free(localVarPath);
+    return NULL;
+
+}
+
 // Create a new Image
 //
 image_t*
-ArmAPI_v1CreateImage(apiClient_t *apiClient, char * type , arm_api_v1CreateImage_encoding_e encoding , char * name , char * project , char * instance , binary_t* file )
+ArmAPI_v1CreateImage(apiClient_t *apiClient, char * type , arm_api_v1CreateImage_encoding_e encoding , int encapsulated , char * name , char * project , char * instance , binary_t* file )
 {
     list_t    *localVarQueryParameters = NULL;
     list_t    *localVarHeaderParameters = NULL;
@@ -547,6 +1334,18 @@ ArmAPI_v1CreateImage(apiClient_t *apiClient, char * type , arm_api_v1CreateImage
         valueForm_encoding = (encoding);
         keyPairForm_encoding = keyValuePair_create(keyForm_encoding,(void *)valueForm_encoding);
         list_addElement(localVarFormParameters,keyPairForm_encoding);
+    }
+
+    // form parameters
+    char *keyForm_encapsulated = NULL;
+    int valueForm_encapsulated = 0;
+    keyValuePair_t *keyPairForm_encapsulated = 0;
+    if (encapsulated != NULL)
+    {
+        keyForm_encapsulated = strdup("encapsulated");
+        valueForm_encapsulated = (encapsulated);
+        keyPairForm_encapsulated = keyValuePair_create(keyForm_encapsulated,&valueForm_encapsulated);
+        list_addElement(localVarFormParameters,keyPairForm_encapsulated);
     }
 
     // form parameters
@@ -657,6 +1456,11 @@ ArmAPI_v1CreateImage(apiClient_t *apiClient, char * type , arm_api_v1CreateImage
         valueForm_encoding = 0;
     }
     free(keyPairForm_encoding);
+    if (keyForm_encapsulated) {
+        free(keyForm_encapsulated);
+        keyForm_encapsulated = NULL;
+    }
+    free(keyPairForm_encapsulated);
     if (keyForm_name) {
         free(keyForm_name);
         keyForm_name = NULL;
@@ -986,6 +1790,171 @@ ArmAPI_v1CreateSnapshot(apiClient_t *apiClient, char * instanceId , snapshot_cre
 end:
     free(localVarPath);
     return NULL;
+
+}
+
+// Create Subscriber Invite
+//
+// Create Subscriber Invite
+//
+subscriber_invite_t*
+ArmAPI_v1CreateSubscriberInvite(apiClient_t *apiClient, subscriber_invite_t * subscriber_invite )
+{
+    list_t    *localVarQueryParameters = NULL;
+    list_t    *localVarHeaderParameters = NULL;
+    list_t    *localVarFormParameters = NULL;
+    list_t *localVarHeaderType = list_createList();
+    list_t *localVarContentType = list_createList();
+    char      *localVarBodyParameters = NULL;
+    size_t     localVarBodyLength = 0;
+
+    // clear the error code from the previous api call
+    apiClient->response_code = 0;
+
+    // create the path
+    long sizeOfPath = strlen("/v1/billing/invites")+1;
+    char *localVarPath = malloc(sizeOfPath);
+    snprintf(localVarPath, sizeOfPath, "/v1/billing/invites");
+
+
+
+
+
+    // Body Param
+    cJSON *localVarSingleItemJSON_subscriber_invite = NULL;
+    if (subscriber_invite != NULL)
+    {
+        //not string, not binary
+        localVarSingleItemJSON_subscriber_invite = subscriber_invite_convertToJSON(subscriber_invite);
+        localVarBodyParameters = cJSON_Print(localVarSingleItemJSON_subscriber_invite);
+        localVarBodyLength = strlen(localVarBodyParameters);
+    }
+    list_addElement(localVarHeaderType,"application/json"); //produces
+    list_addElement(localVarContentType,"application/json"); //consumes
+    apiClient_invoke(apiClient,
+                    localVarPath,
+                    localVarQueryParameters,
+                    localVarHeaderParameters,
+                    localVarFormParameters,
+                    localVarHeaderType,
+                    localVarContentType,
+                    localVarBodyParameters,
+                    localVarBodyLength,
+                    "POST");
+
+    // uncomment below to debug the error response
+    //if (apiClient->response_code == 200) {
+    //    printf("%s\n","Success");
+    //}
+    //nonprimitive not container
+    subscriber_invite_t *elementToReturn = NULL;
+    if(apiClient->response_code >= 200 && apiClient->response_code < 300) {
+        cJSON *ArmAPIlocalVarJSON = cJSON_Parse(apiClient->dataReceived);
+        elementToReturn = subscriber_invite_parseFromJSON(ArmAPIlocalVarJSON);
+        cJSON_Delete(ArmAPIlocalVarJSON);
+        if(elementToReturn == NULL) {
+            // return 0;
+        }
+    }
+
+    //return type
+    if (apiClient->dataReceived) {
+        free(apiClient->dataReceived);
+        apiClient->dataReceived = NULL;
+        apiClient->dataReceivedLen = 0;
+    }
+    
+    
+    
+    list_freeList(localVarHeaderType);
+    list_freeList(localVarContentType);
+    free(localVarPath);
+    if (localVarSingleItemJSON_subscriber_invite) {
+        cJSON_Delete(localVarSingleItemJSON_subscriber_invite);
+        localVarSingleItemJSON_subscriber_invite = NULL;
+    }
+    free(localVarBodyParameters);
+    return elementToReturn;
+end:
+    free(localVarPath);
+    return NULL;
+
+}
+
+// Delete an existing hypervisor hook
+//
+void
+ArmAPI_v1DeleteHook(apiClient_t *apiClient, char * hookId )
+{
+    list_t    *localVarQueryParameters = NULL;
+    list_t    *localVarHeaderParameters = NULL;
+    list_t    *localVarFormParameters = NULL;
+    list_t *localVarHeaderType = list_createList();
+    list_t *localVarContentType = NULL;
+    char      *localVarBodyParameters = NULL;
+    size_t     localVarBodyLength = 0;
+
+    // clear the error code from the previous api call
+    apiClient->response_code = 0;
+
+    // create the path
+    long sizeOfPath = strlen("/v1/hooks/{hookId}")+1;
+    char *localVarPath = malloc(sizeOfPath);
+    snprintf(localVarPath, sizeOfPath, "/v1/hooks/{hookId}");
+
+    if(!hookId)
+        goto end;
+
+
+    // Path Params
+    long sizeOfPathParams_hookId = strlen(hookId)+3 + strlen("{ hookId }");
+    if(hookId == NULL) {
+        goto end;
+    }
+    char* localVarToReplace_hookId = malloc(sizeOfPathParams_hookId);
+    sprintf(localVarToReplace_hookId, "{%s}", "hookId");
+
+    localVarPath = strReplace(localVarPath, localVarToReplace_hookId, hookId);
+
+
+    list_addElement(localVarHeaderType,"application/json"); //produces
+    apiClient_invoke(apiClient,
+                    localVarPath,
+                    localVarQueryParameters,
+                    localVarHeaderParameters,
+                    localVarFormParameters,
+                    localVarHeaderType,
+                    localVarContentType,
+                    localVarBodyParameters,
+                    localVarBodyLength,
+                    "DELETE");
+
+    // uncomment below to debug the error response
+    //if (apiClient->response_code == 200) {
+    //    printf("%s\n","Accepted");
+    //}
+    // uncomment below to debug the error response
+    //if (apiClient->response_code == 400) {
+    //    printf("%s\n","Bad Request");
+    //}
+    // uncomment below to debug the error response
+    //if (apiClient->response_code == 403) {
+    //    printf("%s\n","Forbidden");
+    //}
+    //No return type
+end:
+    if (apiClient->dataReceived) {
+        free(apiClient->dataReceived);
+        apiClient->dataReceived = NULL;
+        apiClient->dataReceivedLen = 0;
+    }
+    
+    
+    
+    list_freeList(localVarHeaderType);
+    
+    free(localVarPath);
+    free(localVarToReplace_hookId);
 
 }
 
@@ -1530,6 +2499,340 @@ end:
     
     free(localVarPath);
     free(localVarToReplace_instanceId);
+
+}
+
+// Execute Hooks on an instance
+//
+void
+ArmAPI_v1ExecuteHyperTraceHooks(apiClient_t *apiClient, char * instanceId )
+{
+    list_t    *localVarQueryParameters = NULL;
+    list_t    *localVarHeaderParameters = NULL;
+    list_t    *localVarFormParameters = NULL;
+    list_t *localVarHeaderType = list_createList();
+    list_t *localVarContentType = NULL;
+    char      *localVarBodyParameters = NULL;
+    size_t     localVarBodyLength = 0;
+
+    // clear the error code from the previous api call
+    apiClient->response_code = 0;
+
+    // create the path
+    long sizeOfPath = strlen("/v1/instances/{instanceId}/hooks/execute")+1;
+    char *localVarPath = malloc(sizeOfPath);
+    snprintf(localVarPath, sizeOfPath, "/v1/instances/{instanceId}/hooks/execute");
+
+    if(!instanceId)
+        goto end;
+
+
+    // Path Params
+    long sizeOfPathParams_instanceId = strlen(instanceId)+3 + strlen("{ instanceId }");
+    if(instanceId == NULL) {
+        goto end;
+    }
+    char* localVarToReplace_instanceId = malloc(sizeOfPathParams_instanceId);
+    sprintf(localVarToReplace_instanceId, "{%s}", "instanceId");
+
+    localVarPath = strReplace(localVarPath, localVarToReplace_instanceId, instanceId);
+
+
+    list_addElement(localVarHeaderType,"application/json"); //produces
+    apiClient_invoke(apiClient,
+                    localVarPath,
+                    localVarQueryParameters,
+                    localVarHeaderParameters,
+                    localVarFormParameters,
+                    localVarHeaderType,
+                    localVarContentType,
+                    localVarBodyParameters,
+                    localVarBodyLength,
+                    "POST");
+
+    // uncomment below to debug the error response
+    //if (apiClient->response_code == 204) {
+    //    printf("%s\n","No Content");
+    //}
+    // uncomment below to debug the error response
+    //if (apiClient->response_code == 400) {
+    //    printf("%s\n","Bad Request");
+    //}
+    // uncomment below to debug the error response
+    //if (apiClient->response_code == 403) {
+    //    printf("%s\n","Forbidden");
+    //}
+    //No return type
+end:
+    if (apiClient->dataReceived) {
+        free(apiClient->dataReceived);
+        apiClient->dataReceived = NULL;
+        apiClient->dataReceivedLen = 0;
+    }
+    
+    
+    
+    list_freeList(localVarHeaderType);
+    
+    free(localVarPath);
+    free(localVarToReplace_instanceId);
+
+}
+
+// Get hypervisor hook by id
+//
+hook_t*
+ArmAPI_v1GetHookById(apiClient_t *apiClient, char * hookId )
+{
+    list_t    *localVarQueryParameters = NULL;
+    list_t    *localVarHeaderParameters = NULL;
+    list_t    *localVarFormParameters = NULL;
+    list_t *localVarHeaderType = list_createList();
+    list_t *localVarContentType = NULL;
+    char      *localVarBodyParameters = NULL;
+    size_t     localVarBodyLength = 0;
+
+    // clear the error code from the previous api call
+    apiClient->response_code = 0;
+
+    // create the path
+    long sizeOfPath = strlen("/v1/hooks/{hookId}")+1;
+    char *localVarPath = malloc(sizeOfPath);
+    snprintf(localVarPath, sizeOfPath, "/v1/hooks/{hookId}");
+
+    if(!hookId)
+        goto end;
+
+
+    // Path Params
+    long sizeOfPathParams_hookId = strlen(hookId)+3 + strlen("{ hookId }");
+    if(hookId == NULL) {
+        goto end;
+    }
+    char* localVarToReplace_hookId = malloc(sizeOfPathParams_hookId);
+    sprintf(localVarToReplace_hookId, "{%s}", "hookId");
+
+    localVarPath = strReplace(localVarPath, localVarToReplace_hookId, hookId);
+
+
+    list_addElement(localVarHeaderType,"application/json"); //produces
+    apiClient_invoke(apiClient,
+                    localVarPath,
+                    localVarQueryParameters,
+                    localVarHeaderParameters,
+                    localVarFormParameters,
+                    localVarHeaderType,
+                    localVarContentType,
+                    localVarBodyParameters,
+                    localVarBodyLength,
+                    "GET");
+
+    // uncomment below to debug the error response
+    //if (apiClient->response_code == 200) {
+    //    printf("%s\n","Hook");
+    //}
+    // uncomment below to debug the error response
+    //if (apiClient->response_code == 400) {
+    //    printf("%s\n","Bad Request");
+    //}
+    // uncomment below to debug the error response
+    //if (apiClient->response_code == 403) {
+    //    printf("%s\n","Forbidden");
+    //}
+    //nonprimitive not container
+    hook_t *elementToReturn = NULL;
+    if(apiClient->response_code >= 200 && apiClient->response_code < 300) {
+        cJSON *ArmAPIlocalVarJSON = cJSON_Parse(apiClient->dataReceived);
+        elementToReturn = hook_parseFromJSON(ArmAPIlocalVarJSON);
+        cJSON_Delete(ArmAPIlocalVarJSON);
+        if(elementToReturn == NULL) {
+            // return 0;
+        }
+    }
+
+    //return type
+    if (apiClient->dataReceived) {
+        free(apiClient->dataReceived);
+        apiClient->dataReceived = NULL;
+        apiClient->dataReceivedLen = 0;
+    }
+    
+    
+    
+    list_freeList(localVarHeaderType);
+    
+    free(localVarPath);
+    free(localVarToReplace_hookId);
+    return elementToReturn;
+end:
+    free(localVarPath);
+    return NULL;
+
+}
+
+// Get all hypervisor hooks for Instance
+//
+list_t*
+ArmAPI_v1GetHooks(apiClient_t *apiClient, char * instanceId , double limit , double offset , arm_api_v1GetHooks_sort_e sort )
+{
+    list_t    *localVarQueryParameters = list_createList();
+    list_t    *localVarHeaderParameters = NULL;
+    list_t    *localVarFormParameters = NULL;
+    list_t *localVarHeaderType = list_createList();
+    list_t *localVarContentType = NULL;
+    char      *localVarBodyParameters = NULL;
+    size_t     localVarBodyLength = 0;
+
+    // clear the error code from the previous api call
+    apiClient->response_code = 0;
+
+    // create the path
+    long sizeOfPath = strlen("/v1/instances/{instanceId}/hooks")+1;
+    char *localVarPath = malloc(sizeOfPath);
+    snprintf(localVarPath, sizeOfPath, "/v1/instances/{instanceId}/hooks");
+
+    if(!instanceId)
+        goto end;
+
+
+    // Path Params
+    long sizeOfPathParams_instanceId = strlen(instanceId)+3 + strlen("{ instanceId }");
+    if(instanceId == NULL) {
+        goto end;
+    }
+    char* localVarToReplace_instanceId = malloc(sizeOfPathParams_instanceId);
+    sprintf(localVarToReplace_instanceId, "{%s}", "instanceId");
+
+    localVarPath = strReplace(localVarPath, localVarToReplace_instanceId, instanceId);
+
+
+
+    // query parameters
+    char *keyQuery_limit = NULL;
+    double valueQuery_limit ;
+    keyValuePair_t *keyPairQuery_limit = 0;
+    if (limit)
+    {
+        keyQuery_limit = strdup("limit");
+        valueQuery_limit = (limit);
+        keyPairQuery_limit = keyValuePair_create(keyQuery_limit, &valueQuery_limit);
+        list_addElement(localVarQueryParameters,keyPairQuery_limit);
+    }
+
+    // query parameters
+    char *keyQuery_offset = NULL;
+    double valueQuery_offset ;
+    keyValuePair_t *keyPairQuery_offset = 0;
+    if (offset)
+    {
+        keyQuery_offset = strdup("offset");
+        valueQuery_offset = (offset);
+        keyPairQuery_offset = keyValuePair_create(keyQuery_offset, &valueQuery_offset);
+        list_addElement(localVarQueryParameters,keyPairQuery_offset);
+    }
+
+    // query parameters
+    char *keyQuery_sort = NULL;
+    arm_api_v1GetHooks_sort_e valueQuery_sort ;
+    keyValuePair_t *keyPairQuery_sort = 0;
+    if (sort)
+    {
+        keyQuery_sort = strdup("sort");
+        valueQuery_sort = (sort);
+        keyPairQuery_sort = keyValuePair_create(keyQuery_sort, (void *)strdup(v1GetHooks_SORT_ToString(
+		valueQuery_sort)));
+        list_addElement(localVarQueryParameters,keyPairQuery_sort);
+    }
+    list_addElement(localVarHeaderType,"application/json"); //produces
+    apiClient_invoke(apiClient,
+                    localVarPath,
+                    localVarQueryParameters,
+                    localVarHeaderParameters,
+                    localVarFormParameters,
+                    localVarHeaderType,
+                    localVarContentType,
+                    localVarBodyParameters,
+                    localVarBodyLength,
+                    "GET");
+
+    // uncomment below to debug the error response
+    //if (apiClient->response_code == 200) {
+    //    printf("%s\n","Hooks");
+    //}
+    // uncomment below to debug the error response
+    //if (apiClient->response_code == 304) {
+    //    printf("%s\n","No changes");
+    //}
+    // uncomment below to debug the error response
+    //if (apiClient->response_code == 400) {
+    //    printf("%s\n","Bad Request");
+    //}
+    // uncomment below to debug the error response
+    //if (apiClient->response_code == 403) {
+    //    printf("%s\n","Forbidden");
+    //}
+    list_t *elementToReturn = NULL;
+    if(apiClient->response_code >= 200 && apiClient->response_code < 300) {
+        cJSON *ArmAPIlocalVarJSON = cJSON_Parse(apiClient->dataReceived);
+        if(!cJSON_IsArray(ArmAPIlocalVarJSON)) {
+            return 0;//nonprimitive container
+        }
+        elementToReturn = list_createList();
+        cJSON *VarJSON;
+        cJSON_ArrayForEach(VarJSON, ArmAPIlocalVarJSON)
+        {
+            if(!cJSON_IsObject(VarJSON))
+            {
+               // return 0;
+            }
+            char *localVarJSONToChar = cJSON_Print(VarJSON);
+            list_addElement(elementToReturn , localVarJSONToChar);
+        }
+
+        cJSON_Delete( ArmAPIlocalVarJSON);
+        cJSON_Delete( VarJSON);
+    }
+    //return type
+    if (apiClient->dataReceived) {
+        free(apiClient->dataReceived);
+        apiClient->dataReceived = NULL;
+        apiClient->dataReceivedLen = 0;
+    }
+    list_freeList(localVarQueryParameters);
+    
+    
+    list_freeList(localVarHeaderType);
+    
+    free(localVarPath);
+    free(localVarToReplace_instanceId);
+    if(keyQuery_limit){
+        free(keyQuery_limit);
+        keyQuery_limit = NULL;
+    }
+    if(keyPairQuery_limit){
+        keyValuePair_free(keyPairQuery_limit);
+        keyPairQuery_limit = NULL;
+    }
+    if(keyQuery_offset){
+        free(keyQuery_offset);
+        keyQuery_offset = NULL;
+    }
+    if(keyPairQuery_offset){
+        keyValuePair_free(keyPairQuery_offset);
+        keyPairQuery_offset = NULL;
+    }
+    if(keyQuery_sort){
+        free(keyQuery_sort);
+        keyQuery_sort = NULL;
+    }
+    if(keyPairQuery_sort){
+        keyValuePair_free(keyPairQuery_sort);
+        keyPairQuery_sort = NULL;
+    }
+    return elementToReturn;
+end:
+    free(localVarPath);
+    return NULL;
 
 }
 
@@ -2243,6 +3546,90 @@ ArmAPI_v1GetInstancePeripherals(apiClient_t *apiClient, char * instanceId )
     }
 
     //return type
+    if (apiClient->dataReceived) {
+        free(apiClient->dataReceived);
+        apiClient->dataReceived = NULL;
+        apiClient->dataReceivedLen = 0;
+    }
+    
+    
+    
+    list_freeList(localVarHeaderType);
+    
+    free(localVarPath);
+    free(localVarToReplace_instanceId);
+    return elementToReturn;
+end:
+    free(localVarPath);
+    return NULL;
+
+}
+
+// Recommended SSH Command for Quick Connect
+//
+char*
+ArmAPI_v1GetInstanceQuickConnectCommand(apiClient_t *apiClient, char * instanceId )
+{
+    list_t    *localVarQueryParameters = NULL;
+    list_t    *localVarHeaderParameters = NULL;
+    list_t    *localVarFormParameters = NULL;
+    list_t *localVarHeaderType = list_createList();
+    list_t *localVarContentType = NULL;
+    char      *localVarBodyParameters = NULL;
+    size_t     localVarBodyLength = 0;
+
+    // clear the error code from the previous api call
+    apiClient->response_code = 0;
+
+    // create the path
+    long sizeOfPath = strlen("/v1/instances/{instanceId}/quickConnectCommand")+1;
+    char *localVarPath = malloc(sizeOfPath);
+    snprintf(localVarPath, sizeOfPath, "/v1/instances/{instanceId}/quickConnectCommand");
+
+    if(!instanceId)
+        goto end;
+
+
+    // Path Params
+    long sizeOfPathParams_instanceId = strlen(instanceId)+3 + strlen("{ instanceId }");
+    if(instanceId == NULL) {
+        goto end;
+    }
+    char* localVarToReplace_instanceId = malloc(sizeOfPathParams_instanceId);
+    sprintf(localVarToReplace_instanceId, "{%s}", "instanceId");
+
+    localVarPath = strReplace(localVarPath, localVarToReplace_instanceId, instanceId);
+
+
+    list_addElement(localVarHeaderType,"application/json"); //produces
+    apiClient_invoke(apiClient,
+                    localVarPath,
+                    localVarQueryParameters,
+                    localVarHeaderParameters,
+                    localVarFormParameters,
+                    localVarHeaderType,
+                    localVarContentType,
+                    localVarBodyParameters,
+                    localVarBodyLength,
+                    "GET");
+
+    // uncomment below to debug the error response
+    //if (apiClient->response_code == 200) {
+    //    printf("%s\n","Quick Connect Command");
+    //}
+    // uncomment below to debug the error response
+    //if (apiClient->response_code == 400) {
+    //    printf("%s\n","Bad Request");
+    //}
+    // uncomment below to debug the error response
+    //if (apiClient->response_code == 403) {
+    //    printf("%s\n","Forbidden");
+    //}
+    //primitive return type simple string
+    char* elementToReturn = NULL;
+    if(apiClient->response_code >= 200 && apiClient->response_code < 300)
+        elementToReturn = strdup((char*)apiClient->dataReceived);
+
     if (apiClient->dataReceived) {
         free(apiClient->dataReceived);
         apiClient->dataReceived = NULL;
@@ -3602,6 +4989,107 @@ end:
 
 }
 
+// Get Kernel extension ranges
+//
+list_t*
+ArmAPI_v1Kcrange(apiClient_t *apiClient, char * instanceId )
+{
+    list_t    *localVarQueryParameters = NULL;
+    list_t    *localVarHeaderParameters = NULL;
+    list_t    *localVarFormParameters = NULL;
+    list_t *localVarHeaderType = list_createList();
+    list_t *localVarContentType = NULL;
+    char      *localVarBodyParameters = NULL;
+    size_t     localVarBodyLength = 0;
+
+    // clear the error code from the previous api call
+    apiClient->response_code = 0;
+
+    // create the path
+    long sizeOfPath = strlen("/v1/instances/{instanceId}/btrace-kcrange")+1;
+    char *localVarPath = malloc(sizeOfPath);
+    snprintf(localVarPath, sizeOfPath, "/v1/instances/{instanceId}/btrace-kcrange");
+
+    if(!instanceId)
+        goto end;
+
+
+    // Path Params
+    long sizeOfPathParams_instanceId = strlen(instanceId)+3 + strlen("{ instanceId }");
+    if(instanceId == NULL) {
+        goto end;
+    }
+    char* localVarToReplace_instanceId = malloc(sizeOfPathParams_instanceId);
+    sprintf(localVarToReplace_instanceId, "{%s}", "instanceId");
+
+    localVarPath = strReplace(localVarPath, localVarToReplace_instanceId, instanceId);
+
+
+    list_addElement(localVarHeaderType,"application/json"); //produces
+    apiClient_invoke(apiClient,
+                    localVarPath,
+                    localVarQueryParameters,
+                    localVarHeaderParameters,
+                    localVarFormParameters,
+                    localVarHeaderType,
+                    localVarContentType,
+                    localVarBodyParameters,
+                    localVarBodyLength,
+                    "GET");
+
+    // uncomment below to debug the error response
+    //if (apiClient->response_code == 200) {
+    //    printf("%s\n","Kcranges");
+    //}
+    // uncomment below to debug the error response
+    //if (apiClient->response_code == 400) {
+    //    printf("%s\n","Bad Request");
+    //}
+    // uncomment below to debug the error response
+    //if (apiClient->response_code == 403) {
+    //    printf("%s\n","Forbidden");
+    //}
+    list_t *elementToReturn = NULL;
+    if(apiClient->response_code >= 200 && apiClient->response_code < 300) {
+        cJSON *ArmAPIlocalVarJSON = cJSON_Parse(apiClient->dataReceived);
+        if(!cJSON_IsArray(ArmAPIlocalVarJSON)) {
+            return 0;//nonprimitive container
+        }
+        elementToReturn = list_createList();
+        cJSON *VarJSON;
+        cJSON_ArrayForEach(VarJSON, ArmAPIlocalVarJSON)
+        {
+            if(!cJSON_IsObject(VarJSON))
+            {
+               // return 0;
+            }
+            char *localVarJSONToChar = cJSON_Print(VarJSON);
+            list_addElement(elementToReturn , localVarJSONToChar);
+        }
+
+        cJSON_Delete( ArmAPIlocalVarJSON);
+        cJSON_Delete( VarJSON);
+    }
+    //return type
+    if (apiClient->dataReceived) {
+        free(apiClient->dataReceived);
+        apiClient->dataReceived = NULL;
+        apiClient->dataReceivedLen = 0;
+    }
+    
+    
+    
+    list_freeList(localVarHeaderType);
+    
+    free(localVarPath);
+    free(localVarToReplace_instanceId);
+    return elementToReturn;
+end:
+    free(localVarPath);
+    return NULL;
+
+}
+
 // Get Running Threads (CoreTrace)
 //
 list_t*
@@ -4420,6 +5908,308 @@ end:
 
 }
 
+// Remove team role from project
+//
+// This endpoint is available for Enterprise accounts only
+//
+void
+ArmAPI_v1RemoveTeamRoleFromProject(apiClient_t *apiClient, char * projectId , char * teamId , char * roleId )
+{
+    list_t    *localVarQueryParameters = NULL;
+    list_t    *localVarHeaderParameters = NULL;
+    list_t    *localVarFormParameters = NULL;
+    list_t *localVarHeaderType = list_createList();
+    list_t *localVarContentType = NULL;
+    char      *localVarBodyParameters = NULL;
+    size_t     localVarBodyLength = 0;
+
+    // clear the error code from the previous api call
+    apiClient->response_code = 0;
+
+    // create the path
+    long sizeOfPath = strlen("/v1/roles/projects/{projectId}/teams/{teamId}/roles/{roleId}")+1;
+    char *localVarPath = malloc(sizeOfPath);
+    snprintf(localVarPath, sizeOfPath, "/v1/roles/projects/{projectId}/teams/{teamId}/roles/{roleId}");
+
+    if(!projectId)
+        goto end;
+    if(!teamId)
+        goto end;
+    if(!roleId)
+        goto end;
+
+
+    // Path Params
+    long sizeOfPathParams_projectId = strlen(projectId)+3 + strlen(teamId)+3 + strlen(roleId)+3 + strlen("{ projectId }");
+    if(projectId == NULL) {
+        goto end;
+    }
+    char* localVarToReplace_projectId = malloc(sizeOfPathParams_projectId);
+    sprintf(localVarToReplace_projectId, "{%s}", "projectId");
+
+    localVarPath = strReplace(localVarPath, localVarToReplace_projectId, projectId);
+
+    // Path Params
+    long sizeOfPathParams_teamId = strlen(projectId)+3 + strlen(teamId)+3 + strlen(roleId)+3 + strlen("{ teamId }");
+    if(teamId == NULL) {
+        goto end;
+    }
+    char* localVarToReplace_teamId = malloc(sizeOfPathParams_teamId);
+    sprintf(localVarToReplace_teamId, "{%s}", "teamId");
+
+    localVarPath = strReplace(localVarPath, localVarToReplace_teamId, teamId);
+
+    // Path Params
+    long sizeOfPathParams_roleId = strlen(projectId)+3 + strlen(teamId)+3 + strlen(roleId)+3 + strlen("{ roleId }");
+    if(roleId == NULL) {
+        goto end;
+    }
+    char* localVarToReplace_roleId = malloc(sizeOfPathParams_roleId);
+    sprintf(localVarToReplace_roleId, "{%s}", "roleId");
+
+    localVarPath = strReplace(localVarPath, localVarToReplace_roleId, roleId);
+
+
+    list_addElement(localVarHeaderType,"application/json"); //produces
+    apiClient_invoke(apiClient,
+                    localVarPath,
+                    localVarQueryParameters,
+                    localVarHeaderParameters,
+                    localVarFormParameters,
+                    localVarHeaderType,
+                    localVarContentType,
+                    localVarBodyParameters,
+                    localVarBodyLength,
+                    "DELETE");
+
+    // uncomment below to debug the error response
+    //if (apiClient->response_code == 200) {
+    //    printf("%s\n","Success");
+    //}
+    // uncomment below to debug the error response
+    //if (apiClient->response_code == 400) {
+    //    printf("%s\n","Bad Request");
+    //}
+    // uncomment below to debug the error response
+    //if (apiClient->response_code == 403) {
+    //    printf("%s\n","Forbidden");
+    //}
+    //No return type
+end:
+    if (apiClient->dataReceived) {
+        free(apiClient->dataReceived);
+        apiClient->dataReceived = NULL;
+        apiClient->dataReceivedLen = 0;
+    }
+    
+    
+    
+    list_freeList(localVarHeaderType);
+    
+    free(localVarPath);
+    free(localVarToReplace_projectId);
+    free(localVarToReplace_teamId);
+    free(localVarToReplace_roleId);
+
+}
+
+// Remove user from team
+//
+// This endpoint is available for Enterprise accounts only
+//
+void
+ArmAPI_v1RemoveUserFromTeam(apiClient_t *apiClient, char * teamId , char * userId )
+{
+    list_t    *localVarQueryParameters = NULL;
+    list_t    *localVarHeaderParameters = NULL;
+    list_t    *localVarFormParameters = NULL;
+    list_t *localVarHeaderType = list_createList();
+    list_t *localVarContentType = NULL;
+    char      *localVarBodyParameters = NULL;
+    size_t     localVarBodyLength = 0;
+
+    // clear the error code from the previous api call
+    apiClient->response_code = 0;
+
+    // create the path
+    long sizeOfPath = strlen("/v1/teams/{teamId}/users/{userId}")+1;
+    char *localVarPath = malloc(sizeOfPath);
+    snprintf(localVarPath, sizeOfPath, "/v1/teams/{teamId}/users/{userId}");
+
+    if(!teamId)
+        goto end;
+    if(!userId)
+        goto end;
+
+
+    // Path Params
+    long sizeOfPathParams_teamId = strlen(teamId)+3 + strlen(userId)+3 + strlen("{ teamId }");
+    if(teamId == NULL) {
+        goto end;
+    }
+    char* localVarToReplace_teamId = malloc(sizeOfPathParams_teamId);
+    sprintf(localVarToReplace_teamId, "{%s}", "teamId");
+
+    localVarPath = strReplace(localVarPath, localVarToReplace_teamId, teamId);
+
+    // Path Params
+    long sizeOfPathParams_userId = strlen(teamId)+3 + strlen(userId)+3 + strlen("{ userId }");
+    if(userId == NULL) {
+        goto end;
+    }
+    char* localVarToReplace_userId = malloc(sizeOfPathParams_userId);
+    sprintf(localVarToReplace_userId, "{%s}", "userId");
+
+    localVarPath = strReplace(localVarPath, localVarToReplace_userId, userId);
+
+
+    list_addElement(localVarHeaderType,"application/json"); //produces
+    apiClient_invoke(apiClient,
+                    localVarPath,
+                    localVarQueryParameters,
+                    localVarHeaderParameters,
+                    localVarFormParameters,
+                    localVarHeaderType,
+                    localVarContentType,
+                    localVarBodyParameters,
+                    localVarBodyLength,
+                    "DELETE");
+
+    // uncomment below to debug the error response
+    //if (apiClient->response_code == 204) {
+    //    printf("%s\n","Success");
+    //}
+    // uncomment below to debug the error response
+    //if (apiClient->response_code == 403) {
+    //    printf("%s\n","Forbidden");
+    //}
+    // uncomment below to debug the error response
+    //if (apiClient->response_code == 500) {
+    //    printf("%s\n","Internal Server Error");
+    //}
+    //No return type
+end:
+    if (apiClient->dataReceived) {
+        free(apiClient->dataReceived);
+        apiClient->dataReceived = NULL;
+        apiClient->dataReceivedLen = 0;
+    }
+    
+    
+    
+    list_freeList(localVarHeaderType);
+    
+    free(localVarPath);
+    free(localVarToReplace_teamId);
+    free(localVarToReplace_userId);
+
+}
+
+// Remove user role from project
+//
+// This endpoint is available for Enterprise accounts only
+//
+void
+ArmAPI_v1RemoveUserRoleFromProject(apiClient_t *apiClient, char * projectId , char * userId , char * roleId )
+{
+    list_t    *localVarQueryParameters = NULL;
+    list_t    *localVarHeaderParameters = NULL;
+    list_t    *localVarFormParameters = NULL;
+    list_t *localVarHeaderType = list_createList();
+    list_t *localVarContentType = NULL;
+    char      *localVarBodyParameters = NULL;
+    size_t     localVarBodyLength = 0;
+
+    // clear the error code from the previous api call
+    apiClient->response_code = 0;
+
+    // create the path
+    long sizeOfPath = strlen("/v1/roles/projects/{projectId}/users/{userId}/roles/{roleId}")+1;
+    char *localVarPath = malloc(sizeOfPath);
+    snprintf(localVarPath, sizeOfPath, "/v1/roles/projects/{projectId}/users/{userId}/roles/{roleId}");
+
+    if(!projectId)
+        goto end;
+    if(!userId)
+        goto end;
+    if(!roleId)
+        goto end;
+
+
+    // Path Params
+    long sizeOfPathParams_projectId = strlen(projectId)+3 + strlen(userId)+3 + strlen(roleId)+3 + strlen("{ projectId }");
+    if(projectId == NULL) {
+        goto end;
+    }
+    char* localVarToReplace_projectId = malloc(sizeOfPathParams_projectId);
+    sprintf(localVarToReplace_projectId, "{%s}", "projectId");
+
+    localVarPath = strReplace(localVarPath, localVarToReplace_projectId, projectId);
+
+    // Path Params
+    long sizeOfPathParams_userId = strlen(projectId)+3 + strlen(userId)+3 + strlen(roleId)+3 + strlen("{ userId }");
+    if(userId == NULL) {
+        goto end;
+    }
+    char* localVarToReplace_userId = malloc(sizeOfPathParams_userId);
+    sprintf(localVarToReplace_userId, "{%s}", "userId");
+
+    localVarPath = strReplace(localVarPath, localVarToReplace_userId, userId);
+
+    // Path Params
+    long sizeOfPathParams_roleId = strlen(projectId)+3 + strlen(userId)+3 + strlen(roleId)+3 + strlen("{ roleId }");
+    if(roleId == NULL) {
+        goto end;
+    }
+    char* localVarToReplace_roleId = malloc(sizeOfPathParams_roleId);
+    sprintf(localVarToReplace_roleId, "{%s}", "roleId");
+
+    localVarPath = strReplace(localVarPath, localVarToReplace_roleId, roleId);
+
+
+    list_addElement(localVarHeaderType,"application/json"); //produces
+    apiClient_invoke(apiClient,
+                    localVarPath,
+                    localVarQueryParameters,
+                    localVarHeaderParameters,
+                    localVarFormParameters,
+                    localVarHeaderType,
+                    localVarContentType,
+                    localVarBodyParameters,
+                    localVarBodyLength,
+                    "DELETE");
+
+    // uncomment below to debug the error response
+    //if (apiClient->response_code == 200) {
+    //    printf("%s\n","Success");
+    //}
+    // uncomment below to debug the error response
+    //if (apiClient->response_code == 400) {
+    //    printf("%s\n","Bad Request");
+    //}
+    // uncomment below to debug the error response
+    //if (apiClient->response_code == 403) {
+    //    printf("%s\n","Forbidden");
+    //}
+    //No return type
+end:
+    if (apiClient->dataReceived) {
+        free(apiClient->dataReceived);
+        apiClient->dataReceived = NULL;
+        apiClient->dataReceivedLen = 0;
+    }
+    
+    
+    
+    list_freeList(localVarHeaderType);
+    
+    free(localVarPath);
+    free(localVarToReplace_projectId);
+    free(localVarToReplace_userId);
+    free(localVarToReplace_roleId);
+
+}
+
 // Rename a Snapshot
 //
 snapshot_t*
@@ -4627,6 +6417,96 @@ end:
     free(localVarPath);
     free(localVarToReplace_instanceId);
     free(localVarToReplace_snapshotId);
+
+}
+
+// Get all roles
+//
+// This endpoint is available for Enterprise accounts only
+//
+list_t*
+ArmAPI_v1Roles(apiClient_t *apiClient)
+{
+    list_t    *localVarQueryParameters = NULL;
+    list_t    *localVarHeaderParameters = NULL;
+    list_t    *localVarFormParameters = NULL;
+    list_t *localVarHeaderType = list_createList();
+    list_t *localVarContentType = NULL;
+    char      *localVarBodyParameters = NULL;
+    size_t     localVarBodyLength = 0;
+
+    // clear the error code from the previous api call
+    apiClient->response_code = 0;
+
+    // create the path
+    long sizeOfPath = strlen("/v1/roles")+1;
+    char *localVarPath = malloc(sizeOfPath);
+    snprintf(localVarPath, sizeOfPath, "/v1/roles");
+
+
+
+
+    list_addElement(localVarHeaderType,"application/json"); //produces
+    apiClient_invoke(apiClient,
+                    localVarPath,
+                    localVarQueryParameters,
+                    localVarHeaderParameters,
+                    localVarFormParameters,
+                    localVarHeaderType,
+                    localVarContentType,
+                    localVarBodyParameters,
+                    localVarBodyLength,
+                    "GET");
+
+    // uncomment below to debug the error response
+    //if (apiClient->response_code == 200) {
+    //    printf("%s\n","Roles");
+    //}
+    // uncomment below to debug the error response
+    //if (apiClient->response_code == 400) {
+    //    printf("%s\n","Bad Request");
+    //}
+    // uncomment below to debug the error response
+    //if (apiClient->response_code == 403) {
+    //    printf("%s\n","Forbidden");
+    //}
+    list_t *elementToReturn = NULL;
+    if(apiClient->response_code >= 200 && apiClient->response_code < 300) {
+        cJSON *ArmAPIlocalVarJSON = cJSON_Parse(apiClient->dataReceived);
+        if(!cJSON_IsArray(ArmAPIlocalVarJSON)) {
+            return 0;//nonprimitive container
+        }
+        elementToReturn = list_createList();
+        cJSON *VarJSON;
+        cJSON_ArrayForEach(VarJSON, ArmAPIlocalVarJSON)
+        {
+            if(!cJSON_IsObject(VarJSON))
+            {
+               // return 0;
+            }
+            char *localVarJSONToChar = cJSON_Print(VarJSON);
+            list_addElement(elementToReturn , localVarJSONToChar);
+        }
+
+        cJSON_Delete( ArmAPIlocalVarJSON);
+        cJSON_Delete( VarJSON);
+    }
+    //return type
+    if (apiClient->dataReceived) {
+        free(apiClient->dataReceived);
+        apiClient->dataReceived = NULL;
+        apiClient->dataReceivedLen = 0;
+    }
+    
+    
+    
+    list_freeList(localVarHeaderType);
+    
+    free(localVarPath);
+    return elementToReturn;
+end:
+    free(localVarPath);
+    return NULL;
 
 }
 
@@ -5129,6 +7009,99 @@ end:
 
 }
 
+// Start HyperTrace on an instance
+//
+void
+ArmAPI_v1StartHyperTrace(apiClient_t *apiClient, char * instanceId , btrace_enable_options_t * btrace_enable_options )
+{
+    list_t    *localVarQueryParameters = NULL;
+    list_t    *localVarHeaderParameters = NULL;
+    list_t    *localVarFormParameters = NULL;
+    list_t *localVarHeaderType = list_createList();
+    list_t *localVarContentType = list_createList();
+    char      *localVarBodyParameters = NULL;
+    size_t     localVarBodyLength = 0;
+
+    // clear the error code from the previous api call
+    apiClient->response_code = 0;
+
+    // create the path
+    long sizeOfPath = strlen("/v1/instances/{instanceId}/btrace/enable")+1;
+    char *localVarPath = malloc(sizeOfPath);
+    snprintf(localVarPath, sizeOfPath, "/v1/instances/{instanceId}/btrace/enable");
+
+    if(!instanceId)
+        goto end;
+
+
+    // Path Params
+    long sizeOfPathParams_instanceId = strlen(instanceId)+3 + strlen("{ instanceId }");
+    if(instanceId == NULL) {
+        goto end;
+    }
+    char* localVarToReplace_instanceId = malloc(sizeOfPathParams_instanceId);
+    sprintf(localVarToReplace_instanceId, "{%s}", "instanceId");
+
+    localVarPath = strReplace(localVarPath, localVarToReplace_instanceId, instanceId);
+
+
+
+    // Body Param
+    cJSON *localVarSingleItemJSON_btrace_enable_options = NULL;
+    if (btrace_enable_options != NULL)
+    {
+        //not string, not binary
+        localVarSingleItemJSON_btrace_enable_options = btrace_enable_options_convertToJSON(btrace_enable_options);
+        localVarBodyParameters = cJSON_Print(localVarSingleItemJSON_btrace_enable_options);
+        localVarBodyLength = strlen(localVarBodyParameters);
+    }
+    list_addElement(localVarHeaderType,"application/json"); //produces
+    list_addElement(localVarContentType,"application/json"); //consumes
+    apiClient_invoke(apiClient,
+                    localVarPath,
+                    localVarQueryParameters,
+                    localVarHeaderParameters,
+                    localVarFormParameters,
+                    localVarHeaderType,
+                    localVarContentType,
+                    localVarBodyParameters,
+                    localVarBodyLength,
+                    "POST");
+
+    // uncomment below to debug the error response
+    //if (apiClient->response_code == 204) {
+    //    printf("%s\n","No Content");
+    //}
+    // uncomment below to debug the error response
+    //if (apiClient->response_code == 400) {
+    //    printf("%s\n","Bad Request");
+    //}
+    // uncomment below to debug the error response
+    //if (apiClient->response_code == 403) {
+    //    printf("%s\n","Forbidden");
+    //}
+    //No return type
+end:
+    if (apiClient->dataReceived) {
+        free(apiClient->dataReceived);
+        apiClient->dataReceived = NULL;
+        apiClient->dataReceivedLen = 0;
+    }
+    
+    
+    
+    list_freeList(localVarHeaderType);
+    list_freeList(localVarContentType);
+    free(localVarPath);
+    free(localVarToReplace_instanceId);
+    if (localVarSingleItemJSON_btrace_enable_options) {
+        cJSON_Delete(localVarSingleItemJSON_btrace_enable_options);
+        localVarSingleItemJSON_btrace_enable_options = NULL;
+    }
+    free(localVarBodyParameters);
+
+}
+
 // Start an Instance
 //
 void
@@ -5380,6 +7353,83 @@ end:
 
 }
 
+// Stop HyperTrace on an instance.
+//
+void
+ArmAPI_v1StopHyperTrace(apiClient_t *apiClient, char * instanceId )
+{
+    list_t    *localVarQueryParameters = NULL;
+    list_t    *localVarHeaderParameters = NULL;
+    list_t    *localVarFormParameters = NULL;
+    list_t *localVarHeaderType = list_createList();
+    list_t *localVarContentType = NULL;
+    char      *localVarBodyParameters = NULL;
+    size_t     localVarBodyLength = 0;
+
+    // clear the error code from the previous api call
+    apiClient->response_code = 0;
+
+    // create the path
+    long sizeOfPath = strlen("/v1/instances/{instanceId}/btrace/disable")+1;
+    char *localVarPath = malloc(sizeOfPath);
+    snprintf(localVarPath, sizeOfPath, "/v1/instances/{instanceId}/btrace/disable");
+
+    if(!instanceId)
+        goto end;
+
+
+    // Path Params
+    long sizeOfPathParams_instanceId = strlen(instanceId)+3 + strlen("{ instanceId }");
+    if(instanceId == NULL) {
+        goto end;
+    }
+    char* localVarToReplace_instanceId = malloc(sizeOfPathParams_instanceId);
+    sprintf(localVarToReplace_instanceId, "{%s}", "instanceId");
+
+    localVarPath = strReplace(localVarPath, localVarToReplace_instanceId, instanceId);
+
+
+    list_addElement(localVarHeaderType,"application/json"); //produces
+    apiClient_invoke(apiClient,
+                    localVarPath,
+                    localVarQueryParameters,
+                    localVarHeaderParameters,
+                    localVarFormParameters,
+                    localVarHeaderType,
+                    localVarContentType,
+                    localVarBodyParameters,
+                    localVarBodyLength,
+                    "POST");
+
+    // uncomment below to debug the error response
+    //if (apiClient->response_code == 204) {
+    //    printf("%s\n","No Content");
+    //}
+    // uncomment below to debug the error response
+    //if (apiClient->response_code == 400) {
+    //    printf("%s\n","Bad Request");
+    //}
+    // uncomment below to debug the error response
+    //if (apiClient->response_code == 403) {
+    //    printf("%s\n","Forbidden");
+    //}
+    //No return type
+end:
+    if (apiClient->dataReceived) {
+        free(apiClient->dataReceived);
+        apiClient->dataReceived = NULL;
+        apiClient->dataReceivedLen = 0;
+    }
+    
+    
+    
+    list_freeList(localVarHeaderType);
+    
+    free(localVarPath);
+    free(localVarToReplace_instanceId);
+
+}
+
 // Stop an Instance
 //
 void
@@ -5554,6 +7604,362 @@ end:
 
 }
 
+// Update team
+//
+// This endpoint is available for Enterprise accounts only
+//
+void
+ArmAPI_v1TeamChange(apiClient_t *apiClient, char * teamId , create_team_t * create_team )
+{
+    list_t    *localVarQueryParameters = NULL;
+    list_t    *localVarHeaderParameters = NULL;
+    list_t    *localVarFormParameters = NULL;
+    list_t *localVarHeaderType = list_createList();
+    list_t *localVarContentType = list_createList();
+    char      *localVarBodyParameters = NULL;
+    size_t     localVarBodyLength = 0;
+
+    // clear the error code from the previous api call
+    apiClient->response_code = 0;
+
+    // create the path
+    long sizeOfPath = strlen("/v1/teams/{teamId}")+1;
+    char *localVarPath = malloc(sizeOfPath);
+    snprintf(localVarPath, sizeOfPath, "/v1/teams/{teamId}");
+
+    if(!teamId)
+        goto end;
+
+
+    // Path Params
+    long sizeOfPathParams_teamId = strlen(teamId)+3 + strlen("{ teamId }");
+    if(teamId == NULL) {
+        goto end;
+    }
+    char* localVarToReplace_teamId = malloc(sizeOfPathParams_teamId);
+    sprintf(localVarToReplace_teamId, "{%s}", "teamId");
+
+    localVarPath = strReplace(localVarPath, localVarToReplace_teamId, teamId);
+
+
+
+    // Body Param
+    cJSON *localVarSingleItemJSON_create_team = NULL;
+    if (create_team != NULL)
+    {
+        //not string, not binary
+        localVarSingleItemJSON_create_team = create_team_convertToJSON(create_team);
+        localVarBodyParameters = cJSON_Print(localVarSingleItemJSON_create_team);
+        localVarBodyLength = strlen(localVarBodyParameters);
+    }
+    list_addElement(localVarHeaderType,"application/json"); //produces
+    list_addElement(localVarContentType,"application/json"); //consumes
+    apiClient_invoke(apiClient,
+                    localVarPath,
+                    localVarQueryParameters,
+                    localVarHeaderParameters,
+                    localVarFormParameters,
+                    localVarHeaderType,
+                    localVarContentType,
+                    localVarBodyParameters,
+                    localVarBodyLength,
+                    "PATCH");
+
+    // uncomment below to debug the error response
+    //if (apiClient->response_code == 204) {
+    //    printf("%s\n","Success");
+    //}
+    // uncomment below to debug the error response
+    //if (apiClient->response_code == 403) {
+    //    printf("%s\n","Forbidden");
+    //}
+    // uncomment below to debug the error response
+    //if (apiClient->response_code == 404) {
+    //    printf("%s\n","Not Found");
+    //}
+    //No return type
+end:
+    if (apiClient->dataReceived) {
+        free(apiClient->dataReceived);
+        apiClient->dataReceived = NULL;
+        apiClient->dataReceivedLen = 0;
+    }
+    
+    
+    
+    list_freeList(localVarHeaderType);
+    list_freeList(localVarContentType);
+    free(localVarPath);
+    free(localVarToReplace_teamId);
+    if (localVarSingleItemJSON_create_team) {
+        cJSON_Delete(localVarSingleItemJSON_create_team);
+        localVarSingleItemJSON_create_team = NULL;
+    }
+    free(localVarBodyParameters);
+
+}
+
+// Create team
+//
+// This endpoint is available for Enterprise accounts only
+//
+team_create_t*
+ArmAPI_v1TeamCreate(apiClient_t *apiClient, create_team_t * create_team )
+{
+    list_t    *localVarQueryParameters = NULL;
+    list_t    *localVarHeaderParameters = NULL;
+    list_t    *localVarFormParameters = NULL;
+    list_t *localVarHeaderType = list_createList();
+    list_t *localVarContentType = list_createList();
+    char      *localVarBodyParameters = NULL;
+    size_t     localVarBodyLength = 0;
+
+    // clear the error code from the previous api call
+    apiClient->response_code = 0;
+
+    // create the path
+    long sizeOfPath = strlen("/v1/teams")+1;
+    char *localVarPath = malloc(sizeOfPath);
+    snprintf(localVarPath, sizeOfPath, "/v1/teams");
+
+
+
+
+
+    // Body Param
+    cJSON *localVarSingleItemJSON_create_team = NULL;
+    if (create_team != NULL)
+    {
+        //not string, not binary
+        localVarSingleItemJSON_create_team = create_team_convertToJSON(create_team);
+        localVarBodyParameters = cJSON_Print(localVarSingleItemJSON_create_team);
+        localVarBodyLength = strlen(localVarBodyParameters);
+    }
+    list_addElement(localVarHeaderType,"application/json"); //produces
+    list_addElement(localVarContentType,"application/json"); //consumes
+    apiClient_invoke(apiClient,
+                    localVarPath,
+                    localVarQueryParameters,
+                    localVarHeaderParameters,
+                    localVarFormParameters,
+                    localVarHeaderType,
+                    localVarContentType,
+                    localVarBodyParameters,
+                    localVarBodyLength,
+                    "POST");
+
+    // uncomment below to debug the error response
+    //if (apiClient->response_code == 200) {
+    //    printf("%s\n","User");
+    //}
+    // uncomment below to debug the error response
+    //if (apiClient->response_code == 403) {
+    //    printf("%s\n","Forbidden");
+    //}
+    //nonprimitive not container
+    team_create_t *elementToReturn = NULL;
+    if(apiClient->response_code >= 200 && apiClient->response_code < 300) {
+        cJSON *ArmAPIlocalVarJSON = cJSON_Parse(apiClient->dataReceived);
+        elementToReturn = team_create_parseFromJSON(ArmAPIlocalVarJSON);
+        cJSON_Delete(ArmAPIlocalVarJSON);
+        if(elementToReturn == NULL) {
+            // return 0;
+        }
+    }
+
+    //return type
+    if (apiClient->dataReceived) {
+        free(apiClient->dataReceived);
+        apiClient->dataReceived = NULL;
+        apiClient->dataReceivedLen = 0;
+    }
+    
+    
+    
+    list_freeList(localVarHeaderType);
+    list_freeList(localVarContentType);
+    free(localVarPath);
+    if (localVarSingleItemJSON_create_team) {
+        cJSON_Delete(localVarSingleItemJSON_create_team);
+        localVarSingleItemJSON_create_team = NULL;
+    }
+    free(localVarBodyParameters);
+    return elementToReturn;
+end:
+    free(localVarPath);
+    return NULL;
+
+}
+
+// Delete team
+//
+// This endpoint is available for Enterprise accounts only
+//
+void
+ArmAPI_v1TeamDelete(apiClient_t *apiClient, char * teamId )
+{
+    list_t    *localVarQueryParameters = NULL;
+    list_t    *localVarHeaderParameters = NULL;
+    list_t    *localVarFormParameters = NULL;
+    list_t *localVarHeaderType = list_createList();
+    list_t *localVarContentType = NULL;
+    char      *localVarBodyParameters = NULL;
+    size_t     localVarBodyLength = 0;
+
+    // clear the error code from the previous api call
+    apiClient->response_code = 0;
+
+    // create the path
+    long sizeOfPath = strlen("/v1/teams/{teamId}")+1;
+    char *localVarPath = malloc(sizeOfPath);
+    snprintf(localVarPath, sizeOfPath, "/v1/teams/{teamId}");
+
+    if(!teamId)
+        goto end;
+
+
+    // Path Params
+    long sizeOfPathParams_teamId = strlen(teamId)+3 + strlen("{ teamId }");
+    if(teamId == NULL) {
+        goto end;
+    }
+    char* localVarToReplace_teamId = malloc(sizeOfPathParams_teamId);
+    sprintf(localVarToReplace_teamId, "{%s}", "teamId");
+
+    localVarPath = strReplace(localVarPath, localVarToReplace_teamId, teamId);
+
+
+    list_addElement(localVarHeaderType,"application/json"); //produces
+    apiClient_invoke(apiClient,
+                    localVarPath,
+                    localVarQueryParameters,
+                    localVarHeaderParameters,
+                    localVarFormParameters,
+                    localVarHeaderType,
+                    localVarContentType,
+                    localVarBodyParameters,
+                    localVarBodyLength,
+                    "DELETE");
+
+    // uncomment below to debug the error response
+    //if (apiClient->response_code == 204) {
+    //    printf("%s\n","Success");
+    //}
+    // uncomment below to debug the error response
+    //if (apiClient->response_code == 403) {
+    //    printf("%s\n","Forbidden");
+    //}
+    // uncomment below to debug the error response
+    //if (apiClient->response_code == 500) {
+    //    printf("%s\n","Internal Server Error");
+    //}
+    //No return type
+end:
+    if (apiClient->dataReceived) {
+        free(apiClient->dataReceived);
+        apiClient->dataReceived = NULL;
+        apiClient->dataReceivedLen = 0;
+    }
+    
+    
+    
+    list_freeList(localVarHeaderType);
+    
+    free(localVarPath);
+    free(localVarToReplace_teamId);
+
+}
+
+// Get teams
+//
+// This endpoint is available for Enterprise accounts only
+//
+list_t*
+ArmAPI_v1Teams(apiClient_t *apiClient)
+{
+    list_t    *localVarQueryParameters = NULL;
+    list_t    *localVarHeaderParameters = NULL;
+    list_t    *localVarFormParameters = NULL;
+    list_t *localVarHeaderType = list_createList();
+    list_t *localVarContentType = NULL;
+    char      *localVarBodyParameters = NULL;
+    size_t     localVarBodyLength = 0;
+
+    // clear the error code from the previous api call
+    apiClient->response_code = 0;
+
+    // create the path
+    long sizeOfPath = strlen("/v1/teams")+1;
+    char *localVarPath = malloc(sizeOfPath);
+    snprintf(localVarPath, sizeOfPath, "/v1/teams");
+
+
+
+
+    list_addElement(localVarHeaderType,"application/json"); //produces
+    apiClient_invoke(apiClient,
+                    localVarPath,
+                    localVarQueryParameters,
+                    localVarHeaderParameters,
+                    localVarFormParameters,
+                    localVarHeaderType,
+                    localVarContentType,
+                    localVarBodyParameters,
+                    localVarBodyLength,
+                    "GET");
+
+    // uncomment below to debug the error response
+    //if (apiClient->response_code == 200) {
+    //    printf("%s\n","Teams");
+    //}
+    // uncomment below to debug the error response
+    //if (apiClient->response_code == 400) {
+    //    printf("%s\n","Bad Request");
+    //}
+    // uncomment below to debug the error response
+    //if (apiClient->response_code == 403) {
+    //    printf("%s\n","Forbidden");
+    //}
+    list_t *elementToReturn = NULL;
+    if(apiClient->response_code >= 200 && apiClient->response_code < 300) {
+        cJSON *ArmAPIlocalVarJSON = cJSON_Parse(apiClient->dataReceived);
+        if(!cJSON_IsArray(ArmAPIlocalVarJSON)) {
+            return 0;//nonprimitive container
+        }
+        elementToReturn = list_createList();
+        cJSON *VarJSON;
+        cJSON_ArrayForEach(VarJSON, ArmAPIlocalVarJSON)
+        {
+            if(!cJSON_IsObject(VarJSON))
+            {
+               // return 0;
+            }
+            char *localVarJSONToChar = cJSON_Print(VarJSON);
+            list_addElement(elementToReturn , localVarJSONToChar);
+        }
+
+        cJSON_Delete( ArmAPIlocalVarJSON);
+        cJSON_Delete( VarJSON);
+    }
+    //return type
+    if (apiClient->dataReceived) {
+        free(apiClient->dataReceived);
+        apiClient->dataReceived = NULL;
+        apiClient->dataReceivedLen = 0;
+    }
+    
+    
+    
+    list_freeList(localVarHeaderType);
+    
+    free(localVarPath);
+    return elementToReturn;
+end:
+    free(localVarPath);
+    return NULL;
+
+}
+
 // Unpause an Instance
 //
 void
@@ -5628,6 +8034,113 @@ end:
     
     free(localVarPath);
     free(localVarToReplace_instanceId);
+
+}
+
+// Update an existing hypervisor hook
+//
+hook_t*
+ArmAPI_v1UpdateHook(apiClient_t *apiClient, char * hookId , v1_create_hook_parameters_t * v1_create_hook_parameters )
+{
+    list_t    *localVarQueryParameters = NULL;
+    list_t    *localVarHeaderParameters = NULL;
+    list_t    *localVarFormParameters = NULL;
+    list_t *localVarHeaderType = list_createList();
+    list_t *localVarContentType = list_createList();
+    char      *localVarBodyParameters = NULL;
+    size_t     localVarBodyLength = 0;
+
+    // clear the error code from the previous api call
+    apiClient->response_code = 0;
+
+    // create the path
+    long sizeOfPath = strlen("/v1/hooks/{hookId}")+1;
+    char *localVarPath = malloc(sizeOfPath);
+    snprintf(localVarPath, sizeOfPath, "/v1/hooks/{hookId}");
+
+    if(!hookId)
+        goto end;
+
+
+    // Path Params
+    long sizeOfPathParams_hookId = strlen(hookId)+3 + strlen("{ hookId }");
+    if(hookId == NULL) {
+        goto end;
+    }
+    char* localVarToReplace_hookId = malloc(sizeOfPathParams_hookId);
+    sprintf(localVarToReplace_hookId, "{%s}", "hookId");
+
+    localVarPath = strReplace(localVarPath, localVarToReplace_hookId, hookId);
+
+
+
+    // Body Param
+    cJSON *localVarSingleItemJSON_v1_create_hook_parameters = NULL;
+    if (v1_create_hook_parameters != NULL)
+    {
+        //not string, not binary
+        localVarSingleItemJSON_v1_create_hook_parameters = v1_create_hook_parameters_convertToJSON(v1_create_hook_parameters);
+        localVarBodyParameters = cJSON_Print(localVarSingleItemJSON_v1_create_hook_parameters);
+        localVarBodyLength = strlen(localVarBodyParameters);
+    }
+    list_addElement(localVarHeaderType,"application/json"); //produces
+    list_addElement(localVarContentType,"application/json"); //consumes
+    apiClient_invoke(apiClient,
+                    localVarPath,
+                    localVarQueryParameters,
+                    localVarHeaderParameters,
+                    localVarFormParameters,
+                    localVarHeaderType,
+                    localVarContentType,
+                    localVarBodyParameters,
+                    localVarBodyLength,
+                    "PUT");
+
+    // uncomment below to debug the error response
+    //if (apiClient->response_code == 200) {
+    //    printf("%s\n","Hook");
+    //}
+    // uncomment below to debug the error response
+    //if (apiClient->response_code == 400) {
+    //    printf("%s\n","Bad Request");
+    //}
+    // uncomment below to debug the error response
+    //if (apiClient->response_code == 403) {
+    //    printf("%s\n","Forbidden");
+    //}
+    //nonprimitive not container
+    hook_t *elementToReturn = NULL;
+    if(apiClient->response_code >= 200 && apiClient->response_code < 300) {
+        cJSON *ArmAPIlocalVarJSON = cJSON_Parse(apiClient->dataReceived);
+        elementToReturn = hook_parseFromJSON(ArmAPIlocalVarJSON);
+        cJSON_Delete(ArmAPIlocalVarJSON);
+        if(elementToReturn == NULL) {
+            // return 0;
+        }
+    }
+
+    //return type
+    if (apiClient->dataReceived) {
+        free(apiClient->dataReceived);
+        apiClient->dataReceived = NULL;
+        apiClient->dataReceivedLen = 0;
+    }
+    
+    
+    
+    list_freeList(localVarHeaderType);
+    list_freeList(localVarContentType);
+    free(localVarPath);
+    free(localVarToReplace_hookId);
+    if (localVarSingleItemJSON_v1_create_hook_parameters) {
+        cJSON_Delete(localVarSingleItemJSON_v1_create_hook_parameters);
+        localVarSingleItemJSON_v1_create_hook_parameters = NULL;
+    }
+    free(localVarBodyParameters);
+    return elementToReturn;
+end:
+    free(localVarPath);
+    return NULL;
 
 }
 
@@ -5915,6 +8428,434 @@ ArmAPI_v1UploadImageData(apiClient_t *apiClient, char * imageId , char * body )
     free(localVarPath);
     free(localVarToReplace_imageId);
     free(localVarBodyParameters);
+    return elementToReturn;
+end:
+    free(localVarPath);
+    return NULL;
+
+}
+
+// Retrieve the list of allowed domains for all Web Player sessions
+//
+web_player_session_t*
+ArmAPI_v1WebPlayerAllowedDomains(apiClient_t *apiClient)
+{
+    list_t    *localVarQueryParameters = NULL;
+    list_t    *localVarHeaderParameters = NULL;
+    list_t    *localVarFormParameters = NULL;
+    list_t *localVarHeaderType = list_createList();
+    list_t *localVarContentType = NULL;
+    char      *localVarBodyParameters = NULL;
+    size_t     localVarBodyLength = 0;
+
+    // clear the error code from the previous api call
+    apiClient->response_code = 0;
+
+    // create the path
+    long sizeOfPath = strlen("/v1/webplayer/allowedDomains")+1;
+    char *localVarPath = malloc(sizeOfPath);
+    snprintf(localVarPath, sizeOfPath, "/v1/webplayer/allowedDomains");
+
+
+
+
+    list_addElement(localVarHeaderType,"application/json"); //produces
+    apiClient_invoke(apiClient,
+                    localVarPath,
+                    localVarQueryParameters,
+                    localVarHeaderParameters,
+                    localVarFormParameters,
+                    localVarHeaderType,
+                    localVarContentType,
+                    localVarBodyParameters,
+                    localVarBodyLength,
+                    "GET");
+
+    // uncomment below to debug the error response
+    //if (apiClient->response_code == 200) {
+    //    printf("%s\n","Success");
+    //}
+    // uncomment below to debug the error response
+    //if (apiClient->response_code == 400) {
+    //    printf("%s\n","Bad Request");
+    //}
+    // uncomment below to debug the error response
+    //if (apiClient->response_code == 403) {
+    //    printf("%s\n","Forbidden");
+    //}
+    //nonprimitive not container
+    web_player_session_t *elementToReturn = NULL;
+    if(apiClient->response_code >= 200 && apiClient->response_code < 300) {
+        cJSON *ArmAPIlocalVarJSON = cJSON_Parse(apiClient->dataReceived);
+        elementToReturn = web_player_session_parseFromJSON(ArmAPIlocalVarJSON);
+        cJSON_Delete(ArmAPIlocalVarJSON);
+        if(elementToReturn == NULL) {
+            // return 0;
+        }
+    }
+
+    //return type
+    if (apiClient->dataReceived) {
+        free(apiClient->dataReceived);
+        apiClient->dataReceived = NULL;
+        apiClient->dataReceivedLen = 0;
+    }
+    
+    
+    
+    list_freeList(localVarHeaderType);
+    
+    free(localVarPath);
+    return elementToReturn;
+end:
+    free(localVarPath);
+    return NULL;
+
+}
+
+// Create a new Web Player Session
+//
+web_player_session_t*
+ArmAPI_v1WebPlayerCreateSession(apiClient_t *apiClient, web_player_create_session_request_t * web_player_create_session_request )
+{
+    list_t    *localVarQueryParameters = NULL;
+    list_t    *localVarHeaderParameters = NULL;
+    list_t    *localVarFormParameters = NULL;
+    list_t *localVarHeaderType = list_createList();
+    list_t *localVarContentType = list_createList();
+    char      *localVarBodyParameters = NULL;
+    size_t     localVarBodyLength = 0;
+
+    // clear the error code from the previous api call
+    apiClient->response_code = 0;
+
+    // create the path
+    long sizeOfPath = strlen("/v1/webplayer")+1;
+    char *localVarPath = malloc(sizeOfPath);
+    snprintf(localVarPath, sizeOfPath, "/v1/webplayer");
+
+
+
+
+
+    // Body Param
+    cJSON *localVarSingleItemJSON_web_player_create_session_request = NULL;
+    if (web_player_create_session_request != NULL)
+    {
+        //not string, not binary
+        localVarSingleItemJSON_web_player_create_session_request = web_player_create_session_request_convertToJSON(web_player_create_session_request);
+        localVarBodyParameters = cJSON_Print(localVarSingleItemJSON_web_player_create_session_request);
+        localVarBodyLength = strlen(localVarBodyParameters);
+    }
+    list_addElement(localVarHeaderType,"application/json"); //produces
+    list_addElement(localVarContentType,"application/json"); //consumes
+    apiClient_invoke(apiClient,
+                    localVarPath,
+                    localVarQueryParameters,
+                    localVarHeaderParameters,
+                    localVarFormParameters,
+                    localVarHeaderType,
+                    localVarContentType,
+                    localVarBodyParameters,
+                    localVarBodyLength,
+                    "POST");
+
+    // uncomment below to debug the error response
+    //if (apiClient->response_code == 200) {
+    //    printf("%s\n","Success");
+    //}
+    // uncomment below to debug the error response
+    //if (apiClient->response_code == 400) {
+    //    printf("%s\n","Bad Request");
+    //}
+    // uncomment below to debug the error response
+    //if (apiClient->response_code == 403) {
+    //    printf("%s\n","Forbidden");
+    //}
+    //nonprimitive not container
+    web_player_session_t *elementToReturn = NULL;
+    if(apiClient->response_code >= 200 && apiClient->response_code < 300) {
+        cJSON *ArmAPIlocalVarJSON = cJSON_Parse(apiClient->dataReceived);
+        elementToReturn = web_player_session_parseFromJSON(ArmAPIlocalVarJSON);
+        cJSON_Delete(ArmAPIlocalVarJSON);
+        if(elementToReturn == NULL) {
+            // return 0;
+        }
+    }
+
+    //return type
+    if (apiClient->dataReceived) {
+        free(apiClient->dataReceived);
+        apiClient->dataReceived = NULL;
+        apiClient->dataReceivedLen = 0;
+    }
+    
+    
+    
+    list_freeList(localVarHeaderType);
+    list_freeList(localVarContentType);
+    free(localVarPath);
+    if (localVarSingleItemJSON_web_player_create_session_request) {
+        cJSON_Delete(localVarSingleItemJSON_web_player_create_session_request);
+        localVarSingleItemJSON_web_player_create_session_request = NULL;
+    }
+    free(localVarBodyParameters);
+    return elementToReturn;
+end:
+    free(localVarPath);
+    return NULL;
+
+}
+
+// Tear down a Web Player Session
+//
+void
+ArmAPI_v1WebPlayerDestroySession(apiClient_t *apiClient, char * sessionId )
+{
+    list_t    *localVarQueryParameters = NULL;
+    list_t    *localVarHeaderParameters = NULL;
+    list_t    *localVarFormParameters = NULL;
+    list_t *localVarHeaderType = list_createList();
+    list_t *localVarContentType = NULL;
+    char      *localVarBodyParameters = NULL;
+    size_t     localVarBodyLength = 0;
+
+    // clear the error code from the previous api call
+    apiClient->response_code = 0;
+
+    // create the path
+    long sizeOfPath = strlen("/v1/webplayer/{sessionId}")+1;
+    char *localVarPath = malloc(sizeOfPath);
+    snprintf(localVarPath, sizeOfPath, "/v1/webplayer/{sessionId}");
+
+    if(!sessionId)
+        goto end;
+
+
+    // Path Params
+    long sizeOfPathParams_sessionId = strlen(sessionId)+3 + strlen("{ sessionId }");
+    if(sessionId == NULL) {
+        goto end;
+    }
+    char* localVarToReplace_sessionId = malloc(sizeOfPathParams_sessionId);
+    sprintf(localVarToReplace_sessionId, "{%s}", "sessionId");
+
+    localVarPath = strReplace(localVarPath, localVarToReplace_sessionId, sessionId);
+
+
+    list_addElement(localVarHeaderType,"application/json"); //produces
+    apiClient_invoke(apiClient,
+                    localVarPath,
+                    localVarQueryParameters,
+                    localVarHeaderParameters,
+                    localVarFormParameters,
+                    localVarHeaderType,
+                    localVarContentType,
+                    localVarBodyParameters,
+                    localVarBodyLength,
+                    "DELETE");
+
+    // uncomment below to debug the error response
+    //if (apiClient->response_code == 400) {
+    //    printf("%s\n","Bad Request");
+    //}
+    // uncomment below to debug the error response
+    //if (apiClient->response_code == 403) {
+    //    printf("%s\n","Forbidden");
+    //}
+    //No return type
+end:
+    if (apiClient->dataReceived) {
+        free(apiClient->dataReceived);
+        apiClient->dataReceived = NULL;
+        apiClient->dataReceivedLen = 0;
+    }
+    
+    
+    
+    list_freeList(localVarHeaderType);
+    
+    free(localVarPath);
+    free(localVarToReplace_sessionId);
+
+}
+
+// List all Web Player sessions
+//
+list_t*
+ArmAPI_v1WebPlayerListSessions(apiClient_t *apiClient)
+{
+    list_t    *localVarQueryParameters = NULL;
+    list_t    *localVarHeaderParameters = NULL;
+    list_t    *localVarFormParameters = NULL;
+    list_t *localVarHeaderType = list_createList();
+    list_t *localVarContentType = NULL;
+    char      *localVarBodyParameters = NULL;
+    size_t     localVarBodyLength = 0;
+
+    // clear the error code from the previous api call
+    apiClient->response_code = 0;
+
+    // create the path
+    long sizeOfPath = strlen("/v1/webplayer")+1;
+    char *localVarPath = malloc(sizeOfPath);
+    snprintf(localVarPath, sizeOfPath, "/v1/webplayer");
+
+
+
+
+    list_addElement(localVarHeaderType,"application/json"); //produces
+    apiClient_invoke(apiClient,
+                    localVarPath,
+                    localVarQueryParameters,
+                    localVarHeaderParameters,
+                    localVarFormParameters,
+                    localVarHeaderType,
+                    localVarContentType,
+                    localVarBodyParameters,
+                    localVarBodyLength,
+                    "GET");
+
+    // uncomment below to debug the error response
+    //if (apiClient->response_code == 200) {
+    //    printf("%s\n","Success");
+    //}
+    // uncomment below to debug the error response
+    //if (apiClient->response_code == 400) {
+    //    printf("%s\n","Bad Request");
+    //}
+    // uncomment below to debug the error response
+    //if (apiClient->response_code == 403) {
+    //    printf("%s\n","Forbidden");
+    //}
+    list_t *elementToReturn = NULL;
+    if(apiClient->response_code >= 200 && apiClient->response_code < 300) {
+        cJSON *ArmAPIlocalVarJSON = cJSON_Parse(apiClient->dataReceived);
+        if(!cJSON_IsArray(ArmAPIlocalVarJSON)) {
+            return 0;//nonprimitive container
+        }
+        elementToReturn = list_createList();
+        cJSON *VarJSON;
+        cJSON_ArrayForEach(VarJSON, ArmAPIlocalVarJSON)
+        {
+            if(!cJSON_IsObject(VarJSON))
+            {
+               // return 0;
+            }
+            char *localVarJSONToChar = cJSON_Print(VarJSON);
+            list_addElement(elementToReturn , localVarJSONToChar);
+        }
+
+        cJSON_Delete( ArmAPIlocalVarJSON);
+        cJSON_Delete( VarJSON);
+    }
+    //return type
+    if (apiClient->dataReceived) {
+        free(apiClient->dataReceived);
+        apiClient->dataReceived = NULL;
+        apiClient->dataReceivedLen = 0;
+    }
+    
+    
+    
+    list_freeList(localVarHeaderType);
+    
+    free(localVarPath);
+    return elementToReturn;
+end:
+    free(localVarPath);
+    return NULL;
+
+}
+
+// Retrieve Web Player Session Information
+//
+web_player_session_t*
+ArmAPI_v1WebPlayerSessionInfo(apiClient_t *apiClient, char * sessionId )
+{
+    list_t    *localVarQueryParameters = NULL;
+    list_t    *localVarHeaderParameters = NULL;
+    list_t    *localVarFormParameters = NULL;
+    list_t *localVarHeaderType = list_createList();
+    list_t *localVarContentType = NULL;
+    char      *localVarBodyParameters = NULL;
+    size_t     localVarBodyLength = 0;
+
+    // clear the error code from the previous api call
+    apiClient->response_code = 0;
+
+    // create the path
+    long sizeOfPath = strlen("/v1/webplayer/{sessionId}")+1;
+    char *localVarPath = malloc(sizeOfPath);
+    snprintf(localVarPath, sizeOfPath, "/v1/webplayer/{sessionId}");
+
+    if(!sessionId)
+        goto end;
+
+
+    // Path Params
+    long sizeOfPathParams_sessionId = strlen(sessionId)+3 + strlen("{ sessionId }");
+    if(sessionId == NULL) {
+        goto end;
+    }
+    char* localVarToReplace_sessionId = malloc(sizeOfPathParams_sessionId);
+    sprintf(localVarToReplace_sessionId, "{%s}", "sessionId");
+
+    localVarPath = strReplace(localVarPath, localVarToReplace_sessionId, sessionId);
+
+
+    list_addElement(localVarHeaderType,"application/json"); //produces
+    apiClient_invoke(apiClient,
+                    localVarPath,
+                    localVarQueryParameters,
+                    localVarHeaderParameters,
+                    localVarFormParameters,
+                    localVarHeaderType,
+                    localVarContentType,
+                    localVarBodyParameters,
+                    localVarBodyLength,
+                    "GET");
+
+    // uncomment below to debug the error response
+    //if (apiClient->response_code == 200) {
+    //    printf("%s\n","Success");
+    //}
+    // uncomment below to debug the error response
+    //if (apiClient->response_code == 400) {
+    //    printf("%s\n","Bad Request");
+    //}
+    // uncomment below to debug the error response
+    //if (apiClient->response_code == 403) {
+    //    printf("%s\n","Forbidden");
+    //}
+    // uncomment below to debug the error response
+    //if (apiClient->response_code == 404) {
+    //    printf("%s\n","Not Found");
+    //}
+    //nonprimitive not container
+    web_player_session_t *elementToReturn = NULL;
+    if(apiClient->response_code >= 200 && apiClient->response_code < 300) {
+        cJSON *ArmAPIlocalVarJSON = cJSON_Parse(apiClient->dataReceived);
+        elementToReturn = web_player_session_parseFromJSON(ArmAPIlocalVarJSON);
+        cJSON_Delete(ArmAPIlocalVarJSON);
+        if(elementToReturn == NULL) {
+            // return 0;
+        }
+    }
+
+    //return type
+    if (apiClient->dataReceived) {
+        free(apiClient->dataReceived);
+        apiClient->dataReceived = NULL;
+        apiClient->dataReceivedLen = 0;
+    }
+    
+    
+    
+    list_freeList(localVarHeaderType);
+    
+    free(localVarPath);
+    free(localVarToReplace_sessionId);
     return elementToReturn;
 end:
     free(localVarPath);

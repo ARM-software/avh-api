@@ -11,5 +11,6 @@ Name | Type | Description | Notes
 **randomSeed** | **String** | Random seed to provide to boot if any | [optional] 
 **pac** | **Boolean** | Enable PAC | [optional] 
 **aprr** | **Boolean** | Enable APRR | [optional] 
+**additionalTags** | [**[InstanceBootOptionsAdditionalTag]**](InstanceBootOptionsAdditionalTag.md) |  | [optional] 
 
 
