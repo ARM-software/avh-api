@@ -16,7 +16,7 @@ import ApiClient from '../ApiClient';
 /**
  * The AgreedAck model module.
  * @module model/AgreedAck
- * @version 1.0.2
+ * @version 1.0.3
  */
 class AgreedAck {
     /**

@@ -16,7 +16,7 @@ import ApiClient from '../ApiClient';
 /**
  * The AgentProfilesReturn model module.
  * @module model/AgentProfilesReturn
- * @version 1.0.2
+ * @version 1.0.3
  */
 class AgentProfilesReturn {
     /**

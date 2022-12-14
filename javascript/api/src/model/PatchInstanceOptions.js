@@ -17,7 +17,7 @@ import InstanceBootOptions from './InstanceBootOptions';
 /**
  * The PatchInstanceOptions model module.
  * @module model/PatchInstanceOptions
- * @version 1.0.2
+ * @version 1.0.3
  */
 class PatchInstanceOptions {
     /**

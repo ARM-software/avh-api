@@ -16,7 +16,7 @@ import ApiClient from '../ApiClient';
 /**
  * The ProjectUsage model module.
  * @module model/ProjectUsage
- * @version 1.0.2
+ * @version 1.0.3
  */
 class ProjectUsage {
     /**

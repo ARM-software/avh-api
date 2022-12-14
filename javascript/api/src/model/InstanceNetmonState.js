@@ -16,7 +16,7 @@ import ApiClient from '../ApiClient';
 /**
  * The InstanceNetmonState model module.
  * @module model/InstanceNetmonState
- * @version 1.0.2
+ * @version 1.0.3
  */
 class InstanceNetmonState {
     /**
@@ -48,6 +48,12 @@ class InstanceNetmonState {
         if (data) {
             obj = obj || new InstanceNetmonState();
 
+            if (data.hasOwnProperty('hash')) {
+                obj['hash'] = ApiClient.convertToType(data['hash'], 'String');
+            }
+            if (data.hasOwnProperty('info')) {
+                obj['info'] = ApiClient.convertToType(data['info'], 'String');
+            }
             if (data.hasOwnProperty('enabled')) {
                 obj['enabled'] = ApiClient.convertToType(data['enabled'], 'Boolean');
             }
@@ -57,6 +63,18 @@ class InstanceNetmonState {
 
 
 }
+
+/**
+ * 
+ * @member {String} hash
+ */
+InstanceNetmonState.prototype['hash'] = undefined;
+
+/**
+ * 
+ * @member {String} info
+ */
+InstanceNetmonState.prototype['info'] = undefined;
 
 /**
  * 

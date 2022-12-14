@@ -46,6 +46,7 @@ from avh_api.model.grant_trial_request_response import GrantTrialRequestResponse
 from avh_api.model.hook import Hook
 from avh_api.model.image import Image
 from avh_api.model.instance import Instance
+from avh_api.model.instance_agent_state import InstanceAgentState
 from avh_api.model.instance_boot_options import InstanceBootOptions
 from avh_api.model.instance_boot_options_additional_tag import InstanceBootOptionsAdditionalTag
 from avh_api.model.instance_console_endpoint import InstanceConsoleEndpoint

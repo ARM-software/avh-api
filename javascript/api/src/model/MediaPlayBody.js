@@ -16,7 +16,7 @@ import ApiClient from '../ApiClient';
 /**
  * The MediaPlayBody model module.
  * @module model/MediaPlayBody
- * @version 1.0.2
+ * @version 1.0.3
  */
 class MediaPlayBody {
     /**

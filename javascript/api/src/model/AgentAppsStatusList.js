@@ -17,7 +17,7 @@ import AgentAppStatus from './AgentAppStatus';
 /**
  * The AgentAppsStatusList model module.
  * @module model/AgentAppsStatusList
- * @version 1.0.2
+ * @version 1.0.3
  */
 class AgentAppsStatusList {
     /**

@@ -54,6 +54,18 @@
       //expect(instance).to.be.a(AvhApi.InstanceNetmonState);
     });
 
+    it('should have the property hash (base name: "hash")', function() {
+      // uncomment below and update the code to test the property hash
+      //var instance = new AvhApi.InstanceNetmonState();
+      //expect(instance).to.be();
+    });
+
+    it('should have the property info (base name: "info")', function() {
+      // uncomment below and update the code to test the property info
+      //var instance = new AvhApi.InstanceNetmonState();
+      //expect(instance).to.be();
+    });
+
     it('should have the property enabled (base name: "enabled")', function() {
       // uncomment below and update the code to test the property enabled
       //var instance = new AvhApi.InstanceNetmonState();

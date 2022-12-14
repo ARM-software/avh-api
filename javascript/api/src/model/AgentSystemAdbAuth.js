@@ -16,7 +16,7 @@ import ApiClient from '../ApiClient';
 /**
  * The AgentSystemAdbAuth model module.
  * @module model/AgentSystemAdbAuth
- * @version 1.0.2
+ * @version 1.0.3
  */
 class AgentSystemAdbAuth {
     /**

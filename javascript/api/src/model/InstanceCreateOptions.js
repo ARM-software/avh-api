@@ -19,7 +19,7 @@ import VolumeOptions from './VolumeOptions';
 /**
  * The InstanceCreateOptions model module.
  * @module model/InstanceCreateOptions
- * @version 1.0.2
+ * @version 1.0.3
  */
 class InstanceCreateOptions {
     /**

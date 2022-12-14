@@ -28,7 +28,7 @@ static instance_t *instance_create_internal(
     char *model,
     char *fwpackage,
     char *os,
-    char *agent,
+    instance_agent_state_t *agent,
     instance_netmon_state_t *netmon,
     char *expose_port,
     int fault,
@@ -95,7 +95,7 @@ __attribute__((deprecated)) instance_t *instance_create(
     char *model,
     char *fwpackage,
     char *os,
-    char *agent,
+    instance_agent_state_t *agent,
     instance_netmon_state_t *netmon,
     char *expose_port,
     int fault,
@@ -224,7 +224,7 @@ void instance_free(instance_t *instance) {
         instance->os = NULL;
     }
     if (instance->agent) {
-        free(instance->agent);
+        instance_agent_state_free(instance->agent);
         instance->agent = NULL;
     }
     if (instance->netmon) {
@@ -445,8 +445,13 @@ cJSON *instance_convertToJSON(instance_t *instance) {
 
     // instance->agent
     if(instance->agent) {
-    if(cJSON_AddStringToObject(item, "agent", instance->agent) == NULL) {
-    goto fail; //String
+    cJSON *agent_local_JSON = instance_agent_state_convertToJSON(instance->agent);
+    if(agent_local_JSON == NULL) {
+    goto fail; //model
+    }
+    cJSON_AddItemToObject(item, "agent", agent_local_JSON);
+    if(item->child == NULL) {
+    goto fail;
     }
     }
 
@@ -529,6 +534,9 @@ instance_t *instance_parseFromJSON(cJSON *instanceJSON){
 
     // define the local variable for instance->services
     instance_services_t *services_local_nonprim = NULL;
+
+    // define the local variable for instance->agent
+    instance_agent_state_t *agent_local_nonprim = NULL;
 
     // define the local variable for instance->netmon
     instance_netmon_state_t *netmon_local_nonprim = NULL;
@@ -800,10 +808,7 @@ instance_t *instance_parseFromJSON(cJSON *instanceJSON){
         agent = NULL;
     }
     if (agent) { 
-    if(!cJSON_IsString(agent))
-    {
-    goto end; //String
-    }
+    agent_local_nonprim = instance_agent_state_parseFromJSON(agent); //nonprimitive
     }
 
     // instance->netmon
@@ -894,7 +899,7 @@ instance_t *instance_parseFromJSON(cJSON *instanceJSON){
         model ? strdup(model->valuestring) : NULL,
         fwpackage ? strdup(fwpackage->valuestring) : NULL,
         os ? strdup(os->valuestring) : NULL,
-        agent ? strdup(agent->valuestring) : NULL,
+        agent ? agent_local_nonprim : NULL,
         netmon ? netmon_local_nonprim : NULL,
         expose_port ? strdup(expose_port->valuestring) : NULL,
         fault ? fault->valueint : 0,
@@ -914,6 +919,10 @@ end:
     if (services_local_nonprim) {
         instance_services_free(services_local_nonprim);
         services_local_nonprim = NULL;
+    }
+    if (agent_local_nonprim) {
+        instance_agent_state_free(agent_local_nonprim);
+        agent_local_nonprim = NULL;
     }
     if (netmon_local_nonprim) {
         instance_netmon_state_free(netmon_local_nonprim);

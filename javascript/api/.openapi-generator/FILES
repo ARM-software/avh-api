@@ -41,6 +41,7 @@ docs/GrantTrialRequestResponse.md
 docs/Hook.md
 docs/Image.md
 docs/Instance.md
+docs/InstanceAgentState.md
 docs/InstanceBootOptions.md
 docs/InstanceBootOptionsAdditionalTag.md
 docs/InstanceConsoleEndpoint.md
@@ -143,6 +144,7 @@ src/model/GrantTrialRequestResponse.js
 src/model/Hook.js
 src/model/Image.js
 src/model/Instance.js
+src/model/InstanceAgentState.js
 src/model/InstanceBootOptions.js
 src/model/InstanceBootOptionsAdditionalTag.js
 src/model/InstanceConsoleEndpoint.js
@@ -240,6 +242,7 @@ test/model/GrantTrialRequestResponse.spec.js
 test/model/Hook.spec.js
 test/model/Image.spec.js
 test/model/Instance.spec.js
+test/model/InstanceAgentState.spec.js
 test/model/InstanceBootOptions.spec.js
 test/model/InstanceBootOptionsAdditionalTag.spec.js
 test/model/InstanceConsoleEndpoint.spec.js

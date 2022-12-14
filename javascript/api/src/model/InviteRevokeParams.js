@@ -17,7 +17,7 @@ import InviteRevokeParamsIds from './InviteRevokeParamsIds';
 /**
  * The InviteRevokeParams model module.
  * @module model/InviteRevokeParams
- * @version 1.0.2
+ * @version 1.0.3
  */
 class InviteRevokeParams {
     /**

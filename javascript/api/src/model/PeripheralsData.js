@@ -16,7 +16,7 @@ import ApiClient from '../ApiClient';
 /**
  * The PeripheralsData model module.
  * @module model/PeripheralsData
- * @version 1.0.2
+ * @version 1.0.3
  */
 class PeripheralsData {
     /**

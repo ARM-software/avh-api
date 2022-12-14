@@ -16,7 +16,7 @@ import ApiClient from '../ApiClient';
 /**
  * The V1LoadExtensionParameters model module.
  * @module model/V1LoadExtensionParameters
- * @version 1.0.2
+ * @version 1.0.3
  */
 class V1LoadExtensionParameters {
     /**

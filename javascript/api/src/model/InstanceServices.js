@@ -17,7 +17,7 @@ import VpnDefinition from './VpnDefinition';
 /**
  * The InstanceServices model module.
  * @module model/InstanceServices
- * @version 1.0.2
+ * @version 1.0.3
  */
 class InstanceServices {
     /**

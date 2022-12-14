@@ -16,7 +16,7 @@ import ApiClient from '../ApiClient';
 /**
  * The TrialRequestMetadata model module.
  * @module model/TrialRequestMetadata
- * @version 1.0.2
+ * @version 1.0.3
  */
 class TrialRequestMetadata {
     /**

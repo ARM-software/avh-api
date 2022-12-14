@@ -16,7 +16,7 @@ import ApiClient from '../ApiClient';
 /**
  * The Hook model module.
  * @module model/Hook
- * @version 1.0.2
+ * @version 1.0.3
  */
 class Hook {
     /**

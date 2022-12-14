@@ -90,6 +90,7 @@ set(SRCS
     model/hook.c
     model/image.c
     model/instance.c
+    model/instance_agent_state.c
     model/instance_boot_options.c
     model/instance_boot_options_additional_tag.c
     model/instance_console_endpoint.c
@@ -198,6 +199,7 @@ set(HDRS
     model/hook.h
     model/image.h
     model/instance.h
+    model/instance_agent_state.h
     model/instance_boot_options.h
     model/instance_boot_options_additional_tag.h
     model/instance_console_endpoint.h

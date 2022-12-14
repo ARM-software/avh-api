@@ -17,7 +17,7 @@ import Firmware from './Firmware';
 /**
  * The ModelSoftware model module.
  * @module model/ModelSoftware
- * @version 1.0.2
+ * @version 1.0.3
  */
 class ModelSoftware {
     /**

@@ -16,7 +16,7 @@ import ApiClient from '../ApiClient';
 /**
  * The ApiConflictError model module.
  * @module model/ApiConflictError
- * @version 1.0.2
+ * @version 1.0.3
  */
 class ApiConflictError {
     /**

@@ -17,7 +17,7 @@ import InstanceBootOptionsAdditionalTag from './InstanceBootOptionsAdditionalTag
 /**
  * The InstanceBootOptions model module.
  * @module model/InstanceBootOptions
- * @version 1.0.2
+ * @version 1.0.3
  */
 class InstanceBootOptions {
     /**

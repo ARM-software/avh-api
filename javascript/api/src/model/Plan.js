@@ -16,7 +16,7 @@ import ApiClient from '../ApiClient';
 /**
  * The Plan model module.
  * @module model/Plan
- * @version 1.0.2
+ * @version 1.0.3
  */
 class Plan {
     /**

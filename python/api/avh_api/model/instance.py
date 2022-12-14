@@ -31,11 +31,13 @@ from avh_api.exceptions import ApiAttributeError
 
 def lazy_import():
     from avh_api.model.created_by import CreatedBy
+    from avh_api.model.instance_agent_state import InstanceAgentState
     from avh_api.model.instance_boot_options import InstanceBootOptions
     from avh_api.model.instance_netmon_state import InstanceNetmonState
     from avh_api.model.instance_services import InstanceServices
     from avh_api.model.instance_state import InstanceState
     globals()['CreatedBy'] = CreatedBy
+    globals()['InstanceAgentState'] = InstanceAgentState
     globals()['InstanceBootOptions'] = InstanceBootOptions
     globals()['InstanceNetmonState'] = InstanceNetmonState
     globals()['InstanceServices'] = InstanceServices
@@ -117,7 +119,7 @@ class Instance(ModelNormal):
             'model': (str, none_type,),  # noqa: E501
             'fwpackage': (str, none_type,),  # noqa: E501
             'os': (str, none_type,),  # noqa: E501
-            'agent': (str, none_type,),  # noqa: E501
+            'agent': (InstanceAgentState,),  # noqa: E501
             'netmon': (InstanceNetmonState,),  # noqa: E501
             'expose_port': (str, none_type,),  # noqa: E501
             'fault': (bool, none_type,),  # noqa: E501
@@ -224,7 +226,7 @@ class Instance(ModelNormal):
             model (str, none_type): Model of virtual machine device. [optional]  # noqa: E501
             fwpackage (str, none_type): URL that package used to create this instance is available at. [optional]  # noqa: E501
             os (str, none_type): . [optional]  # noqa: E501
-            agent (str, none_type): . [optional]  # noqa: E501
+            agent (InstanceAgentState): [optional]  # noqa: E501
             netmon (InstanceNetmonState): [optional]  # noqa: E501
             expose_port (str, none_type): . [optional]  # noqa: E501
             fault (bool, none_type): . [optional]  # noqa: E501
@@ -337,7 +339,7 @@ class Instance(ModelNormal):
             model (str, none_type): Model of virtual machine device. [optional]  # noqa: E501
             fwpackage (str, none_type): URL that package used to create this instance is available at. [optional]  # noqa: E501
             os (str, none_type): . [optional]  # noqa: E501
-            agent (str, none_type): . [optional]  # noqa: E501
+            agent (InstanceAgentState): [optional]  # noqa: E501
             netmon (InstanceNetmonState): [optional]  # noqa: E501
             expose_port (str, none_type): . [optional]  # noqa: E501
             fault (bool, none_type): . [optional]  # noqa: E501

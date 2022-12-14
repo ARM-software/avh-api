@@ -16,7 +16,7 @@ import ApiClient from '../ApiClient';
 /**
  * The GrantTrialRequestResponse model module.
  * @module model/GrantTrialRequestResponse
- * @version 1.0.2
+ * @version 1.0.3
  */
 class GrantTrialRequestResponse {
     /**

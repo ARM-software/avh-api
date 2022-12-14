@@ -18,6 +18,7 @@ instance_t* instantiate_instance(int include_optional);
 
 #include "test_instance_boot_options.c"
 #include "test_instance_services.c"
+#include "test_instance_agent_state.c"
 #include "test_instance_netmon_state.c"
 #include "test_created_by.c"
 
@@ -50,7 +51,8 @@ instance_t* instantiate_instance(int include_optional) {
       "0",
       "0",
       "0",
-      "0",
+       // false, not to have infinite recursion
+      instantiate_instance_agent_state(0),
        // false, not to have infinite recursion
       instantiate_instance_netmon_state(0),
       "0",
@@ -83,7 +85,7 @@ instance_t* instantiate_instance(int include_optional) {
       "0",
       "0",
       "0",
-      "0",
+      NULL,
       NULL,
       "0",
       1,

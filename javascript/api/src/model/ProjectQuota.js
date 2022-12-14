@@ -16,7 +16,7 @@ import ApiClient from '../ApiClient';
 /**
  * The ProjectQuota model module.
  * @module model/ProjectQuota
- * @version 1.0.2
+ * @version 1.0.3
  */
 class ProjectQuota {
     /**

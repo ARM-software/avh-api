@@ -16,7 +16,7 @@ import ApiClient from '../ApiClient';
 /**
  * The RateInfo model module.
  * @module model/RateInfo
- * @version 1.0.2
+ * @version 1.0.3
  */
 class RateInfo {
     /**

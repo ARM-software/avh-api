@@ -58,7 +58,7 @@ import WebPlayerSession from '../model/WebPlayerSession';
 /**
 * Arm service.
 * @module api/ArmApi
-* @version 1.0.2
+* @version 1.0.3
 */
 export default class ArmApi {
 

@@ -22,10 +22,14 @@ instance_netmon_state_t* instantiate_instance_netmon_state(int include_optional)
   instance_netmon_state_t* instance_netmon_state = NULL;
   if (include_optional) {
     instance_netmon_state = instance_netmon_state_create(
+      "0",
+      "0",
       1
     );
   } else {
     instance_netmon_state = instance_netmon_state_create(
+      "0",
+      "0",
       1
     );
   }

@@ -18,7 +18,7 @@ import TrialRequestMetadata from './TrialRequestMetadata';
 /**
  * The TrialRequestOptions model module.
  * @module model/TrialRequestOptions
- * @version 1.0.2
+ * @version 1.0.3
  */
 class TrialRequestOptions {
     /**

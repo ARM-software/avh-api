@@ -16,7 +16,7 @@ import ApiClient from '../ApiClient';
 /**
  * The CreateTeam model module.
  * @module model/CreateTeam
- * @version 1.0.2
+ * @version 1.0.3
  */
 class CreateTeam {
     /**

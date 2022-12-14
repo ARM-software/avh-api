@@ -16,7 +16,7 @@ import ApiClient from '../ApiClient';
 /**
  * The InstanceConsoleEndpoint model module.
  * @module model/InstanceConsoleEndpoint
- * @version 1.0.2
+ * @version 1.0.3
  */
 class InstanceConsoleEndpoint {
     /**

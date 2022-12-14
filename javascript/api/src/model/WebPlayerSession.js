@@ -16,7 +16,7 @@ import ApiClient from '../ApiClient';
 /**
  * The WebPlayerSession model module.
  * @module model/WebPlayerSession
- * @version 1.0.2
+ * @version 1.0.3
  */
 class WebPlayerSession {
     /**

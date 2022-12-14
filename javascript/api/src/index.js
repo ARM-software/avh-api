@@ -50,6 +50,7 @@ import GrantTrialRequestResponse from './model/GrantTrialRequestResponse';
 import Hook from './model/Hook';
 import Image from './model/Image';
 import Instance from './model/Instance';
+import InstanceAgentState from './model/InstanceAgentState';
 import InstanceBootOptions from './model/InstanceBootOptions';
 import InstanceBootOptionsAdditionalTag from './model/InstanceBootOptionsAdditionalTag';
 import InstanceConsoleEndpoint from './model/InstanceConsoleEndpoint';
@@ -141,7 +142,7 @@ import ArmApi from './api/ArmApi';
 * </pre>
 * </p>
 * @module index
-* @version 1.0.2
+* @version 1.0.3
 */
 export {
     /**
@@ -371,6 +372,12 @@ export {
      * @property {module:model/Instance}
      */
     Instance,
+
+    /**
+     * The InstanceAgentState model constructor.
+     * @property {module:model/InstanceAgentState}
+     */
+    InstanceAgentState,
 
     /**
      * The InstanceBootOptions model constructor.

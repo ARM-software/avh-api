@@ -16,7 +16,7 @@ import ApiClient from '../ApiClient';
 /**
  * The PasswordChangeBody model module.
  * @module model/PasswordChangeBody
- * @version 1.0.2
+ * @version 1.0.3
  */
 class PasswordChangeBody {
     /**

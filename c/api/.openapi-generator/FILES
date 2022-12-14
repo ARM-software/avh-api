@@ -43,6 +43,7 @@ docs/grant_trial_request_response.md
 docs/hook.md
 docs/image.md
 docs/instance.md
+docs/instance_agent_state.md
 docs/instance_boot_options.md
 docs/instance_boot_options_additional_tag.md
 docs/instance_console_endpoint.md
@@ -185,6 +186,8 @@ model/image.c
 model/image.h
 model/instance.c
 model/instance.h
+model/instance_agent_state.c
+model/instance_agent_state.h
 model/instance_boot_options.c
 model/instance_boot_options.h
 model/instance_boot_options_additional_tag.c
@@ -347,6 +350,7 @@ unit-test/test_grant_trial_request_response.c
 unit-test/test_hook.c
 unit-test/test_image.c
 unit-test/test_instance.c
+unit-test/test_instance_agent_state.c
 unit-test/test_instance_boot_options.c
 unit-test/test_instance_boot_options_additional_tag.c
 unit-test/test_instance_console_endpoint.c

@@ -16,7 +16,7 @@ import ApiClient from '../ApiClient';
 /**
  * The AgentInstallBody model module.
  * @module model/AgentInstallBody
- * @version 1.0.2
+ * @version 1.0.3
  */
 class AgentInstallBody {
     /**

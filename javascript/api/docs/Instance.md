@@ -26,7 +26,7 @@ Name | Type | Description | Notes
 **model** | **String** | Model of virtual machine device | [optional] 
 **fwpackage** | **String** | URL that package used to create this instance is available at | [optional] 
 **os** | **String** |  | [optional] 
-**agent** | **String** |  | [optional] 
+**agent** | [**InstanceAgentState**](InstanceAgentState.md) |  | [optional] 
 **netmon** | [**InstanceNetmonState**](InstanceNetmonState.md) |  | [optional] 
 **exposePort** | **String** |  | [optional] 
 **fault** | **Boolean** |  | [optional] 

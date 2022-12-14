@@ -16,7 +16,7 @@ import ApiClient from '../ApiClient';
 /**
  * The Kcrange model module.
  * @module model/Kcrange
- * @version 1.0.2
+ * @version 1.0.3
  */
 class Kcrange {
     /**

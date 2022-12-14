@@ -17,7 +17,7 @@ import GpioStateDefinition from './GpioStateDefinition';
 /**
  * The GpiosState model module.
  * @module model/GpiosState
- * @version 1.0.2
+ * @version 1.0.3
  */
 class GpiosState {
     /**

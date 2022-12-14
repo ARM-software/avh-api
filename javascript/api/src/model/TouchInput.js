@@ -16,7 +16,7 @@ import ApiClient from '../ApiClient';
 /**
  * The TouchInput model module.
  * @module model/TouchInput
- * @version 1.0.2
+ * @version 1.0.3
  */
 class TouchInput {
     /**

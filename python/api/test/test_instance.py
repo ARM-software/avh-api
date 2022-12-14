@@ -13,11 +13,13 @@ import unittest
 
 import avh_api
 from avh_api.model.created_by import CreatedBy
+from avh_api.model.instance_agent_state import InstanceAgentState
 from avh_api.model.instance_boot_options import InstanceBootOptions
 from avh_api.model.instance_netmon_state import InstanceNetmonState
 from avh_api.model.instance_services import InstanceServices
 from avh_api.model.instance_state import InstanceState
 globals()['CreatedBy'] = CreatedBy
+globals()['InstanceAgentState'] = InstanceAgentState
 globals()['InstanceBootOptions'] = InstanceBootOptions
 globals()['InstanceNetmonState'] = InstanceNetmonState
 globals()['InstanceServices'] = InstanceServices

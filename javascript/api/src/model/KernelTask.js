@@ -17,7 +17,7 @@ import KernelThread from './KernelThread';
 /**
  * The KernelTask model module.
  * @module model/KernelTask
- * @version 1.0.2
+ * @version 1.0.3
  */
 class KernelTask {
     /**

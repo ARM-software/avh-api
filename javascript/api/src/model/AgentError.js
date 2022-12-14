@@ -16,7 +16,7 @@ import ApiClient from '../ApiClient';
 /**
  * The AgentError model module.
  * @module model/AgentError
- * @version 1.0.2
+ * @version 1.0.3
  */
 class AgentError {
     /**

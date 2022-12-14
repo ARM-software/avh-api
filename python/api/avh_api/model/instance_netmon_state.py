@@ -68,7 +68,7 @@ class InstanceNetmonState(ModelNormal):
         """
         return (bool, date, datetime, dict, float, int, list, str, none_type,)  # noqa: E501
 
-    _nullable = False
+    _nullable = True
 
     @cached_property
     def openapi_types():
@@ -81,6 +81,8 @@ class InstanceNetmonState(ModelNormal):
                 and the value is attribute type.
         """
         return {
+            'hash': (str, none_type,),  # noqa: E501
+            'info': (str, none_type,),  # noqa: E501
             'enabled': (bool, none_type,),  # noqa: E501
         }
 
@@ -90,6 +92,8 @@ class InstanceNetmonState(ModelNormal):
 
 
     attribute_map = {
+        'hash': 'hash',  # noqa: E501
+        'info': 'info',  # noqa: E501
         'enabled': 'enabled',  # noqa: E501
     }
 
@@ -134,6 +138,8 @@ class InstanceNetmonState(ModelNormal):
                                 Animal class but this time we won't travel
                                 through its discriminator because we passed in
                                 _visited_composed_classes = (Animal,)
+            hash (str, none_type): . [optional]  # noqa: E501
+            info (str, none_type): . [optional]  # noqa: E501
             enabled (bool, none_type): . [optional]  # noqa: E501
         """
 
@@ -220,6 +226,8 @@ class InstanceNetmonState(ModelNormal):
                                 Animal class but this time we won't travel
                                 through its discriminator because we passed in
                                 _visited_composed_classes = (Animal,)
+            hash (str, none_type): . [optional]  # noqa: E501
+            info (str, none_type): . [optional]  # noqa: E501
             enabled (bool, none_type): . [optional]  # noqa: E501
         """
 

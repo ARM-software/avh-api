@@ -16,7 +16,7 @@ import ApiClient from '../ApiClient';
 /**
  * The PasswordResetBody model module.
  * @module model/PasswordResetBody
- * @version 1.0.2
+ * @version 1.0.3
  */
 class PasswordResetBody {
     /**

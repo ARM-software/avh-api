@@ -16,7 +16,7 @@ import ApiClient from '../ApiClient';
 /**
  * The AgentValueReturn model module.
  * @module model/AgentValueReturn
- * @version 1.0.2
+ * @version 1.0.3
  */
 class AgentValueReturn {
     /**

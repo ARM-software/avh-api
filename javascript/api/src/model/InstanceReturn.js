@@ -17,7 +17,7 @@ import InstanceState from './InstanceState';
 /**
  * The InstanceReturn model module.
  * @module model/InstanceReturn
- * @version 1.0.2
+ * @version 1.0.3
  */
 class InstanceReturn {
     /**

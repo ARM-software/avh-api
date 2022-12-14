@@ -17,7 +17,7 @@ import User from './User';
 /**
  * The Team model module.
  * @module model/Team
- * @version 1.0.2
+ * @version 1.0.3
  */
 class Team {
     /**

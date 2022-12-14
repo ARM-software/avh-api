@@ -16,6 +16,7 @@
 typedef struct instance_t instance_t;
 
 #include "created_by.h"
+#include "instance_agent_state.h"
 #include "instance_boot_options.h"
 #include "instance_netmon_state.h"
 #include "instance_services.h"
@@ -46,7 +47,7 @@ typedef struct instance_t {
     char *model; // string
     char *fwpackage; // string
     char *os; // string
-    char *agent; // string
+    struct instance_agent_state_t *agent; //model
     struct instance_netmon_state_t *netmon; //model
     char *expose_port; // string
     int fault; //boolean
@@ -79,7 +80,7 @@ __attribute__((deprecated)) instance_t *instance_create(
     char *model,
     char *fwpackage,
     char *os,
-    char *agent,
+    instance_agent_state_t *agent,
     instance_netmon_state_t *netmon,
     char *expose_port,
     int fault,

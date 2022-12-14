@@ -13,6 +13,7 @@
 
 import ApiClient from '../ApiClient';
 import CreatedBy from './CreatedBy';
+import InstanceAgentState from './InstanceAgentState';
 import InstanceBootOptions from './InstanceBootOptions';
 import InstanceNetmonState from './InstanceNetmonState';
 import InstanceServices from './InstanceServices';
@@ -21,7 +22,7 @@ import InstanceState from './InstanceState';
 /**
  * The Instance model module.
  * @module model/Instance
- * @version 1.0.2
+ * @version 1.0.3
  */
 class Instance {
     /**
@@ -120,7 +121,7 @@ class Instance {
                 obj['os'] = ApiClient.convertToType(data['os'], 'String');
             }
             if (data.hasOwnProperty('agent')) {
-                obj['agent'] = ApiClient.convertToType(data['agent'], 'String');
+                obj['agent'] = InstanceAgentState.constructFromObject(data['agent']);
             }
             if (data.hasOwnProperty('netmon')) {
                 obj['netmon'] = InstanceNetmonState.constructFromObject(data['netmon']);
@@ -274,8 +275,7 @@ Instance.prototype['fwpackage'] = undefined;
 Instance.prototype['os'] = undefined;
 
 /**
- * 
- * @member {String} agent
+ * @member {module:model/InstanceAgentState} agent
  */
 Instance.prototype['agent'] = undefined;
 

@@ -16,7 +16,7 @@ import ApiClient from '../ApiClient';
 /**
  * The SnapshotCreationOptions model module.
  * @module model/SnapshotCreationOptions
- * @version 1.0.2
+ * @version 1.0.3
  */
 class SnapshotCreationOptions {
     /**

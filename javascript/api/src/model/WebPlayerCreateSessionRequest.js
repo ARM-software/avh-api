@@ -17,7 +17,7 @@ import Features from './Features';
 /**
  * The WebPlayerCreateSessionRequest model module.
  * @module model/WebPlayerCreateSessionRequest
- * @version 1.0.2
+ * @version 1.0.3
  */
 class WebPlayerCreateSessionRequest {
     /**

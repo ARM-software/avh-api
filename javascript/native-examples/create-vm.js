@@ -1,8 +1,9 @@
 const readline = require('readline')
 const { ArmApi, ApiClient } = require('@arm-avh/avh-api');
 
-const BearerAuth = ApiClient.instance.authentications['BearerAuth']
-const api = new ArmApi()
+const apiClient = new ApiClient('https://app.corellium.io/api')
+const BearerAuth = apiClient.authentications['BearerAuth']
+const api = new ArmApi(apiClient)
 
 function prompt (prompt) {
   const rl = readline.createInterface({

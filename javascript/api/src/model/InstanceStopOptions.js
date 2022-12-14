@@ -16,7 +16,7 @@ import ApiClient from '../ApiClient';
 /**
  * The InstanceStopOptions model module.
  * @module model/InstanceStopOptions
- * @version 1.0.2
+ * @version 1.0.3
  */
 class InstanceStopOptions {
     /**

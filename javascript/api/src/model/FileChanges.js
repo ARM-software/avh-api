@@ -16,7 +16,7 @@ import ApiClient from '../ApiClient';
 /**
  * The FileChanges model module.
  * @module model/FileChanges
- * @version 1.0.2
+ * @version 1.0.3
  */
 class FileChanges {
     /**

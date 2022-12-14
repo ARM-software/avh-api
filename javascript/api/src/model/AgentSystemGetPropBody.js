@@ -16,7 +16,7 @@ import ApiClient from '../ApiClient';
 /**
  * The AgentSystemGetPropBody model module.
  * @module model/AgentSystemGetPropBody
- * @version 1.0.2
+ * @version 1.0.3
  */
 class AgentSystemGetPropBody {
     /**

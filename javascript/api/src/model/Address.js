@@ -16,7 +16,7 @@ import ApiClient from '../ApiClient';
 /**
  * The Address model module.
  * @module model/Address
- * @version 1.0.2
+ * @version 1.0.3
  */
 class Address {
     /**

@@ -16,7 +16,7 @@ import ApiClient from '../ApiClient';
 /**
  * The TouchCurveInput model module.
  * @module model/TouchCurveInput
- * @version 1.0.2
+ * @version 1.0.3
  */
 class TouchCurveInput {
     /**

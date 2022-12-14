@@ -47,6 +47,7 @@ avh_api_async/models/grant_trial_request_response.py
 avh_api_async/models/hook.py
 avh_api_async/models/image.py
 avh_api_async/models/instance.py
+avh_api_async/models/instance_agent_state.py
 avh_api_async/models/instance_boot_options.py
 avh_api_async/models/instance_boot_options_additional_tag.py
 avh_api_async/models/instance_console_endpoint.py
@@ -145,6 +146,7 @@ docs/GrantTrialRequestResponse.md
 docs/Hook.md
 docs/Image.md
 docs/Instance.md
+docs/InstanceAgentState.md
 docs/InstanceBootOptions.md
 docs/InstanceBootOptionsAdditionalTag.md
 docs/InstanceConsoleEndpoint.md
@@ -248,6 +250,7 @@ test/test_grant_trial_request_response.py
 test/test_hook.py
 test/test_image.py
 test/test_instance.py
+test/test_instance_agent_state.py
 test/test_instance_boot_options.py
 test/test_instance_boot_options_additional_tag.py
 test/test_instance_console_endpoint.py

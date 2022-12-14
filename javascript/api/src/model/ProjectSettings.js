@@ -16,7 +16,7 @@ import ApiClient from '../ApiClient';
 /**
  * The ProjectSettings model module.
  * @module model/ProjectSettings
- * @version 1.0.2
+ * @version 1.0.3
  */
 class ProjectSettings {
     /**

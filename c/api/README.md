@@ -197,6 +197,7 @@ Category | Method | HTTP request | Description
  - [hook_t](docs/hook.md)
  - [image_t](docs/image.md)
  - [instance_t](docs/instance.md)
+ - [instance_agent_state_t](docs/instance_agent_state.md)
  - [instance_boot_options_t](docs/instance_boot_options.md)
  - [instance_boot_options_additional_tag_t](docs/instance_boot_options_additional_tag.md)
  - [instance_console_endpoint_t](docs/instance_console_endpoint.md)

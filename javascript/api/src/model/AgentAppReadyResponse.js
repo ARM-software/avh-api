@@ -16,7 +16,7 @@ import ApiClient from '../ApiClient';
 /**
  * The AgentAppReadyResponse model module.
  * @module model/AgentAppReadyResponse
- * @version 1.0.2
+ * @version 1.0.3
  */
 class AgentAppReadyResponse {
     /**

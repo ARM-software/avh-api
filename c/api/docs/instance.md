@@ -25,7 +25,7 @@ Name | Type | Description | Notes
 **model** | **char \*** | Model of virtual machine device | [optional] 
 **fwpackage** | **char \*** | URL that package used to create this instance is available at | [optional] 
 **os** | **char \*** |  | [optional] 
-**agent** | **char \*** |  | [optional] 
+**agent** | [**instance_agent_state_t**](instance_agent_state.md) \* |  | [optional] 
 **netmon** | [**instance_netmon_state_t**](instance_netmon_state.md) \* |  | [optional] 
 **expose_port** | **char \*** |  | [optional] 
 **fault** | **int** |  | [optional] 

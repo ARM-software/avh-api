@@ -16,7 +16,7 @@ import ApiClient from '../ApiClient';
 /**
  * The ResetLinkBody model module.
  * @module model/ResetLinkBody
- * @version 1.0.2
+ * @version 1.0.3
  */
 class ResetLinkBody {
     /**

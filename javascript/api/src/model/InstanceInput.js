@@ -19,7 +19,7 @@ import TouchInput from './TouchInput';
 /**
  * The InstanceInput model module.
  * @module model/InstanceInput
- * @version 1.0.2
+ * @version 1.0.3
  */
 class InstanceInput {
     /**
