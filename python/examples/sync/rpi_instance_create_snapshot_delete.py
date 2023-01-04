@@ -16,40 +16,6 @@ if len(sys.argv) < 3:
 apiEndpoint = sys.argv[1]
 apiToken = sys.argv[2]
 
-async def connectWiFi(consoleEndpoint: InstanceConsoleEndpoint):
-  console = await ws.connect(consoleEndpoint.url)
-  try:
-    text = ''
-    async for message in console:
-      text += message.decode('utf-8')
-      while '\n' in text:
-        offset = text.find('\n')
-        line, text = text[:offset], text[offset+1:]
-        print('<< %s' % line)
-        output = None
-        if line.find('Please enter your wifi ssid') != -1:
-          output = 'Arm'
-        elif line.find('Please enter your wifi password') != -1:
-          output = 'password'
-        elif line.find('IP address :') != -1:
-          match = re.search(r'IP address :\s*(\S+)\.', line)
-          if match:
-            ip = match.group(1)
-            if (ip != '0.0.0.0'):
-              return ip
-
-        if (output):
-          print('>> %s' % output)
-          await console.send('%s\n' % output)  
-  
-  except Exception as e:
-    print('Timed out connecting WiFi')
-    print(e)
-    console.close_timeout = 5
-    await console.close()
-    return False
-
-
 # Defining the host is optional and defaults to https://app.avh.arm.com/api
 # See configuration.py for a list of all supported configuration parameters.
 configuration = AvhAPI.Configuration(
@@ -61,7 +27,6 @@ with AvhAPI.ApiClient(configuration=configuration) as api_client:
   status = 0
   # Create an instance of the API class
   api_instance = arm_api.ArmApi(api_client)
-  body = {} # dict | Authorization data ( Credentials|ApiToken|Token )
 
   # example passing only required values which don't have defaults set
   try:

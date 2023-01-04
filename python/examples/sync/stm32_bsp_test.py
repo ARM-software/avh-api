@@ -5,7 +5,10 @@ import re
 from websockets import client as ws
 import sys
 
-import avh_api_async as AvhAPI
+import avh_api as AvhAPI
+from avh_api.api import arm_api
+from avh_api.model.instance_console_endpoint import InstanceConsoleEndpoint
+from avh_api.model.instance_state import InstanceState
 from pprint import pprint
 
 import ssl
@@ -14,7 +17,7 @@ ctx.check_hostname = False
 ctx.verify_mode = ssl.CERT_NONE
 
 if len(sys.argv) < 3:
-  print('Usage: %s <ApiEndpoint> <ApiToken> [vmName]', sys.argv[0])
+  print('Usage: %s <ApiEndpoint> <ApiToken> [vmName]' % sys.argv[0])
   exit(-1)
 
 apiEndpoint = sys.argv[1]
@@ -27,31 +30,32 @@ else:
 async def waitForState(instance, state):
   global api_instance
 
-  instanceState = await api_instance.v1_get_instance_state(instance.id)
-  while (instanceState != state):
-    if (instanceState == 'error'):
+  instanceState = api_instance.v1_get_instance_state(instance.id)
+  while (instanceState != InstanceState(state)):
+    print('State: %s (waiting for %s)' % (instanceState, state))
+    if (instanceState == InstanceState('error')):
       raise Exception('VM entered error state')
     await asyncio.sleep(1)
-    instanceState = await api_instance.v1_get_instance_state(instance.id)
+    instanceState = api_instance.v1_get_instance_state(instance.id)
 
 ledStates = [ 'off', 'on' ]
 async def printLeds(instance):
-  state = await api_instance.v1_get_instance_gpios(instance.id)
-  ledBank = state.led.banks[0]
-  print('LED6: %s LED7: %s' % (ledStates[ledBank[0]], ledStates[ledBank[1]]) )
+  state = api_instance.v1_get_instance_gpios(instance.id)
+  ledBank = state['led'].banks[0]
+  print('LED6: %s LED7: %s' % (ledStates[int(ledBank[0].value)], ledStates[int(ledBank[1].value)]) )
 
 async def pressButton(instance):
-  await api_instance.v1_set_instance_gpios(instance.id, {
+  api_instance.v1_set_instance_gpios(instance.id, {
     "button": {
-      "bitCount": 1,
+      "bit_count": 1,
       "banks": [
         [1]
       ]
     }
   })
-  await api_instance.v1_set_instance_gpios(instance.id, {
+  api_instance.v1_set_instance_gpios(instance.id, {
     "button": {
-      "bitCount": 1,
+      "bit_count": 1,
       "banks": [
         [0]
       ]
@@ -64,7 +68,7 @@ async def testBspImage(instance):
   text = ''
   done = False
 
-  consoleEndpoint = await api_instance.v1_get_instance_console(instance.id)
+  consoleEndpoint = api_instance.v1_get_instance_console(instance.id)
   console = await ws.connect(consoleEndpoint.url, ssl=ctx)
   try:
     async for message in console:
@@ -107,25 +111,29 @@ async def main():
       host = apiEndpoint
   )
   # Enter a context with an instance of the API client
-  async with AvhAPI.ApiClient(configuration=configuration) as api_client:
+  with AvhAPI.ApiClient(configuration=configuration) as api_client:
     # Create an instance of the API class
-    api_instance = AvhAPI.ArmApi(api_client)
+    api_instance = arm_api.ArmApi(api_client)
 
     # Log In
-    token_response = await api_instance.v1_auth_login({
-      "apiToken": apiToken,
-    })
-
-    print('Logged in')
-    configuration.access_token = token_response.token
+    try:
+        # Log In
+        token_response = api_instance.v1_auth_login({
+          "api_token": apiToken
+        })
+        print('Logged in')
+        configuration.access_token = token_response.token
+    except AvhAPI.ApiException as e:
+        print("Exception when calling v1_auth_login: %s\n" % e)
+        exit(1)
 
     print('Finding a project...')
-    api_response = await api_instance.v1_get_projects()
+    api_response = api_instance.v1_get_projects()
     pprint(api_response)
     projectId = api_response[0].id
 
     print('Getting our model...')
-    api_response = await api_instance.v1_get_models()
+    api_response = api_instance.v1_get_models()
     chosenModel = None
     for model in api_response:
       if model.flavor.startswith('stm32u5'):
@@ -135,7 +143,7 @@ async def main():
     pprint(chosenModel)
 
     print('Finding software for our model...')
-    api_response = await api_instance.v1_get_model_software(model.model)
+    api_response = api_instance.v1_get_model_software(model.model)
     chosenSoftware = None
     for software in api_response:
       if software.filename.startswith('STM32U5-WiFiBasics'):
@@ -143,15 +151,20 @@ async def main():
         chosenSoftware = software
         break
 
-    print('Creating a new instance...')
-    api_response = await api_instance.v1_create_instance({
-      "name": vmName,
-      "project": projectId,
-      "flavor": chosenModel.flavor,
-      "os": chosenSoftware.version,
-      "osbuild": chosenSoftware.buildid
-    })
-    instance = api_response
+    try:
+      print('Creating a new instance...')
+      api_response = api_instance.v1_create_instance({
+        "name": vmName,
+        "project": projectId,
+        "flavor": chosenModel.flavor,
+        "os": chosenSoftware.version,
+        "osbuild": chosenSoftware.buildid
+      })
+      instance = api_response
+    except AvhAPI.ApiException as e:
+      print("Exception when calling v1_create_instance: %s\n" % e)
+      raise e
+      exit(1)
 
     error = None
     try:
@@ -159,25 +172,27 @@ async def main():
       await waitForState(instance, 'on')
 
       print('Setting the VM to use the bsp test software')
-      api_response = await api_instance.v1_create_image('fwbinary', 'plain', 
+      file = open(os.path.join(sys.path[0], '../assets/bsp.elf'), 'rb')
+      pprint(file)
+      api_response = api_instance.v1_create_image(type='fwbinary',
         name="bsp.elf",
         instance=instance.id,
-        file=os.path.join(sys.path[0], '../assets/bsp.elf')
+        file=file
       )
       pprint(api_response)
 
       print('Resetting VM to use the new software')
-      api_response = await api_instance.v1_reboot_instance(instance.id)
+      api_response = api_instance.v1_reboot_instance(instance.id)
       print('Waiting for VM to finish resetting...')
       await waitForState(instance, 'on')
       print('done')
       print('Logging GPIO initial state:')
-      gpios = await api_instance.v1_get_instance_gpios(instance.id)
+      gpios = api_instance.v1_get_instance_gpios(instance.id)
       pprint(gpios)
       print('running test')
       await testBspImage(instance)
       print('Logging GPIO final state:')
-      gpios = await api_instance.v1_get_instance_gpios(instance.id)
+      gpios = api_instance.v1_get_instance_gpios(instance.id)
       pprint(gpios)
 
     except Exception as e:      
@@ -186,11 +201,10 @@ async def main():
       error = e
 
     print('Deleting instance...')
-    api_response = await api_instance.v1_delete_instance(instance.id)
+    api_response = api_instance.v1_delete_instance(instance.id)
 
     if error != None:
       raise error
-      exit(1)
 
 asyncio.run(asyncio.wait_for(main(), 120))
 exit(0)
