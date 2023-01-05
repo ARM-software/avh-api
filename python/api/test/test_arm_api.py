@@ -632,6 +632,41 @@ class TestArmApi(unittest.TestCase):
         """
         pass
 
+    def test_v1_web_player_allowed_domains(self):
+        """Test case for v1_web_player_allowed_domains
+
+        Retrieve the list of allowed domains for all Web Player sessions  # noqa: E501
+        """
+        pass
+
+    def test_v1_web_player_create_session(self):
+        """Test case for v1_web_player_create_session
+
+        Create a new Web Player Session  # noqa: E501
+        """
+        pass
+
+    def test_v1_web_player_destroy_session(self):
+        """Test case for v1_web_player_destroy_session
+
+        Tear down a Web Player Session  # noqa: E501
+        """
+        pass
+
+    def test_v1_web_player_list_sessions(self):
+        """Test case for v1_web_player_list_sessions
+
+        List all Web Player sessions  # noqa: E501
+        """
+        pass
+
+    def test_v1_web_player_session_info(self):
+        """Test case for v1_web_player_session_info
+
+        Retrieve Web Player Session Information  # noqa: E501
+        """
+        pass
+
 
 if __name__ == '__main__':
     unittest.main()
